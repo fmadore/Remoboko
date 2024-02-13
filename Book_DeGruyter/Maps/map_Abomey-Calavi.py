@@ -11,6 +11,7 @@ locations = {
     'Bon Pasteur Parish': (6.3570692871919885, 2.398772893785117),
     'Bâtiment C': (6.41449, 2.34240),
     'GBEEB Headquarters': (6.372156046604895, 2.4974942706506096),
+    'Jardin U': (6.414055663522571, 2.343605535178956),
 }
 
 # Calculate the center of the map
