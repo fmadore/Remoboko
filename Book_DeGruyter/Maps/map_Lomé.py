@@ -13,7 +13,7 @@ locations = {
     'Amphi 20 ans': (6.17387, 1.21318),
     'Benches near the Library': (6.17423,1.21462),
     'Quartier de Doumasséssé': (6.1607, 1.2175),
-    'Centre Saint Jean Lomé': (6.148969553402552, 1.2346652112254952),
+    'Centre Saint Jean Lomé (University Parish)': (6.148969553402552, 1.2346652112254952),
 }
 
 # Calculate the center of the map
@@ -22,7 +22,7 @@ avg_lng = sum(loc[1] for loc in locations.values()) / len(locations)
 map_center = [avg_lat, avg_lng]
 
 # Create a base map
-m = folium.Map(location=map_center, zoom_start=15)
+m = folium.Map(location=map_center, zoom_start=14)
 
 # Add markers for each location
 for name, coords in locations.items():
