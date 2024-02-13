@@ -31,8 +31,7 @@ legend_html = '''
      <div style="position: fixed; 
      bottom: 50px; left: 50px; width: 150px; height: 120px; 
      border:2px solid grey; z-index:9999; font-size:14px;
-     ">&nbsp; Legend <br>
-     &nbsp; University Locations <br>
+     ">&nbsp; University of Lomé <br>
      &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Points of Interest
      </div>
      '''
