@@ -13,7 +13,10 @@ data = data.dropna(subset=['Date'])
 data.sort_values('Date', ascending=False, inplace=True)
 
 # Create the figure and axis for the timeline, adjusting for vertical layout
-fig, ax = plt.subplots(figsize=(10, 15))
+fig, ax = plt.subplots(figsize=(10, 27))
+
+# Adjust subplot parameters
+plt.subplots_adjust(left=0.5, bottom=0, top=1)  # Adjusting subplot margins
 
 # Draw a central vertical timeline
 ax.axvline(x=0, color='black', linewidth=2)
@@ -44,6 +47,9 @@ ax.xaxis.set_visible(False)
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
 ax.spines['bottom'].set_visible(False)
+
+# Save the figure
+plt.savefig('Timeline.png', dpi=300, bbox_inches='tight')
 
 # Show the plot
 plt.show()
