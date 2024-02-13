@@ -13,6 +13,7 @@ locations = {
     'Amphi 20 ans': (6.17387, 1.21318),
     'Benches near the Library': (6.17423,1.21462),
     'Quartier de Doumasséssé': (6.1607, 1.2175),
+    'Centre Saint Jean Lomé': (6.148969553402552, 1.2346652112254952),
 }
 
 # Calculate the center of the map
