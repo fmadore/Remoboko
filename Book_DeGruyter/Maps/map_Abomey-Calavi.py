@@ -6,15 +6,6 @@ from branca.element import Element
 locations = {
     'Centre Catholique Universitaire (CCU)': (6.17428, 1.21188),
     'Mosquée de l\'AEEMT': (6.17170, 1.21159),
-    'Amphi 600': (6.17349, 1.21336),
-    'Cité A': (6.16872, 1.21665),
-    'Cité B': (6.16807, 1.21573),
-    'Grand Amphi': (6.17522, 1.21385),
-    'Amphi 20 ans': (6.17387, 1.21318),
-    'Benches near the Library': (6.17423,1.21462),
-    'Quartier de Doumasséssé': (6.1607, 1.2175),
-    'Centre Saint Jean Lomé (University Parish)': (6.148969553402552, 1.2346652112254952),
-    'Village du Bénin': (6.16674, 1.21730),
 }
 
 # Calculate the center of the map
@@ -34,7 +25,7 @@ legend_html = '''
      <div style="position: fixed; 
      bottom: 50px; left: 50px; width: 150px; height: 120px; 
      border:2px solid grey; z-index:9999; font-size:14px;
-     ">&nbsp; University of Lomé <br>
+     ">&nbsp; University of Abomey-Calavi <br>
      &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Points of Interest
      </div>
      '''
@@ -43,4 +34,4 @@ legend_html = '''
 m.get_root().html.add_child(Element(legend_html))
 
 # Save the map to an HTML file
-m.save('UL_locations_map.html')
+m.save('UAC_locations_map.html')
