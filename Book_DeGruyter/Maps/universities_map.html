@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_870793b00b410eb51fa943c9f6f37824 {
+                #map_fc8694eac1055fa7d882499a31f29d77 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,14 +39,14 @@
 <body>
     
     
-            <div class="folium-map" id="map_870793b00b410eb51fa943c9f6f37824" ></div>
+            <div class="folium-map" id="map_fc8694eac1055fa7d882499a31f29d77" ></div>
         
 </body>
 <script>
     
     
-            var map_870793b00b410eb51fa943c9f6f37824 = L.map(
-                "map_870793b00b410eb51fa943c9f6f37824",
+            var map_fc8694eac1055fa7d882499a31f29d77 = L.map(
+                "map_fc8694eac1055fa7d882499a31f29d77",
                 {
                     center: [7.864523179915057, 1.852379479047527],
                     crs: L.CRS.EPSG3857,
@@ -60,97 +60,85 @@
 
         
     
-            var tile_layer_215dbb5bcd4ec850b02a1fc2561b8d37 = L.tileLayer(
+            var tile_layer_8c7d213ff9d3c17118c6ecbb98f86d3d = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_215dbb5bcd4ec850b02a1fc2561b8d37.addTo(map_870793b00b410eb51fa943c9f6f37824);
+            tile_layer_8c7d213ff9d3c17118c6ecbb98f86d3d.addTo(map_fc8694eac1055fa7d882499a31f29d77);
         
     
-            var marker_242a95f09e6f8d83af5615e7861509a0 = L.marker(
+            var marker_21206244958a46eaf1a301a8ad090f7b = L.marker(
                 [6.175690527334621, 1.2137727591902188],
                 {}
-            ).addTo(map_870793b00b410eb51fa943c9f6f37824);
+            ).addTo(map_fc8694eac1055fa7d882499a31f29d77);
         
     
-        var popup_82704f12b089ea0a2d9ffd32e3368429 = L.popup({"maxWidth": 2650});
-
-        
-            
-                var i_frame_07596be7091fd8de75f7fb60591527b9 = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aW1nIHNyYz0iaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZtYWRvcmUvUmVtb2Jva28vbWFzdGVyL0Jvb2tfRGVHcnV5dGVyL01hcHMvVW5pdmVyc2l0eV9Mb21lLmpwZyIgYWx0PSJVbml2ZXJzaXR5IG9mIExvbcOpIiBzdHlsZT0id2lkdGg6MTAwcHg7Ij48YnI+VW5pdmVyc2l0eSBvZiBMb23DqQ==" width="150" style="border:none !important;" height="150"></iframe>`)[0];
-                popup_82704f12b089ea0a2d9ffd32e3368429.setContent(i_frame_07596be7091fd8de75f7fb60591527b9);
-            
-        
-
-        marker_242a95f09e6f8d83af5615e7861509a0.bindPopup(popup_82704f12b089ea0a2d9ffd32e3368429)
-        ;
-
+        var custom_icon_074a124102ba9810110e092f7ad08660 = L.icon({"iconSize": [50, 50], "iconUrl": "https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Lome.jpg"});
+        marker_21206244958a46eaf1a301a8ad090f7b.setIcon(custom_icon_074a124102ba9810110e092f7ad08660);
         
     
+            marker_21206244958a46eaf1a301a8ad090f7b.bindTooltip(
+                `<div>
+                     University of Lomé
+                 </div>`,
+                {"sticky": true}
+            );
+        
     
-            var marker_bba02c933028f60790e4369e0c15c9b2 = L.marker(
+            var marker_b479eba9b55964d907a6534d5fd2af9a = L.marker(
                 [6.415312316251478, 2.341522503861767],
                 {}
-            ).addTo(map_870793b00b410eb51fa943c9f6f37824);
+            ).addTo(map_fc8694eac1055fa7d882499a31f29d77);
         
     
-        var popup_296b236a2d95399e41bfb1769b809ab1 = L.popup({"maxWidth": 2650});
-
-        
-            
-                var i_frame_037d20aa84240ae2c5546adfb3983620 = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aW1nIHNyYz0iaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZtYWRvcmUvUmVtb2Jva28vbWFzdGVyL0Jvb2tfRGVHcnV5dGVyL01hcHMvVW5pdmVyc2l0eV9BYm9tZXktQ2FsYXZpLmpwZyIgYWx0PSJVbml2ZXJzaXR5IG9mIEFib21leS1DYWxhdmkiIHN0eWxlPSJ3aWR0aDoxMDBweDsiPjxicj5Vbml2ZXJzaXR5IG9mIEFib21leS1DYWxhdmk=" width="150" style="border:none !important;" height="150"></iframe>`)[0];
-                popup_296b236a2d95399e41bfb1769b809ab1.setContent(i_frame_037d20aa84240ae2c5546adfb3983620);
-            
-        
-
-        marker_bba02c933028f60790e4369e0c15c9b2.bindPopup(popup_296b236a2d95399e41bfb1769b809ab1)
-        ;
-
+        var custom_icon_e8d087717a5255244a474d18b314f136 = L.icon({"iconSize": [50, 50], "iconUrl": "https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Abomey-Calavi.jpg"});
+        marker_b479eba9b55964d907a6534d5fd2af9a.setIcon(custom_icon_e8d087717a5255244a474d18b314f136);
         
     
+            marker_b479eba9b55964d907a6534d5fd2af9a.bindTooltip(
+                `<div>
+                     University of Abomey-Calavi
+                 </div>`,
+                {"sticky": true}
+            );
+        
     
-            var marker_6eed5c1df696825b76cc0afe2ee236a6 = L.marker(
+            var marker_4da913ee28166775f5ac62fff62e3787 = L.marker(
                 [9.53190563529209, 1.2075618607303693],
                 {}
-            ).addTo(map_870793b00b410eb51fa943c9f6f37824);
+            ).addTo(map_fc8694eac1055fa7d882499a31f29d77);
         
     
-        var popup_7ea53b8e03bdc334dc0907965b4f345c = L.popup({"maxWidth": 2650});
-
-        
-            
-                var i_frame_cc3b1d5e2bd8b1445d8037c8f64e2ef0 = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aW1nIHNyYz0iaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZtYWRvcmUvUmVtb2Jva28vbWFzdGVyL0Jvb2tfRGVHcnV5dGVyL01hcHMvVW5pdmVyc2l0eV9LYXJhLmpwZyIgYWx0PSJVbml2ZXJzaXR5IG9mIEthcmEiIHN0eWxlPSJ3aWR0aDoxMDBweDsiPjxicj5Vbml2ZXJzaXR5IG9mIEthcmE=" width="150" style="border:none !important;" height="150"></iframe>`)[0];
-                popup_7ea53b8e03bdc334dc0907965b4f345c.setContent(i_frame_cc3b1d5e2bd8b1445d8037c8f64e2ef0);
-            
-        
-
-        marker_6eed5c1df696825b76cc0afe2ee236a6.bindPopup(popup_7ea53b8e03bdc334dc0907965b4f345c)
-        ;
-
+        var custom_icon_12ff1ad43f45618edb192ae89c5e2988 = L.icon({"iconSize": [50, 50], "iconUrl": "https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Kara.jpg"});
+        marker_4da913ee28166775f5ac62fff62e3787.setIcon(custom_icon_12ff1ad43f45618edb192ae89c5e2988);
         
     
+            marker_4da913ee28166775f5ac62fff62e3787.bindTooltip(
+                `<div>
+                     University of Kara
+                 </div>`,
+                {"sticky": true}
+            );
+        
     
-            var marker_c008f132b60fb44f9de6ce5f4b68ff3a = L.marker(
+            var marker_39e5fea7e3a59b0da823ff39a619d0b7 = L.marker(
                 [9.335184240782041, 2.6466607924077525],
                 {}
-            ).addTo(map_870793b00b410eb51fa943c9f6f37824);
+            ).addTo(map_fc8694eac1055fa7d882499a31f29d77);
         
     
-        var popup_a4b6be18d86811177082e8449129920f = L.popup({"maxWidth": 2650});
-
-        
-            
-                var i_frame_ed89d384cc77f78d3cfc79cd31984cb5 = $(`<iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aW1nIHNyYz0iaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZtYWRvcmUvUmVtb2Jva28vbWFzdGVyL0Jvb2tfRGVHcnV5dGVyL01hcHMvVW5pdmVyc2l0eV9QYXJha291LmpwZyIgYWx0PSJVbml2ZXJzaXR5IG9mIFBhcmFrb3UiIHN0eWxlPSJ3aWR0aDoxMDBweDsiPjxicj5Vbml2ZXJzaXR5IG9mIFBhcmFrb3U=" width="150" style="border:none !important;" height="150"></iframe>`)[0];
-                popup_a4b6be18d86811177082e8449129920f.setContent(i_frame_ed89d384cc77f78d3cfc79cd31984cb5);
-            
-        
-
-        marker_c008f132b60fb44f9de6ce5f4b68ff3a.bindPopup(popup_a4b6be18d86811177082e8449129920f)
-        ;
-
+        var custom_icon_4e7c63501647de8468700112e57ce3bb = L.icon({"iconSize": [50, 50], "iconUrl": "https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Parakou.jpg"});
+        marker_39e5fea7e3a59b0da823ff39a619d0b7.setIcon(custom_icon_4e7c63501647de8468700112e57ce3bb);
         
     
+            marker_39e5fea7e3a59b0da823ff39a619d0b7.bindTooltip(
+                `<div>
+                     University of Parakou
+                 </div>`,
+                {"sticky": true}
+            );
+        
 </script>
 </html>

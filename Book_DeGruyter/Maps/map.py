@@ -28,12 +28,14 @@ map_center = [avg_lat, avg_lng]
 # Create a base map using the average coordinates
 m = folium.Map(location=map_center, zoom_start=7)  # Adjust zoom level if necessary
 
-# Add standard marker icons for the universities with popup logos
+# Add custom icon markers for the universities
 for uni, details in universities.items():
-    html = f'<img src="{details["logo"]}" alt="{uni}" style="width:100px;"><br>{uni}'
-    iframe = folium.IFrame(html, width=150, height=150)
-    popup = folium.Popup(iframe, max_width=2650)
-    folium.Marker(location=details['coords'], popup=popup).add_to(m)
+    icon = folium.CustomIcon(details['logo'], icon_size=(50, 50))  # Adjust icon size as needed
+    folium.Marker(location=details['coords'], icon=icon, tooltip=uni).add_to(m)
+
+# Folium does not support legends for images directly,
+# but you can manually create a legend by using HTML and JavaScript if necessary.
+# For simplicity, this example does not include a custom legend.
 
 # Save the map to an HTML file
 m.save('universities_map.html')
