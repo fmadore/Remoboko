@@ -4,8 +4,8 @@ from branca.element import Element
 
 # Define the locations
 locations = {
-    'Centre Catholique Universitaire (CCU)': (6.17428, 1.21188),
-    'Mosquée de l\'AEEMT': (6.17170, 1.21159),
+    'Institut de Langue Arabe et de la Culture Islamique': (6.42047, 2.34345),
+    'Oumar Ibn Khattab Mosque (ACEEMUB)': (6.41478, 2.33682),
 }
 
 # Calculate the center of the map

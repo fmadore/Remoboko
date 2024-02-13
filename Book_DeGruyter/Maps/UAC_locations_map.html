@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_142c4c6f85b019c538dcf012cb743c41 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+     <div style="position: fixed; 
+     bottom: 50px; left: 50px; width: 150px; height: 120px; 
+     border:2px solid grey; z-index:9999; font-size:14px;
+     ">&nbsp; University of Abomey-Calavi <br>
+     &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Points of Interest
+     </div>
+     
+    
+            <div class="folium-map" id="map_142c4c6f85b019c538dcf012cb743c41" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_142c4c6f85b019c538dcf012cb743c41 = L.map(
+                "map_142c4c6f85b019c538dcf012cb743c41",
+                {
+                    center: [6.417625, 2.340135],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 14,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_55cf40aedab7586b4a5bbf155d9c08a5 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_55cf40aedab7586b4a5bbf155d9c08a5.addTo(map_142c4c6f85b019c538dcf012cb743c41);
+        
+    
+            var marker_932968703a77fe88795a25feea9c0ada = L.marker(
+                [6.42047, 2.34345],
+                {}
+            ).addTo(map_142c4c6f85b019c538dcf012cb743c41);
+        
+    
+            var icon_8a4d730460a89bd407a68e6c4cb15108 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_932968703a77fe88795a25feea9c0ada.setIcon(icon_8a4d730460a89bd407a68e6c4cb15108);
+        
+    
+        var popup_5c2e100d65a3d3f074376f5966f0a7c7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2924ee9143fc764e536f1bebc4a66aaf = $(`<div id="html_2924ee9143fc764e536f1bebc4a66aaf" style="width: 100.0%; height: 100.0%;">Institut de Langue Arabe et de la Culture Islamique</div>`)[0];
+                popup_5c2e100d65a3d3f074376f5966f0a7c7.setContent(html_2924ee9143fc764e536f1bebc4a66aaf);
+            
+        
+
+        marker_932968703a77fe88795a25feea9c0ada.bindPopup(popup_5c2e100d65a3d3f074376f5966f0a7c7)
+        ;
+
+        
+    
+    
+            var marker_6b5494daca1bf4c01fd495465f4d8734 = L.marker(
+                [6.41478, 2.33682],
+                {}
+            ).addTo(map_142c4c6f85b019c538dcf012cb743c41);
+        
+    
+            var icon_58be8c95f1787dba40a7926574ae7611 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6b5494daca1bf4c01fd495465f4d8734.setIcon(icon_58be8c95f1787dba40a7926574ae7611);
+        
+    
+        var popup_22fa446ff055824e2f87bc2943b7273f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f4ab2cd2ffd30bed87ff27102116e2ab = $(`<div id="html_f4ab2cd2ffd30bed87ff27102116e2ab" style="width: 100.0%; height: 100.0%;">Oumar Ibn Khattab Mosque (ACEEMUB)</div>`)[0];
+                popup_22fa446ff055824e2f87bc2943b7273f.setContent(html_f4ab2cd2ffd30bed87ff27102116e2ab);
+            
+        
+
+        marker_6b5494daca1bf4c01fd495465f4d8734.bindPopup(popup_22fa446ff055824e2f87bc2943b7273f)
+        ;
+
+        
+    
+</script>
+</html>
