@@ -10,6 +10,7 @@ locations = {
     'Saint-Dominique Cotonou convent': (6.3558124810442935, 2.421426082297773),
     'Bon Pasteur Parish': (6.3570692871919885, 2.398772893785117),
     'Bâtiment C': (6.41449, 2.34240),
+    'GBEEB Headquarters': (6.372156046604895, 2.4974942706506096),
 }
 
 # Calculate the center of the map
