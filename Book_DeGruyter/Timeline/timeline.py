@@ -13,7 +13,7 @@ data = data.dropna(subset=['Date'])
 data.sort_values('Date', ascending=False, inplace=True)
 
 # Create the figure and axis for the timeline, adjusting for vertical layout
-fig, ax = plt.subplots(figsize=(10, 27))
+fig, ax = plt.subplots(figsize=(10, 23))
 
 # Adjust subplot parameters
 plt.subplots_adjust(left=0.5, bottom=0, top=1)  # Adjusting subplot margins
@@ -34,7 +34,7 @@ for i, (idx, row) in enumerate(data.iterrows()):
 
     # Add text with appropriate alignment
     ha = 'left' if country == 'Togo' else 'right'
-    ax.text(text_position, date, event, verticalalignment='center', horizontalalignment=ha, fontsize=10)
+    ax.text(text_position, date, event, verticalalignment='center', horizontalalignment=ha, fontsize=14)
 
 # Adjust the y-axis to use dates and format them
 ax.yaxis_date()
