@@ -6,6 +6,10 @@ from branca.element import Element
 locations = {
     'Institut de Langue Arabe et de la Culture Islamique': (6.42047, 2.34345),
     'Oumar Ibn Khattab Mosque (ACEEMUB)': (6.41478, 2.33682),
+    'Catholic Chaplaincy of the Université d’Abomey-Calavi et des grandes écoles du Bénin': (6.42431, 2.33785),
+    'Saint-Dominique Cotonou convent': (6.3558124810442935, 2.421426082297773),
+    'Bon Pasteur Parish': (6.3570692871919885, 2.398772893785117),
+    'Bâtiment C': (6.41449, 2.34240),
 }
 
 # Calculate the center of the map
@@ -14,7 +18,7 @@ avg_lng = sum(loc[1] for loc in locations.values()) / len(locations)
 map_center = [avg_lat, avg_lng]
 
 # Create a base map
-m = folium.Map(location=map_center, zoom_start=14)
+m = folium.Map(location=map_center, zoom_start=13)
 
 # Add markers for each location
 for name, coords in locations.items():
