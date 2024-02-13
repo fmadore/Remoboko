@@ -4,18 +4,29 @@ import folium
 universities = {
     'University of Lomé': {
         'coords': (6.175690527334621, 1.2137727591902188),
-        'logo': 'University_Lome.jpg'
+        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Lome.jpg'
     },
     'University of Abomey-Calavi': {
         'coords': (6.415312316251478, 2.341522503861767),
-        'logo': 'University_Abomey-Calavi.jpg'
+        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Abomey-Calavi.jpg'
+    },
+    'University of Kara': {
+        'coords': (9.53190563529209, 1.2075618607303693),
+        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Kara.jpg'
+    },
+    'University of Parakou': {
+        'coords': (9.335184240782041, 2.6466607924077525),
+        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Parakou.jpg'
     }
 }
 
-# Create a base map centered between the two universities
-map_center = [(universities['University of Lomé']['coords'][0] + universities['University of Abomey-Calavi']['coords'][0]) / 2,
-              (universities['University of Lomé']['coords'][1] + universities['University of Abomey-Calavi']['coords'][1]) / 2]
-m = folium.Map(location=map_center, zoom_start=8)
+# Calculate the average coordinates to center the map on all universities
+avg_lat = sum(uni['coords'][0] for uni in universities.values()) / len(universities)
+avg_lng = sum(uni['coords'][1] for uni in universities.values()) / len(universities)
+map_center = [avg_lat, avg_lng]
+
+# Create a base map using the average coordinates
+m = folium.Map(location=map_center, zoom_start=7)  # Adjust zoom level if necessary
 
 # Add standard marker icons for the universities with popup logos
 for uni, details in universities.items():
