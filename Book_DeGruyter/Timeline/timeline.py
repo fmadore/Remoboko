@@ -10,59 +10,40 @@ data = pd.read_excel(file_path)
 # Preprocess the data
 data['Date'] = pd.to_datetime(data['Date'], errors='coerce')
 data = data.dropna(subset=['Date'])
-data.sort_values('Date', inplace=True)
+data.sort_values('Date', ascending=False, inplace=True)
 
-# Load PNG files for Togo and Benin icons
-togo_icon_path = 'togo_icon.png'
-benin_icon_path = 'benin_icon.png'
-togo_icon = OffsetImage(plt.imread(togo_icon_path), zoom=0.5)  # Adjust zoom as needed
-benin_icon = OffsetImage(plt.imread(benin_icon_path), zoom=0.5)  # Adjust zoom as needed
+# Create the figure and axis for the timeline, adjusting for vertical layout
+fig, ax = plt.subplots(figsize=(10, 15))
 
-# Create the figure and axis for the timeline
-fig, ax = plt.subplots(figsize=(15, len(data) / 2))  # Adjust the figure size as needed
+# Draw a central vertical timeline
+ax.axvline(x=0, color='black', linewidth=2)
 
-# Set the x-axis to cover the full range of dates plus some padding
-min_date = min(data['Date'])
-max_date = max(data['Date'])
-ax.set_xlim([min_date - pd.DateOffset(years=1), max_date + pd.DateOffset(years=1)])
+# Invert the y-axis to have the oldest dates at the top
+ax.set_ylim([max(data['Date']) + pd.DateOffset(years=1), min(data['Date']) - pd.DateOffset(years=1)])
 
 # Plot each event
 for i, (idx, row) in enumerate(data.iterrows()):
     date = mdates.date2num(row['Date'])
     event = row['Event']
     country = row['Country']
+    x_position = 0.1 if country == 'Togo' else -0.1
+    text_position = x_position + 0.05 if country == 'Togo' else x_position - 0.05
 
-    # Choose the appropriate icon for the country
-    if country == 'Togo':
-        ab = AnnotationBbox(togo_icon, (date, i), frameon=False)
-        ax.add_artist(ab)
-    elif country == 'Benin':
-        ab = AnnotationBbox(benin_icon, (date, i), frameon=False)
-        ax.add_artist(ab)
-    else:
-        ax.plot(date, i, marker='o', color='black', markersize=8)
+    # Add text with appropriate alignment
+    ha = 'left' if country == 'Togo' else 'right'
+    ax.text(text_position, date, event, verticalalignment='center', horizontalalignment=ha, fontsize=10)
 
-    # Add a small horizontal offset to the text to avoid overlap with the icon
-    ax.text(date + 10, i, '  ' + event, verticalalignment='center', fontsize=8, ha='left')
-
-# Set the date format on the x-axis
-ax.xaxis_date()
+# Adjust the y-axis to use dates and format them
+ax.yaxis_date()
 date_format = mdates.DateFormatter('%Y')
-ax.xaxis.set_major_formatter(date_format)
+ax.yaxis.set_major_formatter(date_format)
+ax.yaxis.set_major_locator(mdates.YearLocator(5))
 
-# Display only every 5 or 10 years on the x-axis
-ax.xaxis.set_major_locator(mdates.YearLocator(5))  # Change to 10 if preferred
+# Remove x-axis and right spine/frame
+ax.xaxis.set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
 
-# Remove grid lines
-ax.grid(False)
-
-# Improve layout
-ax.set_ylim(-1, len(data) + 1)
-ax.invert_yaxis()
-
-# Set labels for y-axis to none
-ax.set_yticklabels([])
-ax.set_yticks([])
-
-plt.subplots_adjust(bottom=0.2, left=0.05, right=0.95)  # Adjust margins to ensure all data fits
+# Show the plot
 plt.show()
