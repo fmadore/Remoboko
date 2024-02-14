@@ -6,4 +6,4 @@ https://remoboko.hypotheses.org/
 
 ## Folder "Book_DeGruyter"
 
-This folder contains the data used to create interactive maps and a timeline for the forthcoming book *Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970-2023* by Frédérick Madore.
+This folder contains the Python code and the data used to create interactive maps and a timeline for the forthcoming book *Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970-2023* by Frédérick Madore.
