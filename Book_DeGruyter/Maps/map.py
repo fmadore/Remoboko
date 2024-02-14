@@ -33,9 +33,5 @@ for uni, details in universities.items():
     icon = folium.CustomIcon(details['logo'], icon_size=(50, 50))  # Adjust icon size as needed
     folium.Marker(location=details['coords'], icon=icon, tooltip=uni).add_to(m)
 
-# Folium does not support legends for images directly,
-# but you can manually create a legend by using HTML and JavaScript if necessary.
-# For simplicity, this example does not include a custom legend.
-
 # Save the map to an HTML file
 m.save('universities_map.html')
