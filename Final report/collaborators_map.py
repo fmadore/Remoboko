@@ -29,9 +29,15 @@ for affiliation, group in grouped:
         print(f"Skipping {affiliation} due to invalid coordinates")
         continue
 
-    # Generate HTML content for the popup
-    popup_content = '<br>'.join([f'<a href="{row["URL"]}" target="_blank">{row["Collaborator"]}</a>' for index, row in group.iterrows()])
-    iframe = IFrame(html=popup_content, width=200, height=100)
+    # Generate HTML content for the popup with styling
+    popup_html = '<style>body { font-family: Arial, sans-serif; font-size: 16px; }</style>'
+    popup_html += '<ul>'
+    popup_html += ''.join(
+        [f'<li><a href="{row["URL"]}" target="_blank">{row["Collaborator"]}</a></li>' for index, row in
+         group.iterrows()])
+    popup_html += '</ul>'
+
+    iframe = IFrame(html=popup_html, width=250, height=110)
     popup = folium.Popup(iframe, parse_html=True)
 
     # Add a marker for the affiliation
