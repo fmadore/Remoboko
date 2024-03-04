@@ -28,6 +28,12 @@ fig = px.bar(country_contributors_sorted, x='Contributors Count', y='Country',
              hover_data=['hover_text'], labels={'hover_text': 'Contributors'},
              title='Distribution of Collaborators by Country')
 
+# Make the background transparent
+fig.update_layout({
+    'plot_bgcolor': 'rgba(0,0,0,0)',
+    'paper_bgcolor': 'rgba(0,0,0,0)',
+})
+
 # Customize hover text to format names with line breaks
 fig.update_traces(hovertemplate='%{y}:<br>%{customdata[0]}')
 
