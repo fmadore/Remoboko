@@ -16,7 +16,7 @@ plt.pie(gender_counts, labels=gender_counts.index, autopct='%1.1f%%', startangle
 plt.title('Distribution of Collaborators by Gender')
 
 # Save the pie chart with a transparent background
-plt.savefig('collaborators_by_gender_transparent.png', transparent=True)
+plt.savefig('collaborators_gender.png', transparent=True)
 
 # Display the plot
 plt.show()
