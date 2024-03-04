@@ -1,0 +1,2537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_14aaebf159f3524ee4e8b9df028a0ebb {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_14aaebf159f3524ee4e8b9df028a0ebb" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_14aaebf159f3524ee4e8b9df028a0ebb = L.map(
+                "map_14aaebf159f3524ee4e8b9df028a0ebb",
+                {
+                    center: [0.0, 0.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 2,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_54423b7e817d057f7c98937870ac449a = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_54423b7e817d057f7c98937870ac449a.addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+            var marker_83208b13ea58e9686e61fa33cafc2666 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_5eacc53c1c55dba92fb9deabd64b9ed5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e270f296fee7d4a062f272f38728149b = $(`<div id="html_e270f296fee7d4a062f272f38728149b" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/abdoulbaki-djibo&#34; target=&#34;_blank&#34;&gt;Abdoulbaki Djibo&lt;/a&gt;</div>`)[0];
+                popup_5eacc53c1c55dba92fb9deabd64b9ed5.setContent(html_e270f296fee7d4a062f272f38728149b);
+            
+        
+
+        marker_83208b13ea58e9686e61fa33cafc2666.bindPopup(popup_5eacc53c1c55dba92fb9deabd64b9ed5)
+        ;
+
+        
+    
+    
+            marker_83208b13ea58e9686e61fa33cafc2666.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_39d1b5cd5ef6a57d19dcbfce2c934ee1 = L.marker(
+                [7.4416666666667, 3.9],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_ad88f71f284e73995a70f9284b53272f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2746c2b486da1356bc3cc7a4191fb8a9 = $(`<div id="html_2746c2b486da1356bc3cc7a4191fb8a9" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/adebayo-adedeji&#34; target=&#34;_blank&#34;&gt;Adedeji Adebayo&lt;/a&gt;</div>`)[0];
+                popup_ad88f71f284e73995a70f9284b53272f.setContent(html_2746c2b486da1356bc3cc7a4191fb8a9);
+            
+        
+
+        marker_39d1b5cd5ef6a57d19dcbfce2c934ee1.bindPopup(popup_ad88f71f284e73995a70f9284b53272f)
+        ;
+
+        
+    
+    
+            marker_39d1b5cd5ef6a57d19dcbfce2c934ee1.bindTooltip(
+                `<div>
+                     University of Ibadan
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8792b5280b38cb616490200a13fae15e = L.marker(
+                [7.7616469, 4.6012166],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_e92cb8e889498c8388fb063dc94fe338 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ae614d381cc8f12de82766206f1fb596 = $(`<div id="html_ae614d381cc8f12de82766206f1fb596" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/adeyemi-balogun&#34; target=&#34;_blank&#34;&gt;Adeyemi Balogun&lt;/a&gt;</div>`)[0];
+                popup_e92cb8e889498c8388fb063dc94fe338.setContent(html_ae614d381cc8f12de82766206f1fb596);
+            
+        
+
+        marker_8792b5280b38cb616490200a13fae15e.bindPopup(popup_e92cb8e889498c8388fb063dc94fe338)
+        ;
+
+        
+    
+    
+            marker_8792b5280b38cb616490200a13fae15e.bindTooltip(
+                `<div>
+                     Osun State University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ea2c9b63369c8bc122749f56c5cf8999 = L.marker(
+                [9.341822504659815, 2.592843961135946],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_9a01bff26e02be46813a30b8a16dee0f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1ade7ac1fa9b07c1d64b475c77ce6172 = $(`<div id="html_1ade7ac1fa9b07c1d64b475c77ce6172" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/agnes-badou&#34; target=&#34;_blank&#34;&gt;Agnès Badou&lt;/a&gt;</div>`)[0];
+                popup_9a01bff26e02be46813a30b8a16dee0f.setContent(html_1ade7ac1fa9b07c1d64b475c77ce6172);
+            
+        
+
+        marker_ea2c9b63369c8bc122749f56c5cf8999.bindPopup(popup_9a01bff26e02be46813a30b8a16dee0f)
+        ;
+
+        
+    
+    
+            marker_ea2c9b63369c8bc122749f56c5cf8999.bindTooltip(
+                `<div>
+                     Laboratoire d'Etudes et de Recherche sur les Dynamiques Sociales et le Développement Local Bénin
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c89034517e086dc3585d75e3ff523ebd = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_d5e0112217cde9dbb19e3adf3d996fbb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6e0f5d8a4722612755ba0833a0f8ffba = $(`<div id="html_6e0f5d8a4722612755ba0833a0f8ffba" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/ahmadou-hamage-issa&#34; target=&#34;_blank&#34;&gt;Ahmadou Hamage Issa&lt;/a&gt;</div>`)[0];
+                popup_d5e0112217cde9dbb19e3adf3d996fbb.setContent(html_6e0f5d8a4722612755ba0833a0f8ffba);
+            
+        
+
+        marker_c89034517e086dc3585d75e3ff523ebd.bindPopup(popup_d5e0112217cde9dbb19e3adf3d996fbb)
+        ;
+
+        
+    
+    
+            marker_c89034517e086dc3585d75e3ff523ebd.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2caff11f263241d77b51a46a70cb20c1 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_1e2b347ef6f63c8918cc2d7e9027de16 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ccedcd797f2d3d583897c29bc790cdf7 = $(`<div id="html_ccedcd797f2d3d583897c29bc790cdf7" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/amadou-issoufou&#34; target=&#34;_blank&#34;&gt;Amadou Issoufou&lt;/a&gt;</div>`)[0];
+                popup_1e2b347ef6f63c8918cc2d7e9027de16.setContent(html_ccedcd797f2d3d583897c29bc790cdf7);
+            
+        
+
+        marker_2caff11f263241d77b51a46a70cb20c1.bindPopup(popup_1e2b347ef6f63c8918cc2d7e9027de16)
+        ;
+
+        
+    
+    
+            marker_2caff11f263241d77b51a46a70cb20c1.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7f17df37eae92c5563029b7863050a93 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_715f9a40d71f47a99f35302b13f3d521 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5e72cef01e31ce32466cee33d33bf168 = $(`<div id="html_5e72cef01e31ce32466cee33d33bf168" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/amadou-oumarou&#34; target=&#34;_blank&#34;&gt;Amadou Oumarou&lt;/a&gt;</div>`)[0];
+                popup_715f9a40d71f47a99f35302b13f3d521.setContent(html_5e72cef01e31ce32466cee33d33bf168);
+            
+        
+
+        marker_7f17df37eae92c5563029b7863050a93.bindPopup(popup_715f9a40d71f47a99f35302b13f3d521)
+        ;
+
+        
+    
+    
+            marker_7f17df37eae92c5563029b7863050a93.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_be9cbcc3a28011cbd8cf1509bf115464 = L.marker(
+                [53.557222, 9.992222],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_07090c86c20d8f43a7ef92c5915aef07 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f871ee02e3f571fe31a901649410242e = $(`<div id="html_f871ee02e3f571fe31a901649410242e" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/amanda-tho-seeth&#34; target=&#34;_blank&#34;&gt;Amanda tho Seeth&lt;/a&gt;</div>`)[0];
+                popup_07090c86c20d8f43a7ef92c5915aef07.setContent(html_f871ee02e3f571fe31a901649410242e);
+            
+        
+
+        marker_be9cbcc3a28011cbd8cf1509bf115464.bindPopup(popup_07090c86c20d8f43a7ef92c5915aef07)
+        ;
+
+        
+    
+    
+            marker_be9cbcc3a28011cbd8cf1509bf115464.bindTooltip(
+                `<div>
+                     German Institute for Global and Area Studies
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_887168b0c4343810096eae9719b219ae = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_57acf8484b221e441945e9e5ce25866c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_905a411b5e2ec0bcc0c9212cd1025b36 = $(`<div id="html_905a411b5e2ec0bcc0c9212cd1025b36" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/anandita-bajpai&#34; target=&#34;_blank&#34;&gt;Anandita Bajpai&lt;/a&gt;</div>`)[0];
+                popup_57acf8484b221e441945e9e5ce25866c.setContent(html_905a411b5e2ec0bcc0c9212cd1025b36);
+            
+        
+
+        marker_887168b0c4343810096eae9719b219ae.bindPopup(popup_57acf8484b221e441945e9e5ce25866c)
+        ;
+
+        
+    
+    
+            marker_887168b0c4343810096eae9719b219ae.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2ef4930c643b4ad0784ff7b9c374ab7f = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_e6c33740b2cebaaf4567bac563b1710f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_16d25a75277bca48cb48b8679e137e1f = $(`<div id="html_16d25a75277bca48cb48b8679e137e1f" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/andre-chappatte&#34; target=&#34;_blank&#34;&gt;André Chappatte&lt;/a&gt;</div>`)[0];
+                popup_e6c33740b2cebaaf4567bac563b1710f.setContent(html_16d25a75277bca48cb48b8679e137e1f);
+            
+        
+
+        marker_2ef4930c643b4ad0784ff7b9c374ab7f.bindPopup(popup_e6c33740b2cebaaf4567bac563b1710f)
+        ;
+
+        
+    
+    
+            marker_2ef4930c643b4ad0784ff7b9c374ab7f.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_58ac2e7c1cb2f0627e17c79b7bb2cc94 = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_45e40e3d1e5e073c5450c9315d05e808 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_eed62eaf2e8075e51c57e2804fb3773d = $(`<div id="html_eed62eaf2e8075e51c57e2804fb3773d" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/anna-schenkenberger&#34; target=&#34;_blank&#34;&gt;Anna Schenkenberger&lt;/a&gt;</div>`)[0];
+                popup_45e40e3d1e5e073c5450c9315d05e808.setContent(html_eed62eaf2e8075e51c57e2804fb3773d);
+            
+        
+
+        marker_58ac2e7c1cb2f0627e17c79b7bb2cc94.bindPopup(popup_45e40e3d1e5e073c5450c9315d05e808)
+        ;
+
+        
+    
+    
+            marker_58ac2e7c1cb2f0627e17c79b7bb2cc94.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5e7e11a2202aeff2a5e25d605b1801fd = L.marker(
+                [52.518055555556, 13.393333333333],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_15515c94bd8fc3733902402ff2a24429 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ef1dfb073b6c7609ba49f964acf4d5f7 = $(`<div id="html_ef1dfb073b6c7609ba49f964acf4d5f7" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/anna-schnieder-kruger&#34; target=&#34;_blank&#34;&gt;Anna Schnieder-Krüger&lt;/a&gt;</div>`)[0];
+                popup_15515c94bd8fc3733902402ff2a24429.setContent(html_ef1dfb073b6c7609ba49f964acf4d5f7);
+            
+        
+
+        marker_5e7e11a2202aeff2a5e25d605b1801fd.bindPopup(popup_15515c94bd8fc3733902402ff2a24429)
+        ;
+
+        
+    
+    
+            marker_5e7e11a2202aeff2a5e25d605b1801fd.bindTooltip(
+                `<div>
+                     Humboldt University of Berlin
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5d975fadf798448f843965ea9f5c6bbc = L.marker(
+                [54.775, -1.575],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_bc357c1a14d149377d38094be01d06cb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b13bf37e1715a6f6f88f023d409fdc55 = $(`<div id="html_b13bf37e1715a6f6f88f023d409fdc55" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/anne-heffernan&#34; target=&#34;_blank&#34;&gt;Anne Heffernan&lt;/a&gt;</div>`)[0];
+                popup_bc357c1a14d149377d38094be01d06cb.setContent(html_b13bf37e1715a6f6f88f023d409fdc55);
+            
+        
+
+        marker_5d975fadf798448f843965ea9f5c6bbc.bindPopup(popup_bc357c1a14d149377d38094be01d06cb)
+        ;
+
+        
+    
+    
+            marker_5d975fadf798448f843965ea9f5c6bbc.bindTooltip(
+                `<div>
+                     Durham University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3c09b427fa8ecc9df2c007caaf26b785 = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_4b2e1ebf9f0576b9ab1b84e40c83110b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_14edc4a33f19aeea93e8eb40f3e97a87 = $(`<div id="html_14edc4a33f19aeea93e8eb40f3e97a87" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/benedikt-pontzen&#34; target=&#34;_blank&#34;&gt;Benedikt Pontzen&lt;/a&gt;</div>`)[0];
+                popup_4b2e1ebf9f0576b9ab1b84e40c83110b.setContent(html_14edc4a33f19aeea93e8eb40f3e97a87);
+            
+        
+
+        marker_3c09b427fa8ecc9df2c007caaf26b785.bindPopup(popup_4b2e1ebf9f0576b9ab1b84e40c83110b)
+        ;
+
+        
+    
+    
+            marker_3c09b427fa8ecc9df2c007caaf26b785.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_986ae2c6cd82cb0a39facc117135e86f = L.marker(
+                [52.085277777777776, 5.175],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_185d96ef16d539821c7833170a9b48de = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d4bd6928156e96318886b52a6a643864 = $(`<div id="html_d4bd6928156e96318886b52a6a643864" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/birgit-meyer&#34; target=&#34;_blank&#34;&gt;Birgit Meyer&lt;/a&gt;</div>`)[0];
+                popup_185d96ef16d539821c7833170a9b48de.setContent(html_d4bd6928156e96318886b52a6a643864);
+            
+        
+
+        marker_986ae2c6cd82cb0a39facc117135e86f.bindPopup(popup_185d96ef16d539821c7833170a9b48de)
+        ;
+
+        
+    
+    
+            marker_986ae2c6cd82cb0a39facc117135e86f.bindTooltip(
+                `<div>
+                     Utrecht University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5805d036ac62f20b4f7ad7765aeec7c3 = L.marker(
+                [50.928055555556, 6.9286111111111],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_3f6632000bad3b3a6d2480efc409c13c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7b8e08b34f52dfde03b689b959a1aa35 = $(`<div id="html_7b8e08b34f52dfde03b689b959a1aa35" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/britta-bayer&#34; target=&#34;_blank&#34;&gt;Britta Bayer&lt;/a&gt;</div>`)[0];
+                popup_3f6632000bad3b3a6d2480efc409c13c.setContent(html_7b8e08b34f52dfde03b689b959a1aa35);
+            
+        
+
+        marker_5805d036ac62f20b4f7ad7765aeec7c3.bindPopup(popup_3f6632000bad3b3a6d2480efc409c13c)
+        ;
+
+        
+    
+    
+            marker_5805d036ac62f20b4f7ad7765aeec7c3.bindTooltip(
+                `<div>
+                     University of Cologne
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ac385350adb98d7705d317d41c65dfb9 = L.marker(
+                [-27.6011, -48.52],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_1a1c1c1972ffea1791eda8bdffc9b0e4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_31df06280c88795255f55418847cb69c = $(`<div id="html_31df06280c88795255f55418847cb69c" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/bruno-reinhardt&#34; target=&#34;_blank&#34;&gt;Bruno Reinhardt&lt;/a&gt;</div>`)[0];
+                popup_1a1c1c1972ffea1791eda8bdffc9b0e4.setContent(html_31df06280c88795255f55418847cb69c);
+            
+        
+
+        marker_ac385350adb98d7705d317d41c65dfb9.bindPopup(popup_1a1c1c1972ffea1791eda8bdffc9b0e4)
+        ;
+
+        
+    
+    
+            marker_ac385350adb98d7705d317d41c65dfb9.bindTooltip(
+                `<div>
+                     Universidade Federal de Santa Catarina
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1bbc965d71f1c36fdcf1013f4f6d1f38 = L.marker(
+                [9.9692, 8.884],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_ca0aefef9eec63046ef7a25559e3277b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_60bd0af6bdaa53d20f3f9fefcb814c64 = $(`<div id="html_60bd0af6bdaa53d20f3f9fefcb814c64" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/chikas-ishaku-tsilpi&#34; target=&#34;_blank&#34;&gt;Chikas Ishaku Tsilpi&lt;/a&gt;</div>`)[0];
+                popup_ca0aefef9eec63046ef7a25559e3277b.setContent(html_60bd0af6bdaa53d20f3f9fefcb814c64);
+            
+        
+
+        marker_1bbc965d71f1c36fdcf1013f4f6d1f38.bindPopup(popup_ca0aefef9eec63046ef7a25559e3277b)
+        ;
+
+        
+    
+    
+            marker_1bbc965d71f1c36fdcf1013f4f6d1f38.bindTooltip(
+                `<div>
+                     University of Jos
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4b9349f0fe3bdb306364306edc04560b = L.marker(
+                [-26.183333333333, 27.998888888889],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_5dcbc03741b11a6295378be1bfe5ecdb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_432b21008af6ff6ff01b5d060a40a5f7 = $(`<div id="html_432b21008af6ff6ff01b5d060a40a5f7" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/cindy-morillas&#34; target=&#34;_blank&#34;&gt;Cindy Morillas&lt;/a&gt;</div>`)[0];
+                popup_5dcbc03741b11a6295378be1bfe5ecdb.setContent(html_432b21008af6ff6ff01b5d060a40a5f7);
+            
+        
+
+        marker_4b9349f0fe3bdb306364306edc04560b.bindPopup(popup_5dcbc03741b11a6295378be1bfe5ecdb)
+        ;
+
+        
+    
+    
+            marker_4b9349f0fe3bdb306364306edc04560b.bindTooltip(
+                `<div>
+                     University of Johannesburg
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b464aee8483430fc528bb9897eed0b23 = L.marker(
+                [51.48638889, 11.96888889],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_02f26e627708757478eb995b48980852 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4c2cb266e75c5f5bddf40c0997b31eb3 = $(`<div id="html_4c2cb266e75c5f5bddf40c0997b31eb3" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/daniele-cantini&#34; target=&#34;_blank&#34;&gt;Daniele Cantini&lt;/a&gt;</div>`)[0];
+                popup_02f26e627708757478eb995b48980852.setContent(html_4c2cb266e75c5f5bddf40c0997b31eb3);
+            
+        
+
+        marker_b464aee8483430fc528bb9897eed0b23.bindPopup(popup_02f26e627708757478eb995b48980852)
+        ;
+
+        
+    
+    
+            marker_b464aee8483430fc528bb9897eed0b23.bindTooltip(
+                `<div>
+                     University of Halle-Wittenberg
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d94e9b6bd7c6e6841f5be5aa01745e91 = L.marker(
+                [51.964, 7.613],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_97a85d712476dfba6ffe36d283647351 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_56f51e65aabfd16dab818cd2d94bf57f = $(`<div id="html_56f51e65aabfd16dab818cd2d94bf57f" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/dorothea-schulz&#34; target=&#34;_blank&#34;&gt;Dorothea Schulz&lt;/a&gt;</div>`)[0];
+                popup_97a85d712476dfba6ffe36d283647351.setContent(html_56f51e65aabfd16dab818cd2d94bf57f);
+            
+        
+
+        marker_d94e9b6bd7c6e6841f5be5aa01745e91.bindPopup(popup_97a85d712476dfba6ffe36d283647351)
+        ;
+
+        
+    
+    
+            marker_d94e9b6bd7c6e6841f5be5aa01745e91.bindTooltip(
+                `<div>
+                     University of Münster
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ed0a1e3c7f984eaf84151a01ab476d4f = L.marker(
+                [-7.784758110931052, 110.39435184060227],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_4923d090e9e75f6e1a593b81d7b463eb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6d64af1cf3ceaea2a63f7b0ed65ff748 = $(`<div id="html_6d64af1cf3ceaea2a63f7b0ed65ff748" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/dr-afdawaiza&#34; target=&#34;_blank&#34;&gt;Dr. Afdawaiza&lt;/a&gt;</div>`)[0];
+                popup_4923d090e9e75f6e1a593b81d7b463eb.setContent(html_6d64af1cf3ceaea2a63f7b0ed65ff748);
+            
+        
+
+        marker_ed0a1e3c7f984eaf84151a01ab476d4f.bindPopup(popup_4923d090e9e75f6e1a593b81d7b463eb)
+        ;
+
+        
+    
+    
+            marker_ed0a1e3c7f984eaf84151a01ab476d4f.bindTooltip(
+                `<div>
+                     Sunan Kalijaga Islamic University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1c5f18c62fd631675b44da0a25b4218a = L.marker(
+                [52.51272058842476, 13.395041557671924],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_ce00194167d313dfa60f63098a28e5ca = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_474797878fe2958f9af4658ac52185cb = $(`<div id="html_474797878fe2958f9af4658ac52185cb" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/duane-jethro&#34; target=&#34;_blank&#34;&gt;Duane Jethro&lt;/a&gt;</div>`)[0];
+                popup_ce00194167d313dfa60f63098a28e5ca.setContent(html_474797878fe2958f9af4658ac52185cb);
+            
+        
+
+        marker_1c5f18c62fd631675b44da0a25b4218a.bindPopup(popup_ce00194167d313dfa60f63098a28e5ca)
+        ;
+
+        
+    
+    
+            marker_1c5f18c62fd631675b44da0a25b4218a.bindTooltip(
+                `<div>
+                     Centre for Anthropological Research on Museums and Heritage
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4cd01922a2d6aae631d455ae9494d09b = L.marker(
+                [44.806666666666665, -0.6311111111111111],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_79e1e13eb106fa1ee48c45811ad4d063 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4d974059ae84d0b3373830cf60a381b7 = $(`<div id="html_4d974059ae84d0b3373830cf60a381b7" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/elodie-apard&#34; target=&#34;_blank&#34;&gt;Élodie Apard&lt;/a&gt;</div>`)[0];
+                popup_79e1e13eb106fa1ee48c45811ad4d063.setContent(html_4d974059ae84d0b3373830cf60a381b7);
+            
+        
+
+        marker_4cd01922a2d6aae631d455ae9494d09b.bindPopup(popup_79e1e13eb106fa1ee48c45811ad4d063)
+        ;
+
+        
+    
+    
+            marker_4cd01922a2d6aae631d455ae9494d09b.bindTooltip(
+                `<div>
+                     Les Afriques dans le monde
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3982ae6f62c41d4ca9687d50fd328492 = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_3bbdaff6bb2f56203882be83e527fc9b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_97e666a4f7b0dd15a5b4a318bd42eb8d = $(`<div id="html_97e666a4f7b0dd15a5b4a318bd42eb8d" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/eva-spies&#34; target=&#34;_blank&#34;&gt;Eva Spies&lt;/a&gt;</div>`)[0];
+                popup_3bbdaff6bb2f56203882be83e527fc9b.setContent(html_97e666a4f7b0dd15a5b4a318bd42eb8d);
+            
+        
+
+        marker_3982ae6f62c41d4ca9687d50fd328492.bindPopup(popup_3bbdaff6bb2f56203882be83e527fc9b)
+        ;
+
+        
+    
+    
+            marker_3982ae6f62c41d4ca9687d50fd328492.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a0950e2efb96c1b730b5adf78d682c17 = L.marker(
+                [4.14977, 9.28774],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_b508e164d8f9482cef1858c3f75a2bd5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_10b7c7c05e52c555cdf6200040e9afad = $(`<div id="html_10b7c7c05e52c555cdf6200040e9afad" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/francis-arsene-fogue-kuate&#34; target=&#34;_blank&#34;&gt;Francis Arsène Fogué Kuaté&lt;/a&gt;</div>`)[0];
+                popup_b508e164d8f9482cef1858c3f75a2bd5.setContent(html_10b7c7c05e52c555cdf6200040e9afad);
+            
+        
+
+        marker_a0950e2efb96c1b730b5adf78d682c17.bindPopup(popup_b508e164d8f9482cef1858c3f75a2bd5)
+        ;
+
+        
+    
+    
+            marker_a0950e2efb96c1b730b5adf78d682c17.bindTooltip(
+                `<div>
+                     Université de Buéa
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f6023d5f9cb8b91a2a37ad2003703ad1 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_6d607ff76d0d7bc51dfb28fedc37e82c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_20635e1057d8a6799afb71dc3ddccea1 = $(`<div id="html_20635e1057d8a6799afb71dc3ddccea1" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/gado-alzouma&#34; target=&#34;_blank&#34;&gt;Gado Alzouma&lt;/a&gt;</div>`)[0];
+                popup_6d607ff76d0d7bc51dfb28fedc37e82c.setContent(html_20635e1057d8a6799afb71dc3ddccea1);
+            
+        
+
+        marker_f6023d5f9cb8b91a2a37ad2003703ad1.bindPopup(popup_6d607ff76d0d7bc51dfb28fedc37e82c)
+        ;
+
+        
+    
+    
+            marker_f6023d5f9cb8b91a2a37ad2003703ad1.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dfb3376bd4207b58fd7b672d1b6ea79e = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_1409e131ba6da27d5e4b8d86e1c7c659 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4e4b26747a2bf23a4c8ef35a48bd3244 = $(`<div id="html_4e4b26747a2bf23a4c8ef35a48bd3244" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/gerd-spittler&#34; target=&#34;_blank&#34;&gt;Gerd Spittler&lt;/a&gt;</div>`)[0];
+                popup_1409e131ba6da27d5e4b8d86e1c7c659.setContent(html_4e4b26747a2bf23a4c8ef35a48bd3244);
+            
+        
+
+        marker_dfb3376bd4207b58fd7b672d1b6ea79e.bindPopup(popup_1409e131ba6da27d5e4b8d86e1c7c659)
+        ;
+
+        
+    
+    
+            marker_dfb3376bd4207b58fd7b672d1b6ea79e.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_07aef529936d7464515346817703010d = L.marker(
+                [45.379405555556, -71.927661111111],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_d7e68d0ccb0851630e4b1fc0781a0491 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4f5433544fed16c8ae2cf2a2ebfe164f = $(`<div id="html_4f5433544fed16c8ae2cf2a2ebfe164f" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/guy-bucumi&#34; target=&#34;_blank&#34;&gt;Guy Bucumi&lt;/a&gt;</div>`)[0];
+                popup_d7e68d0ccb0851630e4b1fc0781a0491.setContent(html_4f5433544fed16c8ae2cf2a2ebfe164f);
+            
+        
+
+        marker_07aef529936d7464515346817703010d.bindPopup(popup_d7e68d0ccb0851630e4b1fc0781a0491)
+        ;
+
+        
+    
+    
+            marker_07aef529936d7464515346817703010d.bindTooltip(
+                `<div>
+                     University of Sherbrooke
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7f00ae298ba874100ae20a95f34a8dd7 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_dce9ec6dfadaea7a309732190b62fdf4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cc6b4450474f997d2d8f9a797d37455e = $(`<div id="html_cc6b4450474f997d2d8f9a797d37455e" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/hamani-oumarou&#34; target=&#34;_blank&#34;&gt;Hamani Oumarou&lt;/a&gt;</div>`)[0];
+                popup_dce9ec6dfadaea7a309732190b62fdf4.setContent(html_cc6b4450474f997d2d8f9a797d37455e);
+            
+        
+
+        marker_7f00ae298ba874100ae20a95f34a8dd7.bindPopup(popup_dce9ec6dfadaea7a309732190b62fdf4)
+        ;
+
+        
+    
+    
+            marker_7f00ae298ba874100ae20a95f34a8dd7.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f8b2a2860d05db98fdaf27e83fd63448 = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_9e1d930da274a58236a9f8c8cb968a24 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3abef1edce1953eb0c3d054074413c87 = $(`<div id="html_3abef1edce1953eb0c3d054074413c87" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/hamissou-rhissa-achaffert&#34; target=&#34;_blank&#34;&gt;Hamissou Rhissa Achaffert&lt;/a&gt;</div>`)[0];
+                popup_9e1d930da274a58236a9f8c8cb968a24.setContent(html_3abef1edce1953eb0c3d054074413c87);
+            
+        
+
+        marker_f8b2a2860d05db98fdaf27e83fd63448.bindPopup(popup_9e1d930da274a58236a9f8c8cb968a24)
+        ;
+
+        
+    
+    
+            marker_f8b2a2860d05db98fdaf27e83fd63448.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a658f42494bf0cc86271e608a28162ad = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_f6e8a9dfc0864bd775961b4c5a4d1915 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a05c70145de135abbba91690c93c1565 = $(`<div id="html_a05c70145de135abbba91690c93c1565" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/ibrahim-bachir-abdoulaye&#34; target=&#34;_blank&#34;&gt;Ibrahim Bachir Abdoulaye&lt;/a&gt;</div>`)[0];
+                popup_f6e8a9dfc0864bd775961b4c5a4d1915.setContent(html_a05c70145de135abbba91690c93c1565);
+            
+        
+
+        marker_a658f42494bf0cc86271e608a28162ad.bindPopup(popup_f6e8a9dfc0864bd775961b4c5a4d1915)
+        ;
+
+        
+    
+    
+            marker_a658f42494bf0cc86271e608a28162ad.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ea2b0c1bee56d21be6e5bd4bc91df5d1 = L.marker(
+                [13.84311, 8.98637],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_9a7910f9fceef6cca76ff23ae18ee040 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_bf91decd06713ec2fe4e2ee56af04aec = $(`<div id="html_bf91decd06713ec2fe4e2ee56af04aec" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/ibrahim-moussa&#34; target=&#34;_blank&#34;&gt;Ibrahim Moussa&lt;/a&gt;</div>`)[0];
+                popup_9a7910f9fceef6cca76ff23ae18ee040.setContent(html_bf91decd06713ec2fe4e2ee56af04aec);
+            
+        
+
+        marker_ea2b0c1bee56d21be6e5bd4bc91df5d1.bindPopup(popup_9a7910f9fceef6cca76ff23ae18ee040)
+        ;
+
+        
+    
+    
+            marker_ea2b0c1bee56d21be6e5bd4bc91df5d1.bindTooltip(
+                `<div>
+                     André Salifou University of Zinder
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b65d2ca602eb83ae038cfb6479e8d8c1 = L.marker(
+                [-7.784758110931052, 110.39435184060227],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_cd42c567d5f0154b5685fd4cc3288b9f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8e02b5f3bf2f42b8c17f97272effeb06 = $(`<div id="html_8e02b5f3bf2f42b8c17f97272effeb06" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/inayah-rohmaniyah&#34; target=&#34;_blank&#34;&gt;Inayah Rohmaniyah&lt;/a&gt;</div>`)[0];
+                popup_cd42c567d5f0154b5685fd4cc3288b9f.setContent(html_8e02b5f3bf2f42b8c17f97272effeb06);
+            
+        
+
+        marker_b65d2ca602eb83ae038cfb6479e8d8c1.bindPopup(popup_cd42c567d5f0154b5685fd4cc3288b9f)
+        ;
+
+        
+    
+    
+            marker_b65d2ca602eb83ae038cfb6479e8d8c1.bindTooltip(
+                `<div>
+                     Sunan Kalijaga Islamic University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dc7990d4234b5ff5a19cfbd3789ec42a = L.marker(
+                [7.68642, -5.06669],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_45ebbbef4e347f8cbe8dd3e1048e1194 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5a14318860f169f2d72d81bdbfc1058c = $(`<div id="html_5a14318860f169f2d72d81bdbfc1058c" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/issouf-binate&#34; target=&#34;_blank&#34;&gt;Issouf Binaté&lt;/a&gt;</div>`)[0];
+                popup_45ebbbef4e347f8cbe8dd3e1048e1194.setContent(html_5a14318860f169f2d72d81bdbfc1058c);
+            
+        
+
+        marker_dc7990d4234b5ff5a19cfbd3789ec42a.bindPopup(popup_45ebbbef4e347f8cbe8dd3e1048e1194)
+        ;
+
+        
+    
+    
+            marker_dc7990d4234b5ff5a19cfbd3789ec42a.bindTooltip(
+                `<div>
+                     Université Alassane Ouattara
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6e09d55208bfd647f1923533ce8ad32d = L.marker(
+                [52.4276, 13.7561],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_83335b7984a12a0349a098155418ed28 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4f8b781c6f1107cbddda2e14058fa25b = $(`<div id="html_4f8b781c6f1107cbddda2e14058fa25b" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/jana-kleibert&#34; target=&#34;_blank&#34;&gt;Jana Kleibert&lt;/a&gt;</div>`)[0];
+                popup_83335b7984a12a0349a098155418ed28.setContent(html_4f8b781c6f1107cbddda2e14058fa25b);
+            
+        
+
+        marker_6e09d55208bfd647f1923533ce8ad32d.bindPopup(popup_83335b7984a12a0349a098155418ed28)
+        ;
+
+        
+    
+    
+            marker_6e09d55208bfd647f1923533ce8ad32d.bindTooltip(
+                `<div>
+                     Leibniz Institute for Research on Society and Space
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_aa0603cc4f18f71d79a958afe16c2037 = L.marker(
+                [13.548915, 2.096388],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_dc34e31fe02b3c80e50fc6a82de487b2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_52a8c0600da1333a24798f7b0a077384 = $(`<div id="html_52a8c0600da1333a24798f7b0a077384" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/jean-pierre-olivier-de-sardan&#34; target=&#34;_blank&#34;&gt;Jean-Pierre Olivier de Sardan&lt;/a&gt;</div>`)[0];
+                popup_dc34e31fe02b3c80e50fc6a82de487b2.setContent(html_52a8c0600da1333a24798f7b0a077384);
+            
+        
+
+        marker_aa0603cc4f18f71d79a958afe16c2037.bindPopup(popup_dc34e31fe02b3c80e50fc6a82de487b2)
+        ;
+
+        
+    
+    
+            marker_aa0603cc4f18f71d79a958afe16c2037.bindTooltip(
+                `<div>
+                     Laboratoire d'Etudes et de Recherche sur les Dynamiques Sociales et le Développement Local
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c17d4048b7badf3f1786c6b0dd891c2e = L.marker(
+                [37.19971, -93.28079],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_a2d351a6dcd52db88fea32745c594802 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_e431b72e6327d0beaada77e89e4d4549 = $(`<div id="html_e431b72e6327d0beaada77e89e4d4549" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/john-schmalzbauer&#34; target=&#34;_blank&#34;&gt;John Schmalzbauer&lt;/a&gt;</div>`)[0];
+                popup_a2d351a6dcd52db88fea32745c594802.setContent(html_e431b72e6327d0beaada77e89e4d4549);
+            
+        
+
+        marker_c17d4048b7badf3f1786c6b0dd891c2e.bindPopup(popup_a2d351a6dcd52db88fea32745c594802)
+        ;
+
+        
+    
+    
+            marker_c17d4048b7badf3f1786c6b0dd891c2e.bindTooltip(
+                `<div>
+                     Missouri State University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_344a6fe5d8100d2928ac0e2ff700952a = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_442919479d13c3360d4531a00f87a12f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_aa2414deb139b54fb1e2e1001c6048cf = $(`<div id="html_aa2414deb139b54fb1e2e1001c6048cf" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/judith-scheele&#34; target=&#34;_blank&#34;&gt;Judith Scheele&lt;/a&gt;</div>`)[0];
+                popup_442919479d13c3360d4531a00f87a12f.setContent(html_aa2414deb139b54fb1e2e1001c6048cf);
+            
+        
+
+        marker_344a6fe5d8100d2928ac0e2ff700952a.bindPopup(popup_442919479d13c3360d4531a00f87a12f)
+        ;
+
+        
+    
+    
+            marker_344a6fe5d8100d2928ac0e2ff700952a.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_99549c17e975549410bf871145a37d74 = L.marker(
+                [7.4416666666667, 3.9],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_92dcc55d58cf36516085736a5518b9e8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8f12243e4439dbd269fd0cffa989ff1c = $(`<div id="html_8f12243e4439dbd269fd0cffa989ff1c" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/june-temitope-gbadamosi&#34; target=&#34;_blank&#34;&gt;June Temitope Gbadamosi&lt;/a&gt;</div>`)[0];
+                popup_92dcc55d58cf36516085736a5518b9e8.setContent(html_8f12243e4439dbd269fd0cffa989ff1c);
+            
+        
+
+        marker_99549c17e975549410bf871145a37d74.bindPopup(popup_92dcc55d58cf36516085736a5518b9e8)
+        ;
+
+        
+    
+    
+            marker_99549c17e975549410bf871145a37d74.bindTooltip(
+                `<div>
+                     University of Ibadan
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_87bb2b15116eacfcabb779c1bc8b4c29 = L.marker(
+                [48.83607, 2.37205],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_a71bc2b27e34acd93bb891535bc0a3fa = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_51b6c01bcc70004d2e87505b3a3794a9 = $(`<div id="html_51b6c01bcc70004d2e87505b3a3794a9" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/kae-amo&#34; target=&#34;_blank&#34;&gt;Kae Amo&lt;/a&gt;</div>`)[0];
+                popup_a71bc2b27e34acd93bb891535bc0a3fa.setContent(html_51b6c01bcc70004d2e87505b3a3794a9);
+            
+        
+
+        marker_87bb2b15116eacfcabb779c1bc8b4c29.bindPopup(popup_a71bc2b27e34acd93bb891535bc0a3fa)
+        ;
+
+        
+    
+    
+            marker_87bb2b15116eacfcabb779c1bc8b4c29.bindTooltip(
+                `<div>
+                     School for Advanced Studies in the Social Sciences
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6f89fe502e2474a30fda3994ab37d7b8 = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_48e5eb98482281c9ddf22375dc7e51d0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_211b938357e00824ba824bdef3cda890 = $(`<div id="html_211b938357e00824ba824bdef3cda890" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/kai-kresse&#34; target=&#34;_blank&#34;&gt;Kai Kresse&lt;/a&gt;</div>`)[0];
+                popup_48e5eb98482281c9ddf22375dc7e51d0.setContent(html_211b938357e00824ba824bdef3cda890);
+            
+        
+
+        marker_6f89fe502e2474a30fda3994ab37d7b8.bindPopup(popup_48e5eb98482281c9ddf22375dc7e51d0)
+        ;
+
+        
+    
+    
+            marker_6f89fe502e2474a30fda3994ab37d7b8.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_59ffeab8131501e92d9ddb7e1449a124 = L.marker(
+                [55.679722222222, 12.5725],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_82d4526097542781a6c4c5cb1fc84e69 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_eeabb04dd674332d5f1ef63dbf19f1fa = $(`<div id="html_eeabb04dd674332d5f1ef63dbf19f1fa" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/karen-lauterbach&#34; target=&#34;_blank&#34;&gt;Karen Lauterbach&lt;/a&gt;</div>`)[0];
+                popup_82d4526097542781a6c4c5cb1fc84e69.setContent(html_eeabb04dd674332d5f1ef63dbf19f1fa);
+            
+        
+
+        marker_59ffeab8131501e92d9ddb7e1449a124.bindPopup(popup_82d4526097542781a6c4c5cb1fc84e69)
+        ;
+
+        
+    
+    
+            marker_59ffeab8131501e92d9ddb7e1449a124.bindTooltip(
+                `<div>
+                     University of Copenhagen
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_45d38201f35e811f3e70881a0c045b2f = L.marker(
+                [5.655742895900232, -0.11712973230672785],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_f4803ade1d950e86205293eb111ebccb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_89ede12063f35da4627d1514fe0a9fdb = $(`<div id="html_89ede12063f35da4627d1514fe0a9fdb" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mohammed-ameen-kasim&#34; target=&#34;_blank&#34;&gt;Kasim Mohammed Ameen&lt;/a&gt;</div>`)[0];
+                popup_f4803ade1d950e86205293eb111ebccb.setContent(html_89ede12063f35da4627d1514fe0a9fdb);
+            
+        
+
+        marker_45d38201f35e811f3e70881a0c045b2f.bindPopup(popup_f4803ade1d950e86205293eb111ebccb)
+        ;
+
+        
+    
+    
+            marker_45d38201f35e811f3e70881a0c045b2f.bindTooltip(
+                `<div>
+                     Islamic University College, Ghana
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_68405f7f05dd1d76da7b27b002c144cb = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_d6da9d3b9e5802d74fb63613f759227d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fda2c72e8e8ef4625cab1015cbe8227b = $(`<div id="html_fda2c72e8e8ef4625cab1015cbe8227b" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/katrin-bromber&#34; target=&#34;_blank&#34;&gt;Katrin Bromber&lt;/a&gt;</div>`)[0];
+                popup_d6da9d3b9e5802d74fb63613f759227d.setContent(html_fda2c72e8e8ef4625cab1015cbe8227b);
+            
+        
+
+        marker_68405f7f05dd1d76da7b27b002c144cb.bindPopup(popup_d6da9d3b9e5802d74fb63613f759227d)
+        ;
+
+        
+    
+    
+            marker_68405f7f05dd1d76da7b27b002c144cb.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ab105eb27561dfe0e5f714a98a863d2e = L.marker(
+                [12.37722, -1.50083],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_62679730728ab9a89c3c7e8a6827ba6e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9d6b26262d694509439b4470e710d853 = $(`<div id="html_9d6b26262d694509439b4470e710d853" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/koudbi-kabore&#34; target=&#34;_blank&#34;&gt;Koudbi Kaboré&lt;/a&gt;</div>`)[0];
+                popup_62679730728ab9a89c3c7e8a6827ba6e.setContent(html_9d6b26262d694509439b4470e710d853);
+            
+        
+
+        marker_ab105eb27561dfe0e5f714a98a863d2e.bindPopup(popup_62679730728ab9a89c3c7e8a6827ba6e)
+        ;
+
+        
+    
+    
+            marker_ab105eb27561dfe0e5f714a98a863d2e.bindTooltip(
+                `<div>
+                     University Joseph Ki-Zerbo
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_11f463facf1d2ebdda1cbbf28c8b16e5 = L.marker(
+                [39.3275, -82.1],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_14ef25e24a7b3103efe4d477b4825fe5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7b2205dcd564c6dac6c700cc70c1b850 = $(`<div id="html_7b2205dcd564c6dac6c700cc70c1b850" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/lassane-ouedraogo&#34; target=&#34;_blank&#34;&gt;Lassane Ouedraogo&lt;/a&gt;</div>`)[0];
+                popup_14ef25e24a7b3103efe4d477b4825fe5.setContent(html_7b2205dcd564c6dac6c700cc70c1b850);
+            
+        
+
+        marker_11f463facf1d2ebdda1cbbf28c8b16e5.bindPopup(popup_14ef25e24a7b3103efe4d477b4825fe5)
+        ;
+
+        
+    
+    
+            marker_11f463facf1d2ebdda1cbbf28c8b16e5.bindTooltip(
+                `<div>
+                     Ohio University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f1938a63aaa140a9dc48217eff6689d2 = L.marker(
+                [24.5239, 54.4346],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_b09998cbcde89a5a63d011135e2fde99 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fecbf54caacae35a226cfe029f7755fb = $(`<div id="html_fecbf54caacae35a226cfe029f7755fb" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/laure-assaf&#34; target=&#34;_blank&#34;&gt;Laure Assaf&lt;/a&gt;</div>`)[0];
+                popup_b09998cbcde89a5a63d011135e2fde99.setContent(html_fecbf54caacae35a226cfe029f7755fb);
+            
+        
+
+        marker_f1938a63aaa140a9dc48217eff6689d2.bindPopup(popup_b09998cbcde89a5a63d011135e2fde99)
+        ;
+
+        
+    
+    
+            marker_f1938a63aaa140a9dc48217eff6689d2.bindTooltip(
+                `<div>
+                     New York University Abu Dhabi
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8d5a864b3e9ea06fc425687e3410d009 = L.marker(
+                [44.806666666666665, -0.6311111111111111],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_3a6a95d8d230e0aa53ad0dd2aac14139 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7386c486faf22690a4878f5dd8042e7b = $(`<div id="html_7386c486faf22690a4878f5dd8042e7b" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/lucie-revilla&#34; target=&#34;_blank&#34;&gt;Lucie Revilla&lt;/a&gt;</div>`)[0];
+                popup_3a6a95d8d230e0aa53ad0dd2aac14139.setContent(html_7386c486faf22690a4878f5dd8042e7b);
+            
+        
+
+        marker_8d5a864b3e9ea06fc425687e3410d009.bindPopup(popup_3a6a95d8d230e0aa53ad0dd2aac14139)
+        ;
+
+        
+    
+    
+            marker_8d5a864b3e9ea06fc425687e3410d009.bindTooltip(
+                `<div>
+                     Les Afriques dans le monde
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1dc505b76da33daa9f9781017d160ba9 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_3eb6b368bc8072501d37d76a3c9672a3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4bf8b5fc2a5a40285e9adafb2167b2a8 = $(`<div id="html_4bf8b5fc2a5a40285e9adafb2167b2a8" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mahamadou-bello-adamou&#34; target=&#34;_blank&#34;&gt;Mahamadou Bello Adamou&lt;/a&gt;</div>`)[0];
+                popup_3eb6b368bc8072501d37d76a3c9672a3.setContent(html_4bf8b5fc2a5a40285e9adafb2167b2a8);
+            
+        
+
+        marker_1dc505b76da33daa9f9781017d160ba9.bindPopup(popup_3eb6b368bc8072501d37d76a3c9672a3)
+        ;
+
+        
+    
+    
+            marker_1dc505b76da33daa9f9781017d160ba9.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_354be21b76cc8d70b6dbb05492f8e88b = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_cc6d5d2b7ef16da5af98ddb2c53b0ce6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c6622cf14b1570b796cc7399e7d53368 = $(`<div id="html_c6622cf14b1570b796cc7399e7d53368" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/malam-sani-mahaboubou&#34; target=&#34;_blank&#34;&gt;Malam Sani Mahaboubou&lt;/a&gt;</div>`)[0];
+                popup_cc6d5d2b7ef16da5af98ddb2c53b0ce6.setContent(html_c6622cf14b1570b796cc7399e7d53368);
+            
+        
+
+        marker_354be21b76cc8d70b6dbb05492f8e88b.bindPopup(popup_cc6d5d2b7ef16da5af98ddb2c53b0ce6)
+        ;
+
+        
+    
+    
+            marker_354be21b76cc8d70b6dbb05492f8e88b.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cd12be886130c95e786f9d9317536fd3 = L.marker(
+                [14.686955, -17.463338],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_794123ae335c6a6ab008de207752a342 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_59ffe485ce25f5496fda39d9ff133fca = $(`<div id="html_59ffe485ce25f5496fda39d9ff133fca" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mamadou-yero-balde&#34; target=&#34;_blank&#34;&gt;Mamadou Yéro Baldé&lt;/a&gt;</div>`)[0];
+                popup_794123ae335c6a6ab008de207752a342.setContent(html_59ffe485ce25f5496fda39d9ff133fca);
+            
+        
+
+        marker_cd12be886130c95e786f9d9317536fd3.bindPopup(popup_794123ae335c6a6ab008de207752a342)
+        ;
+
+        
+    
+    
+            marker_cd12be886130c95e786f9d9317536fd3.bindTooltip(
+                `<div>
+                     Université Cheikh Anta Diop
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_10f39d5aa0240fe1ceaeddb1653df64f = L.marker(
+                [52.518055555556, 13.393333333333],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_4d1499661ec5adeab5ac994cbebd91d3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2ca0dcc9091c683d0aa61598ebf02ffc = $(`<div id="html_2ca0dcc9091c683d0aa61598ebf02ffc" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/manja-stephan-emmrich&#34; target=&#34;_blank&#34;&gt;Manja Stephan-Emmrich&lt;/a&gt;</div>`)[0];
+                popup_4d1499661ec5adeab5ac994cbebd91d3.setContent(html_2ca0dcc9091c683d0aa61598ebf02ffc);
+            
+        
+
+        marker_10f39d5aa0240fe1ceaeddb1653df64f.bindPopup(popup_4d1499661ec5adeab5ac994cbebd91d3)
+        ;
+
+        
+    
+    
+            marker_10f39d5aa0240fe1ceaeddb1653df64f.bindTooltip(
+                `<div>
+                     Humboldt University of Berlin
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_121d536bfc4b516cdfc5c8e5e8cd9bae = L.marker(
+                [42.7018637482531, -84.48216117291386],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_c14e415732e62e76ef9e7b758e3fcf00 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cb30a116bc7964e7f7c721fdfd5795d2 = $(`<div id="html_cb30a116bc7964e7f7c721fdfd5795d2" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mara-a-leichtman&#34; target=&#34;_blank&#34;&gt;Mara A. Leichtman&lt;/a&gt;</div>`)[0];
+                popup_c14e415732e62e76ef9e7b758e3fcf00.setContent(html_cb30a116bc7964e7f7c721fdfd5795d2);
+            
+        
+
+        marker_121d536bfc4b516cdfc5c8e5e8cd9bae.bindPopup(popup_c14e415732e62e76ef9e7b758e3fcf00)
+        ;
+
+        
+    
+    
+            marker_121d536bfc4b516cdfc5c8e5e8cd9bae.bindTooltip(
+                `<div>
+                     Michigan State University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fbb56b2c31f35e1e1cabdcba6e5210d8 = L.marker(
+                [36.001111111111, -78.938888888889],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_e3d018751d8cded60e330d1eb952a3e6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0b328425d063c10906daa768148c6e5c = $(`<div id="html_0b328425d063c10906daa768148c6e5c" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mbaye-lo&#34; target=&#34;_blank&#34;&gt;Mbaye Lo&lt;/a&gt;</div>`)[0];
+                popup_e3d018751d8cded60e330d1eb952a3e6.setContent(html_0b328425d063c10906daa768148c6e5c);
+            
+        
+
+        marker_fbb56b2c31f35e1e1cabdcba6e5210d8.bindPopup(popup_e3d018751d8cded60e330d1eb952a3e6)
+        ;
+
+        
+    
+    
+            marker_fbb56b2c31f35e1e1cabdcba6e5210d8.bindTooltip(
+                `<div>
+                     Duke University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cde9688d4fac9083f5275a6c83f428d9 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_35ffe7baf06b4068324b8e5757971596 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6c87701c2a59db9e43a5c624c9a2d2aa = $(`<div id="html_6c87701c2a59db9e43a5c624c9a2d2aa" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mounkaila-abdou&#34; target=&#34;_blank&#34;&gt;Mounkaila Abdou&lt;/a&gt;</div>`)[0];
+                popup_35ffe7baf06b4068324b8e5757971596.setContent(html_6c87701c2a59db9e43a5c624c9a2d2aa);
+            
+        
+
+        marker_cde9688d4fac9083f5275a6c83f428d9.bindPopup(popup_35ffe7baf06b4068324b8e5757971596)
+        ;
+
+        
+    
+    
+            marker_cde9688d4fac9083f5275a6c83f428d9.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_020faa149bedc90e8b9758fe1d0083a6 = L.marker(
+                [-7.784758110931052, 110.39435184060227],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_45738750521baf3e642db30202784120 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2f1ac3e6dad33dfe6863a4a833647e6e = $(`<div id="html_2f1ac3e6dad33dfe6863a4a833647e6e" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/muhammad-wildan&#34; target=&#34;_blank&#34;&gt;Muhammad Wildan&lt;/a&gt;</div>`)[0];
+                popup_45738750521baf3e642db30202784120.setContent(html_2f1ac3e6dad33dfe6863a4a833647e6e);
+            
+        
+
+        marker_020faa149bedc90e8b9758fe1d0083a6.bindPopup(popup_45738750521baf3e642db30202784120)
+        ;
+
+        
+    
+    
+            marker_020faa149bedc90e8b9758fe1d0083a6.bindTooltip(
+                `<div>
+                     Sunan Kalijaga Islamic University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bd7a70d91821a2429ad1d99f53b183ce = L.marker(
+                [52.518055555556, 13.393333333333],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_ed2f4779c23ed59609f58e8ef8bbe125 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3b1c2885c783b7aa7c97c830c228410d = $(`<div id="html_3b1c2885c783b7aa7c97c830c228410d" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/muhammad-yakasai&#34; target=&#34;_blank&#34;&gt;Muhammad Yakasai&lt;/a&gt;</div>`)[0];
+                popup_ed2f4779c23ed59609f58e8ef8bbe125.setContent(html_3b1c2885c783b7aa7c97c830c228410d);
+            
+        
+
+        marker_bd7a70d91821a2429ad1d99f53b183ce.bindPopup(popup_ed2f4779c23ed59609f58e8ef8bbe125)
+        ;
+
+        
+    
+    
+            marker_bd7a70d91821a2429ad1d99f53b183ce.bindTooltip(
+                `<div>
+                     Humboldt University of Berlin
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_026042fa9e903af3606c66f570b56307 = L.marker(
+                [52.453055555556, 13.290555555556],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_d07706146833142a42c262e354032a8e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_dede795dc8ec38e3a33b4c9bdb627034 = $(`<div id="html_dede795dc8ec38e3a33b4c9bdb627034" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/murtala-ibrahim&#34; target=&#34;_blank&#34;&gt;Murtala Ibrahim&lt;/a&gt;</div>`)[0];
+                popup_d07706146833142a42c262e354032a8e.setContent(html_dede795dc8ec38e3a33b4c9bdb627034);
+            
+        
+
+        marker_026042fa9e903af3606c66f570b56307.bindPopup(popup_d07706146833142a42c262e354032a8e)
+        ;
+
+        
+    
+    
+            marker_026042fa9e903af3606c66f570b56307.bindTooltip(
+                `<div>
+                     Free University Berlin
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b797fcabc837a2dea92ed4da3d52bd1b = L.marker(
+                [7.4416666666667, 3.9],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_c4afb02120e58d32022a677c329420f2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a0030cedf02632260c787d598fae7099 = $(`<div id="html_a0030cedf02632260c787d598fae7099" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/mutiat-titilope-oladejo&#34; target=&#34;_blank&#34;&gt;Mutiat Titilope Oladejo&lt;/a&gt;</div>`)[0];
+                popup_c4afb02120e58d32022a677c329420f2.setContent(html_a0030cedf02632260c787d598fae7099);
+            
+        
+
+        marker_b797fcabc837a2dea92ed4da3d52bd1b.bindPopup(popup_c4afb02120e58d32022a677c329420f2)
+        ;
+
+        
+    
+    
+            marker_b797fcabc837a2dea92ed4da3d52bd1b.bindTooltip(
+                `<div>
+                     University of Ibadan
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_af0afdb08d2030707041fa81f4f6afeb = L.marker(
+                [11.15, 7.65],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_c0da7de23ca41cfb6651eff807a617c6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_afdc9c9870cd6e4b35f3498fd4a292ff = $(`<div id="html_afdc9c9870cd6e4b35f3498fd4a292ff" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/nadir-a-nasidi&#34; target=&#34;_blank&#34;&gt;Nadir A. Nasidi&lt;/a&gt;</div>`)[0];
+                popup_c0da7de23ca41cfb6651eff807a617c6.setContent(html_afdc9c9870cd6e4b35f3498fd4a292ff);
+            
+        
+
+        marker_af0afdb08d2030707041fa81f4f6afeb.bindPopup(popup_c0da7de23ca41cfb6651eff807a617c6)
+        ;
+
+        
+    
+    
+            marker_af0afdb08d2030707041fa81f4f6afeb.bindTooltip(
+                `<div>
+                     Ahmadu Bello University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7c3c1b06076bb46a2d61649d54cbfd3a = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_255c6dcb86c538ef5b2ef1208a1a1390 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_43d000577722b76db84c55fff4230b5e = $(`<div id="html_43d000577722b76db84c55fff4230b5e" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/najoum-alhassane&#34; target=&#34;_blank&#34;&gt;Najoum Alhassane&lt;/a&gt;</div>`)[0];
+                popup_255c6dcb86c538ef5b2ef1208a1a1390.setContent(html_43d000577722b76db84c55fff4230b5e);
+            
+        
+
+        marker_7c3c1b06076bb46a2d61649d54cbfd3a.bindPopup(popup_255c6dcb86c538ef5b2ef1208a1a1390)
+        ;
+
+        
+    
+    
+            marker_7c3c1b06076bb46a2d61649d54cbfd3a.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e773c977f9de976807dc11f578f3c10a = L.marker(
+                [7.4416666666667, 3.9],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_000b58dbc20039200f8ba6ab92834238 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8061aa9a0d040ff17960aa58326dcde6 = $(`<div id="html_8061aa9a0d040ff17960aa58326dcde6" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/olubunmi-olowookere&#34; target=&#34;_blank&#34;&gt;Olubunmi Olowookere&lt;/a&gt;</div>`)[0];
+                popup_000b58dbc20039200f8ba6ab92834238.setContent(html_8061aa9a0d040ff17960aa58326dcde6);
+            
+        
+
+        marker_e773c977f9de976807dc11f578f3c10a.bindPopup(popup_000b58dbc20039200f8ba6ab92834238)
+        ;
+
+        
+    
+    
+            marker_e773c977f9de976807dc11f578f3c10a.bindTooltip(
+                `<div>
+                     University of Ibadan
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e035fb45752f43aa3f3cb085fe51cbf6 = L.marker(
+                [7.4416666666667, 3.9],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_c6df745db2f5291361df769a7d7719da = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_fd532873dfcd795a4dfc413c60bfcc55 = $(`<div id="html_fd532873dfcd795a4dfc413c60bfcc55" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/olutayo-adesina&#34; target=&#34;_blank&#34;&gt;Olutayo Adesina&lt;/a&gt;</div>`)[0];
+                popup_c6df745db2f5291361df769a7d7719da.setContent(html_fd532873dfcd795a4dfc413c60bfcc55);
+            
+        
+
+        marker_e035fb45752f43aa3f3cb085fe51cbf6.bindPopup(popup_c6df745db2f5291361df769a7d7719da)
+        ;
+
+        
+    
+    
+            marker_e035fb45752f43aa3f3cb085fe51cbf6.bindTooltip(
+                `<div>
+                     University of Ibadan
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e338a72381ffaf400369b06d6e433e43 = L.marker(
+                [13.50136111, 2.09852778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_a9d24b958686b2a428f49cc19a142648 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_565d40c136093ff158aaa9b1de2be636 = $(`<div id="html_565d40c136093ff158aaa9b1de2be636" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/oumarou-moussa&#34; target=&#34;_blank&#34;&gt;Oumarou Moussa&lt;/a&gt;</div>`)[0];
+                popup_a9d24b958686b2a428f49cc19a142648.setContent(html_565d40c136093ff158aaa9b1de2be636);
+            
+        
+
+        marker_e338a72381ffaf400369b06d6e433e43.bindPopup(popup_a9d24b958686b2a428f49cc19a142648)
+        ;
+
+        
+    
+    
+            marker_e338a72381ffaf400369b06d6e433e43.bindTooltip(
+                `<div>
+                     Abdou Moumouni University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9134533661f5db261cc92a92bb29e109 = L.marker(
+                [10.35, 14.19],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_d4dda5099c9994d727b79bd719f8658f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b0750b812e0b73640bec8e4624286792 = $(`<div id="html_b0750b812e0b73640bec8e4624286792" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/ousmanou-adama&#34; target=&#34;_blank&#34;&gt;Ousmanou Adama&lt;/a&gt;</div>`)[0];
+                popup_d4dda5099c9994d727b79bd719f8658f.setContent(html_b0750b812e0b73640bec8e4624286792);
+            
+        
+
+        marker_9134533661f5db261cc92a92bb29e109.bindPopup(popup_d4dda5099c9994d727b79bd719f8658f)
+        ;
+
+        
+    
+    
+            marker_9134533661f5db261cc92a92bb29e109.bindTooltip(
+                `<div>
+                     Université de Maroua
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_19713a5f96c9308bc8709ed29e644c86 = L.marker(
+                [24.5239, 54.4346],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_0abf10479e3dc4390196decd3af52d28 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2d6513824f89cff2eed20accf8184dc9 = $(`<div id="html_2d6513824f89cff2eed20accf8184dc9" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/pedro-monaville&#34; target=&#34;_blank&#34;&gt;Pedro Monaville&lt;/a&gt;</div>`)[0];
+                popup_0abf10479e3dc4390196decd3af52d28.setContent(html_2d6513824f89cff2eed20accf8184dc9);
+            
+        
+
+        marker_19713a5f96c9308bc8709ed29e644c86.bindPopup(popup_0abf10479e3dc4390196decd3af52d28)
+        ;
+
+        
+    
+    
+            marker_19713a5f96c9308bc8709ed29e644c86.bindTooltip(
+                `<div>
+                     New York University Abu Dhabi
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5850bb1647b8bb2a2a3df395fc6eb8bc = L.marker(
+                [35.7379, 139.827],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_c1e60f4857b06129777bf4a7129cc2b4 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ea41338f029f3150066f5ff2b349120d = $(`<div id="html_ea41338f029f3150066f5ff2b349120d" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/rebecca-babirye&#34; target=&#34;_blank&#34;&gt;Rebecca Babirye&lt;/a&gt;</div>`)[0];
+                popup_c1e60f4857b06129777bf4a7129cc2b4.setContent(html_ea41338f029f3150066f5ff2b349120d);
+            
+        
+
+        marker_5850bb1647b8bb2a2a3df395fc6eb8bc.bindPopup(popup_c1e60f4857b06129777bf4a7129cc2b4)
+        ;
+
+        
+    
+    
+            marker_5850bb1647b8bb2a2a3df395fc6eb8bc.bindTooltip(
+                `<div>
+                     Tokyo Christian University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_79bf577357a85fc57e6e8a412d144f11 = L.marker(
+                [-7.784758110931052, 110.39435184060227],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_b4af76c5773912a3bfb50a1a394d6dc0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_26380abd0afba373097dc95b20894a4a = $(`<div id="html_26380abd0afba373097dc95b20894a4a" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/robby-habiba-abror&#34; target=&#34;_blank&#34;&gt;Robby Habiba Abror&lt;/a&gt;</div>`)[0];
+                popup_b4af76c5773912a3bfb50a1a394d6dc0.setContent(html_26380abd0afba373097dc95b20894a4a);
+            
+        
+
+        marker_79bf577357a85fc57e6e8a412d144f11.bindPopup(popup_b4af76c5773912a3bfb50a1a394d6dc0)
+        ;
+
+        
+    
+    
+            marker_79bf577357a85fc57e6e8a412d144f11.bindTooltip(
+                `<div>
+                     Sunan Kalijaga Islamic University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c04f8db91975bef9768d3a91a85a559d = L.marker(
+                [42.054853, -87.673945],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_1892ffad9c11727c347fa5b4919a6011 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8d2301aab8eb8d8c8df9e702d8836a7f = $(`<div id="html_8d2301aab8eb8d8c8df9e702d8836a7f" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/robert-launay&#34; target=&#34;_blank&#34;&gt;Robert Launay&lt;/a&gt;</div>`)[0];
+                popup_1892ffad9c11727c347fa5b4919a6011.setContent(html_8d2301aab8eb8d8c8df9e702d8836a7f);
+            
+        
+
+        marker_c04f8db91975bef9768d3a91a85a559d.bindPopup(popup_1892ffad9c11727c347fa5b4919a6011)
+        ;
+
+        
+    
+    
+            marker_c04f8db91975bef9768d3a91a85a559d.bindTooltip(
+                `<div>
+                     Northwestern University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6f8c4d70c2c3e36e5e44e46eaf7fa825 = L.marker(
+                [52.518055555556, 13.393333333333],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_5d421f036e239ffcec90db94f2821eff = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4342e71a6842161da38087b28a8d83c5 = $(`<div id="html_4342e71a6842161da38087b28a8d83c5" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/sadia-bajwa&#34; target=&#34;_blank&#34;&gt;Sadia Bajwa&lt;/a&gt;</div>`)[0];
+                popup_5d421f036e239ffcec90db94f2821eff.setContent(html_4342e71a6842161da38087b28a8d83c5);
+            
+        
+
+        marker_6f8c4d70c2c3e36e5e44e46eaf7fa825.bindPopup(popup_5d421f036e239ffcec90db94f2821eff)
+        ;
+
+        
+    
+    
+            marker_6f8c4d70c2c3e36e5e44e46eaf7fa825.bindTooltip(
+                `<div>
+                     Humboldt University of Berlin
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_09ef537d8fc5473e009fcb543bc07814 = L.marker(
+                [33.75, 73.13333333],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_97ed2a3eeb6b0581289c276e5ff57cb2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6a8b2331c01ec43b323da6a88a1c81e0 = $(`<div id="html_6a8b2331c01ec43b323da6a88a1c81e0" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/sadia-mahmood&#34; target=&#34;_blank&#34;&gt;Sadia Mahmood&lt;/a&gt;</div>`)[0];
+                popup_97ed2a3eeb6b0581289c276e5ff57cb2.setContent(html_6a8b2331c01ec43b323da6a88a1c81e0);
+            
+        
+
+        marker_09ef537d8fc5473e009fcb543bc07814.bindPopup(popup_97ed2a3eeb6b0581289c276e5ff57cb2)
+        ;
+
+        
+    
+    
+            marker_09ef537d8fc5473e009fcb543bc07814.bindTooltip(
+                `<div>
+                     Quaid-i-Azam University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c90d41cc61afc34c1ad799156a8572aa = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_94f1a977ebf437d0c6e4fd0293ee299b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c9705440960e5dcbc995f51bcda006d7 = $(`<div id="html_c9705440960e5dcbc995f51bcda006d7" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/sana-chavoshian&#34; target=&#34;_blank&#34;&gt;Sana Chavoshian&lt;/a&gt;</div>`)[0];
+                popup_94f1a977ebf437d0c6e4fd0293ee299b.setContent(html_c9705440960e5dcbc995f51bcda006d7);
+            
+        
+
+        marker_c90d41cc61afc34c1ad799156a8572aa.bindPopup(popup_94f1a977ebf437d0c6e4fd0293ee299b)
+        ;
+
+        
+    
+    
+            marker_c90d41cc61afc34c1ad799156a8572aa.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_2236274c4c5d4d264f01accbee6afdf0 = L.marker(
+                [13.42465383620792, -6.303292125339687],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_04c2d36ebb7c2815f11828b8f6cc4f61 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d8ca428c10a4c95e63adf22874e27883 = $(`<div id="html_d8ca428c10a4c95e63adf22874e27883" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/sekou-sala-timbely&#34; target=&#34;_blank&#34;&gt;Sekou Sala Timbely&lt;/a&gt;</div>`)[0];
+                popup_04c2d36ebb7c2815f11828b8f6cc4f61.setContent(html_d8ca428c10a4c95e63adf22874e27883);
+            
+        
+
+        marker_2236274c4c5d4d264f01accbee6afdf0.bindPopup(popup_04c2d36ebb7c2815f11828b8f6cc4f61)
+        ;
+
+        
+    
+    
+            marker_2236274c4c5d4d264f01accbee6afdf0.bindTooltip(
+                `<div>
+                     Ségou University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e3a3f7eed1ce4fe0e1d772126ae14a01 = L.marker(
+                [49.92885, 11.5859],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_8228ee994edfa29484920529b5f4f45a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_39aac4f5c019c1af1d3c912d35e815dc = $(`<div id="html_39aac4f5c019c1af1d3c912d35e815dc" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/seyni-mamoudou-ibrahim&#34; target=&#34;_blank&#34;&gt;Seyni Mamoudou Ibrahim&lt;/a&gt;</div>`)[0];
+                popup_8228ee994edfa29484920529b5f4f45a.setContent(html_39aac4f5c019c1af1d3c912d35e815dc);
+            
+        
+
+        marker_e3a3f7eed1ce4fe0e1d772126ae14a01.bindPopup(popup_8228ee994edfa29484920529b5f4f45a)
+        ;
+
+        
+    
+    
+            marker_e3a3f7eed1ce4fe0e1d772126ae14a01.bindTooltip(
+                `<div>
+                     University of Bayreuth
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_84282b0e5436fdd857fd201202cc3405 = L.marker(
+                [-7.784758110931052, 110.39435184060227],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_9e4517dfe5832d902833a38801f18191 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4d6634ff772cfb0615d34548600c0af3 = $(`<div id="html_4d6634ff772cfb0615d34548600c0af3" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/shofiyullah-muzammil&#34; target=&#34;_blank&#34;&gt;Shofiyullah Muzammil&lt;/a&gt;</div>`)[0];
+                popup_9e4517dfe5832d902833a38801f18191.setContent(html_4d6634ff772cfb0615d34548600c0af3);
+            
+        
+
+        marker_84282b0e5436fdd857fd201202cc3405.bindPopup(popup_9e4517dfe5832d902833a38801f18191)
+        ;
+
+        
+    
+    
+            marker_84282b0e5436fdd857fd201202cc3405.bindTooltip(
+                `<div>
+                     Sunan Kalijaga Islamic University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_568f5295b26f0bd8bfbf134efd680128 = L.marker(
+                [-28.74511818, 24.76427601],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_73f2074084f6017aec26531cc4e14878 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1a9c362665048ce6324566d1a5c03d19 = $(`<div id="html_1a9c362665048ce6324566d1a5c03d19" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/simbarashe-gukurume&#34; target=&#34;_blank&#34;&gt;Simbarashe Gukurume&lt;/a&gt;</div>`)[0];
+                popup_73f2074084f6017aec26531cc4e14878.setContent(html_1a9c362665048ce6324566d1a5c03d19);
+            
+        
+
+        marker_568f5295b26f0bd8bfbf134efd680128.bindPopup(popup_73f2074084f6017aec26531cc4e14878)
+        ;
+
+        
+    
+    
+            marker_568f5295b26f0bd8bfbf134efd680128.bindTooltip(
+                `<div>
+                     Sol Plaatje University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c425f5ce040a4eaf4a80dccd72877699 = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_54157af026b6452c197ac716d98458ba = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_2e664b757718323d983840992a8d7f09 = $(`<div id="html_2e664b757718323d983840992a8d7f09" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/stefan-kirmse&#34; target=&#34;_blank&#34;&gt;Stefan Kirmse&lt;/a&gt;</div>`)[0];
+                popup_54157af026b6452c197ac716d98458ba.setContent(html_2e664b757718323d983840992a8d7f09);
+            
+        
+
+        marker_c425f5ce040a4eaf4a80dccd72877699.bindPopup(popup_54157af026b6452c197ac716d98458ba)
+        ;
+
+        
+    
+    
+            marker_c425f5ce040a4eaf4a80dccd72877699.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b67fee24a55011f759487258763a1c23 = L.marker(
+                [7.51833333, 4.52277778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_17c6ec651d79964b5f0dde52e3d68215 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d18a49aa05097df9b58eafd215c54218 = $(`<div id="html_d18a49aa05097df9b58eafd215c54218" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/stephen-t-ogundipe&#34; target=&#34;_blank&#34;&gt;Stephen T. Ogundipe&lt;/a&gt;</div>`)[0];
+                popup_17c6ec651d79964b5f0dde52e3d68215.setContent(html_d18a49aa05097df9b58eafd215c54218);
+            
+        
+
+        marker_b67fee24a55011f759487258763a1c23.bindPopup(popup_17c6ec651d79964b5f0dde52e3d68215)
+        ;
+
+        
+    
+    
+            marker_b67fee24a55011f759487258763a1c23.bindTooltip(
+                `<div>
+                     Obafemi Awolowo University
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dcbe92e44ef83f6ae237968fba1bb572 = L.marker(
+                [45.513888888889, -73.560277777778],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_97e217b0bbeaa99364cfc8135313f423 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_84589fbf42c6e5941ccef5c54037c531 = $(`<div id="html_84589fbf42c6e5941ccef5c54037c531" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/tatiana-smirnova&#34; target=&#34;_blank&#34;&gt;Tatiana Smirnova&lt;/a&gt;</div>`)[0];
+                popup_97e217b0bbeaa99364cfc8135313f423.setContent(html_84589fbf42c6e5941ccef5c54037c531);
+            
+        
+
+        marker_dcbe92e44ef83f6ae237968fba1bb572.bindPopup(popup_97e217b0bbeaa99364cfc8135313f423)
+        ;
+
+        
+    
+    
+            marker_dcbe92e44ef83f6ae237968fba1bb572.bindTooltip(
+                `<div>
+                     Université du Québec à Montréal
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bfbfdc6c59113996caa88ae386614b91 = L.marker(
+                [48.84488888888889, 2.396988888888889],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_f031c8c377958041ae03c10c9222bbe0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_3b67b58d7b75695ee7dda5ffd8ed7a98 = $(`<div id="html_3b67b58d7b75695ee7dda5ffd8ed7a98" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/thomas-veret&#34; target=&#34;_blank&#34;&gt;Thomas Veret&lt;/a&gt;</div>`)[0];
+                popup_f031c8c377958041ae03c10c9222bbe0.setContent(html_3b67b58d7b75695ee7dda5ffd8ed7a98);
+            
+        
+
+        marker_bfbfdc6c59113996caa88ae386614b91.bindPopup(popup_f031c8c377958041ae03c10c9222bbe0)
+        ;
+
+        
+    
+    
+            marker_bfbfdc6c59113996caa88ae386614b91.bindTooltip(
+                `<div>
+                     Sorbonne Nouvelle-Paris 3
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1e7b7f3100f8792aa948e4b680c6e8ec = L.marker(
+                [52.427976, 13.202396],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_a9410e0744ab31b261a3aff314b0f6f9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6c0c43def891d41a78e8b7c8ced113f3 = $(`<div id="html_6c0c43def891d41a78e8b7c8ced113f3" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/ulrike-freitag&#34; target=&#34;_blank&#34;&gt;Ulrike Freitag&lt;/a&gt;</div>`)[0];
+                popup_a9410e0744ab31b261a3aff314b0f6f9.setContent(html_6c0c43def891d41a78e8b7c8ced113f3);
+            
+        
+
+        marker_1e7b7f3100f8792aa948e4b680c6e8ec.bindPopup(popup_a9410e0744ab31b261a3aff314b0f6f9)
+        ;
+
+        
+    
+    
+            marker_1e7b7f3100f8792aa948e4b680c6e8ec.bindTooltip(
+                `<div>
+                     Leibniz-Zentrum Moderner Orient
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_491dd5ed766b484020a4972d1fa903b3 = L.marker(
+                [29.6475, -82.345],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_21c8f8ac9e4814fe8038fb6395407e23 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c7de7bee6aae704c099643c34213353d = $(`<div id="html_c7de7bee6aae704c099643c34213353d" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/yekatit-getachew-tsehayu&#34; target=&#34;_blank&#34;&gt;Yekatit Getachew Tsehayu&lt;/a&gt;</div>`)[0];
+                popup_21c8f8ac9e4814fe8038fb6395407e23.setContent(html_c7de7bee6aae704c099643c34213353d);
+            
+        
+
+        marker_491dd5ed766b484020a4972d1fa903b3.bindPopup(popup_21c8f8ac9e4814fe8038fb6395407e23)
+        ;
+
+        
+    
+    
+            marker_491dd5ed766b484020a4972d1fa903b3.bindTooltip(
+                `<div>
+                     University of Florida
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f505e48a4f3fa7fdfeb74b6d795403cb = L.marker(
+                [7.68642, -5.06669],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_9c5ca267ef750741ebb94f11b2e414e7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_77a0372ed9c601ee7bcde74db43662e3 = $(`<div id="html_77a0372ed9c601ee7bcde74db43662e3" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/youssoufou-bakayoko&#34; target=&#34;_blank&#34;&gt;Youssoufou Bakayoko&lt;/a&gt;</div>`)[0];
+                popup_9c5ca267ef750741ebb94f11b2e414e7.setContent(html_77a0372ed9c601ee7bcde74db43662e3);
+            
+        
+
+        marker_f505e48a4f3fa7fdfeb74b6d795403cb.bindPopup(popup_9c5ca267ef750741ebb94f11b2e414e7)
+        ;
+
+        
+    
+    
+            marker_f505e48a4f3fa7fdfeb74b6d795403cb.bindTooltip(
+                `<div>
+                     Université Alassane Ouattara
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9259ae145e86e96e920b6f42343f2421 = L.marker(
+                [6.684903, -1.570514],
+                {}
+            ).addTo(map_14aaebf159f3524ee4e8b9df028a0ebb);
+        
+    
+        var popup_03f1b6ef9467b995861a7d65d81d89ec = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ed6033690c7a096c046abef8a26569a1 = $(`<div id="html_ed6033690c7a096c046abef8a26569a1" style="width: 100.0%; height: 100.0%;">&lt;a href=&#34;https://remoboko.hypotheses.org/tag/yunus-dumbe&#34; target=&#34;_blank&#34;&gt;Yunus Dumbe&lt;/a&gt;</div>`)[0];
+                popup_03f1b6ef9467b995861a7d65d81d89ec.setContent(html_ed6033690c7a096c046abef8a26569a1);
+            
+        
+
+        marker_9259ae145e86e96e920b6f42343f2421.bindPopup(popup_03f1b6ef9467b995861a7d65d81d89ec)
+        ;
+
+        
+    
+    
+            marker_9259ae145e86e96e920b6f42343f2421.bindTooltip(
+                `<div>
+                     Kwame Nkrumah University of Science and Technology
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
