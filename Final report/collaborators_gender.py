@@ -13,10 +13,10 @@ gender_counts = df['Gender'].value_counts()
 # Create a pie chart to visualize the distribution of collaborators by gender
 plt.figure(figsize=(8, 8))
 plt.pie(gender_counts, labels=gender_counts.index, autopct='%1.1f%%', startangle=140)
-plt.title('Distribution of collaborators by gender')
+plt.title('Distribution of Collaborators by Gender')
 
-# Save the pie chart to a file
-plt.savefig('collaborators_gender.png')
+# Save the pie chart with a transparent background
+plt.savefig('collaborators_by_gender_transparent.png', transparent=True)
 
 # Display the plot
 plt.show()
