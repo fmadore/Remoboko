@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
     {"country": "Benin", "event": "Creation of the Réseau des Anciens de la Jeunesse Étudiante Catholique du Bénin (RAJEC)", "date": "2005-08-01"},
     {"country": "Togo", "event": "Creation of the Association des Cadres Musulmans au Togo (ACMT)", "date": "2006-08-01"},
     {"country": "Togo", "event": "Implementation of the LMD reform", "date": "2008-07-21"},
-    {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"}
+    {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
   ];
 
   // Set the dimensions for the SVG
