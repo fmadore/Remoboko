@@ -43,16 +43,16 @@ document.addEventListener("DOMContentLoaded", function() {
     {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
   ];
 
-  // Set the dimensions for the SVG
-  const width = 800, height = events.length * 50 + 100;
-  const margin = {top: 20, right: 20, bottom: 30, left: 100};
+// Set the dimensions for the SVG
+const width = 800, height = events.length * 50 + 100;
+const margin = {top: 20, right: 20, bottom: 30, left: 100};
 
-  // Create the SVG container
-  const svg = d3.select("#timeline").append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// Create the SVG container
+const svg = d3.select("#timeline").append("svg")
+              .attr("width", width)
+              .attr("height", height)
+              .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // Create a scale for the y-axis
   const yScale = d3.scaleTime()
