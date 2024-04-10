@@ -43,48 +43,53 @@ document.addEventListener("DOMContentLoaded", function() {
     {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
   ];
 
-// Set the dimensions for the SVG
-const width = 800, height = events.length * 50 + 100;
-const margin = {top: 20, right: 20, bottom: 30, left: 100};
+  // Set the dimensions for the SVG
+  const width = 800, height = events.length * 50 + 100;
+  const margin = {top: 20, right: 20, bottom: 30, left: 100};
 
-const zoom = d3.zoom()
-  .scaleExtent([0.5, 5]) // Set the minimum and maximum zoom level
-  .on("zoom", (event) => {
-    zoomableGroup.attr("transform", event.transform); // This updates the zoomable group with zoom transformations
-  });
+  // Define the zoom behavior
+  const zoom = d3.zoom()
+    .scaleExtent([1, 10]) // Adjust these values as needed for your zoom levels
+    .on("zoom", (event) => {
+      zoomableGroup.attr("transform", event.transform);
+    });
 
-// Create the SVG container
-const svg = d3.select("#timeline").append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .call(zoom) // Call the zoom behavior on the SVG container
-  .on("dblclick.zoom", null); // Optional: Disable double-click zoom
+  // Create the SVG container and call the zoom on it
+  const svg = d3.select("#timeline").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-// Create a group which will contain elements that we want to be affected by zoom
-const zoomableGroup = svg.append("g")
-  .attr("class", "zoomable");
+  // Append the zoomable group to the SVG
+  const zoomableGroup = svg.append("g")
+    .attr("class", "zoomable")
+    .call(zoom) // Here we attach the zoom behavior to the zoomable group
+    .on("dblclick.zoom", null); // Disable double-click zoom if desired
 
-  // Create a scale for the y-axis
+  // Create the y-scale
   const yScale = d3.scaleTime()
-                   .domain(d3.extent(events, d => new Date(d.date)))
-                   .range([0, height - margin.top - margin.bottom]);
+    .domain(d3.extent(events, d => new Date(d.date)))
+    .range([0, height - margin.top - margin.bottom]);
 
-  // Add the y-axis to the SVG
-  svg.append("g")
-     .call(d3.axisLeft(yScale));
+  // Add a non-zoomable group for the axis
+  const axisGroup = svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // Draw the vertical line for the timeline
-  svg.append("line")
-     .attr("x1", 0)
-     .attr("y1", 0)
-     .attr("x2", 0)
-     .attr("y2", height - margin.top - margin.bottom)
-     .attr("stroke", "black");
+  // Draw the y-axis
+  axisGroup.call(d3.axisLeft(yScale));
 
-  // Tooltip for event details
+  // Draw the vertical line for the timeline within the zoomable group
+  zoomableGroup.append("line")
+    .attr("x1", margin.left)
+    .attr("y1", margin.top)
+    .attr("x2", margin.left)
+    .attr("y2", height - margin.bottom)
+    .attr("stroke", "black");
+
+  // Define the tooltip for event details
   const tooltip = d3.select("body").append("div")
-                    .attr("id", "tooltip")
-                    .style("opacity", 0);
+    .attr("id", "tooltip")
+    .style("opacity", 0);
 
   // Function to update the timeline based on the selected country
   function updateTimeline(selectedCountry) {
