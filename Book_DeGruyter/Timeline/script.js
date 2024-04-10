@@ -15,6 +15,15 @@ const events = [
                    .domain([new Date(events[0].date), new Date(events[events.length - 1].date)])
                    .range([20, 980]);
 
+  // Add the X Axis
+  const xAxis = d3.axisBottom(xScale)
+                  .ticks(d3.timeYear.every(1))
+                  .tickFormat(d3.timeFormat('%Y'));  // Format the ticks to show only the year
+
+  svg.append("g")
+     .attr("transform", "translate(0,100)")  // Position the x-axis
+     .call(xAxis);
+
   // Draw the timeline
   svg.append("line")
      .attr("x1", 20)
