@@ -12,3 +12,15 @@
   stroke: #000;
   stroke-width: 1px;
 }
+
+#tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 10px;
+  background: lightsteelblue;
+  border: 0px solid gray;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
