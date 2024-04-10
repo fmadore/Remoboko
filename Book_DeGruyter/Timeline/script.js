@@ -48,15 +48,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const svg = d3.select("#timeline").append("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .call(zoom); // Attach zoom behavior here
 
   const zoomableGroup = svg.append("g")
     .attr("class", "zoomable");
 
   const zoom = d3.zoom()
-    .scaleExtent([1, 10]) // Adjust these values as needed for your zoom levels
+    .scaleExtent([1, 10])
     .on("zoom", (event) => {
-      zoomableGroup.attr("transform", event.transform);
+      zoomableGroup.attr("transform", event.transform); // This group gets zoomed
     });
 
   svg.call(zoom) // Apply the zoom behavior to the SVG element
@@ -94,8 +95,8 @@ document.addEventListener("DOMContentLoaded", function() {
       .data(filteredEvents, d => d.date);
 
     circles.enter().append("circle")
-      .attr("cx", margin.left)
-      .attr("cy", d => yScale(new Date(d.date)))
+      .attr("cx", margin.left) // Set this to where you want the circles on the x-axis
+      .attr("cy", d => yScale(new Date(d.date))) // This positions the circles on the y-axis based on the date
       .attr("r", 5)
       .attr("fill", "blue")
       .on("mouseover", function(e, d) {
