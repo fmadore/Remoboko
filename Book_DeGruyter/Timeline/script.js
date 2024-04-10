@@ -43,84 +43,80 @@ document.addEventListener("DOMContentLoaded", function() {
     {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
   ];
 
-  const width = 800, height = events.length * 50 + 100;
-  const margin = {top: 20, right: 20, bottom: 30, left: 100};
+// Set the dimensions for the SVG
+const width = 800, height = events.length * 50 + 100;
+const margin = {top: 20, right: 20, bottom: 30, left: 100};
 
-  const svg = d3.select("#timeline").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .call(zoom); // Attach zoom behavior here
+// Create the SVG container
+const svg = d3.select("#timeline").append("svg")
+              .attr("width", width)
+              .attr("height", height)
+              .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  const zoomableGroup = svg.append("g")
-    .attr("class", "zoomable");
-
-  const zoom = d3.zoom()
-    .scaleExtent([1, 10])
-    .on("zoom", (event) => {
-      zoomableGroup.attr("transform", event.transform); // This group gets zoomed
-    });
-
-  svg.call(zoom) // Apply the zoom behavior to the SVG element
-    .on("dblclick.zoom", null); // Optional: disable double-click to zoom
-
-  // Define scales and axes outside of the zoomable group
+  // Create a scale for the y-axis
   const yScale = d3.scaleTime()
-    .domain(d3.extent(events, d => new Date(d.date)))
-    .range([margin.top, height - margin.bottom]);
+                   .domain(d3.extent(events, d => new Date(d.date)))
+                   .range([0, height - margin.top - margin.bottom]);
 
-  const yAxis = svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(yScale));
+  // Add the y-axis to the SVG
+  svg.append("g")
+     .call(d3.axisLeft(yScale));
 
   // Draw the vertical line for the timeline
-  zoomableGroup.append("line")
-    .attr("x1", margin.left)
-    .attr("y1", margin.top)
-    .attr("x2", margin.left)
-    .attr("y2", height - margin.bottom)
-    .attr("stroke", "black");
+  svg.append("line")
+     .attr("x1", 0)
+     .attr("y1", 0)
+     .attr("x2", 0)
+     .attr("y2", height - margin.top - margin.bottom)
+     .attr("stroke", "black");
 
-  // Tooltip setup
+  // Tooltip for event details
   const tooltip = d3.select("body").append("div")
-    .attr("id", "tooltip")
-    .style("opacity", 0);
+                    .attr("id", "tooltip")
+                    .style("opacity", 0);
 
   // Function to update the timeline based on the selected country
   function updateTimeline(selectedCountry) {
+    // Filter events based on the selected country
     const filteredEvents = selectedCountry === "All" ? events : events.filter(d => d.country === selectedCountry);
 
-    // Setup for circles (events)
-    const circles = zoomableGroup.selectAll("circle")
-      .data(filteredEvents, d => d.date);
+    // Bind the filtered events data to the circles
+    const circles = svg.selectAll("circle")
+                       .data(filteredEvents, d => d.date);
 
+    // Enter new elements
     circles.enter().append("circle")
-      .attr("cx", margin.left) // Set this to where you want the circles on the x-axis
-      .attr("cy", d => yScale(new Date(d.date))) // This positions the circles on the y-axis based on the date
-      .attr("r", 5)
-      .attr("fill", "blue")
-      .on("mouseover", function(e, d) {
-        tooltip.transition()
-          .duration(200)
-          .style("opacity", 0.9);
-        tooltip.html(`${d.event}<br/>${d.date}`)
-          .style("left", (e.pageX + 5) + "px")
-          .style("top", (e.pageY - 28) + "px");
-      })
-      .on("mouseout", function() {
-        tooltip.transition()
-          .duration(500)
-          .style("opacity", 0);
-      });
+           .attr("cx", 0)
+           .attr("cy", d => yScale(new Date(d.date)))
+           .attr("r", 5)
+           .attr("fill", "blue")
+           .on("mouseover", function(e, d) {
+             tooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0.9);
+             tooltip.html(d.event + "<br/>" + d.date)
+                    .style("left", (e.pageX) + "px")
+                    .style("top", (e.pageY - 28) + "px");
+           })
+           .on("mouseout", function() {
+             tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+           });
 
+    // Exit and remove old elements
     circles.exit().remove();
+
+    // Update all existing elements
+    circles.attr("cy", d => yScale(new Date(d.date)));
   }
 
-  // Dropdown event listener
-  d3.select("#countryFilter").on("change", function() {
+  // Event listener for the country filter dropdown
+  d3.select("#countryFilter").on("change", function(event) {
     updateTimeline(this.value);
   });
 
-  // Initial rendering
+  // Initial rendering of the timeline
   updateTimeline("All");
 });
