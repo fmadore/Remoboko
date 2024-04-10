@@ -35,4 +35,52 @@ const events = [
   const tooltip = d3.select("#tooltip");
 
   // Dropdown filter
-  const countryFilter = d
+  const countryFilter = d3.select("#countryFilter")
+                          .on("change", function() {
+                            const selectedCountry = this.value;
+                            updateTimeline(selectedCountry);
+                          });
+
+  function updateTimeline(selectedCountry) {
+    const filteredEvents = selectedCountry === "All" ? events : events.filter(d => d.country === selectedCountry);
+    
+    // Clear the current events
+    svg.selectAll(".event").remove();
+    svg.selectAll(".event-text").remove();
+    
+    // Place filtered events
+    filteredEvents.forEach(event => {
+      const yPosition = yScale(new Date(event.date));
+      
+      svg.append("circle")
+         .attr("cx", 100)
+         .attr("cy", yPosition)
+         .attr("r", 5)
+         .attr("class", "event")
+         .on("mouseover", function(e) {
+           tooltip.transition()
+                  .duration(200)
+                  .style("opacity", .9);
+           tooltip.html(event.event + "<br/>" + event.date)
+                  .style("left", (e.pageX + 5) + "px")
+                  .style("top", (e.pageY - 28) + "px");
+         })
+         .on("mouseout", function() {
+           tooltip.transition()
+                  .duration(500)
+                  .style("opacity", 0);
+         });
+      
+      svg.append("text")
+         .attr("x", 120)
+         .attr("y", yPosition)
+         .text(event.event)
+         .attr("class", "event-text")
+         .attr("text-anchor", "start")
+         .attr("alignment-baseline", "central");
+    });
+  }
+
+  // Initial update
+  updateTimeline("All");
+});
