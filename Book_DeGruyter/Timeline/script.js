@@ -47,12 +47,22 @@ document.addEventListener("DOMContentLoaded", function() {
 const width = 800, height = events.length * 50 + 100;
 const margin = {top: 20, right: 20, bottom: 30, left: 100};
 
+const zoom = d3.zoom()
+  .scaleExtent([0.5, 5]) // Set the minimum and maximum zoom level
+  .on("zoom", (event) => {
+    zoomableGroup.attr("transform", event.transform); // This updates the zoomable group with zoom transformations
+  });
+
 // Create the SVG container
 const svg = d3.select("#timeline").append("svg")
-              .attr("width", width)
-              .attr("height", height)
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  .attr("width", width)
+  .attr("height", height)
+  .call(zoom) // Call the zoom behavior on the SVG container
+  .on("dblclick.zoom", null); // Optional: Disable double-click zoom
+
+// Create a group which will contain elements that we want to be affected by zoom
+const zoomableGroup = svg.append("g")
+  .attr("class", "zoomable");
 
   // Create a scale for the y-axis
   const yScale = d3.scaleTime()
@@ -80,7 +90,7 @@ const svg = d3.select("#timeline").append("svg")
   function updateTimeline(selectedCountry) {
     // Filter events based on the selected country
     const filteredEvents = selectedCountry === "All" ? events : events.filter(d => d.country === selectedCountry);
-
+    
     // Bind the filtered events data to the circles
     const circles = svg.selectAll("circle")
                        .data(filteredEvents, d => d.date);
@@ -99,10 +109,14 @@ const svg = d3.select("#timeline").append("svg")
                     .style("left", (e.pageX) + "px")
                     .style("top", (e.pageY - 28) + "px");
            })
-           .on("mouseout", function() {
-             tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0);
+          .on("mouseover", function(e, d) {
+            tooltip.transition()
+              .duration(200)
+              .style("opacity", 0.9);
+            const [x, y] = d3.pointer(e, zoomableGroup.node()); // Get the current x, y within the zoomable group
+            tooltip.html(d.event + "<br/>" + d.date)
+              .style("left", (x + "px"))
+              .style("top", (y + "px"));
            });
 
     // Exit and remove old elements
