@@ -1,86 +1,85 @@
 document.addEventListener("DOMContentLoaded", function() {
-const events = [
-  { date: "1968-05-01", event: "Expulsion of Beninese and Togolese students from the University of Dakar", country: "Senegal" },
-  { date: "1969-05-01", event: "Dahomean May", country: "Benin" },
-  // ... other events
-];
+  // Array of events with date, event description, and country
+  const events = [
+    { date: "1968-05-01", event: "Expulsion from the University of Dakar", country: "Senegal" },
+    { date: "1969-05-01", event: "Dahomean May", country: "Benin" },
+    // Add your other events here
+  ];
 
+  // Set the dimensions for the SVG
+  const width = 800, height = events.length * 50 + 100;
+  const margin = {top: 20, right: 20, bottom: 30, left: 100};
+
+  // Create the SVG container
   const svg = d3.select("#timeline").append("svg")
-                .attr("width", 600)
-                .attr("height", events.length * 50 + 100);
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // Define the scales and axis
+  // Create a scale for the y-axis
   const yScale = d3.scaleTime()
-                   .domain([new Date(events[0].date), new Date(events[events.length - 1].date)])
-                   .range([50, events.length * 50]);
+                   .domain(d3.extent(events, d => new Date(d.date)))
+                   .range([0, height - margin.top - margin.bottom]);
 
-  const yAxis = d3.axisLeft(yScale)
-                  .ticks(d3.timeYear.every(1))
-                  .tickFormat(d3.timeFormat('%Y'));
-
-  // Append the axis
+  // Add the y-axis to the SVG
   svg.append("g")
-     .attr("transform", "translate(100,0)")
-     .call(yAxis);
+     .call(d3.axisLeft(yScale));
 
-  // Draw the timeline
+  // Draw the vertical line for the timeline
   svg.append("line")
-     .attr("x1", 100)
-     .attr("y1", 50)
-     .attr("x2", 100)
-     .attr("y2", events.length * 50)
-     .attr("class", "line");
+     .attr("x1", 0)
+     .attr("y1", 0)
+     .attr("x2", 0)
+     .attr("y2", height - margin.top - margin.bottom)
+     .attr("stroke", "black");
 
-  // Tooltip div
-  const tooltip = d3.select("#tooltip");
+  // Tooltip for event details
+  const tooltip = d3.select("body").append("div")
+                    .attr("id", "tooltip")
+                    .style("opacity", 0);
 
-  // Dropdown filter
-  const countryFilter = d3.select("#countryFilter")
-                          .on("change", function() {
-                            const selectedCountry = this.value;
-                            updateTimeline(selectedCountry);
-                          });
-
+  // Function to update the timeline based on the selected country
   function updateTimeline(selectedCountry) {
+    // Filter events based on the selected country
     const filteredEvents = selectedCountry === "All" ? events : events.filter(d => d.country === selectedCountry);
-    
-    // Clear the current events
-    svg.selectAll(".event").remove();
-    svg.selectAll(".event-text").remove();
-    
-    // Place filtered events
-    filteredEvents.forEach(event => {
-      const yPosition = yScale(new Date(event.date));
-      
-      svg.append("circle")
-         .attr("cx", 100)
-         .attr("cy", yPosition)
-         .attr("r", 5)
-         .attr("class", "event")
-         .on("mouseover", function(e) {
-           tooltip.transition()
-                  .duration(200)
-                  .style("opacity", .9);
-           tooltip.html(event.event + "<br/>" + event.date)
-                  .style("left", (e.pageX + 5) + "px")
-                  .style("top", (e.pageY - 28) + "px");
-         })
-         .on("mouseout", function() {
-           tooltip.transition()
-                  .duration(500)
-                  .style("opacity", 0);
-         });
-      
-      svg.append("text")
-         .attr("x", 120)
-         .attr("y", yPosition)
-         .text(event.event)
-         .attr("class", "event-text")
-         .attr("text-anchor", "start")
-         .attr("alignment-baseline", "central");
-    });
+
+    // Bind the filtered events data to the circles
+    const circles = svg.selectAll("circle")
+                       .data(filteredEvents, d => d.date);
+
+    // Enter new elements
+    circles.enter().append("circle")
+           .attr("cx", 0)
+           .attr("cy", d => yScale(new Date(d.date)))
+           .attr("r", 5)
+           .attr("fill", "blue")
+           .on("mouseover", function(e, d) {
+             tooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0.9);
+             tooltip.html(d.event + "<br/>" + d.date)
+                    .style("left", (e.pageX) + "px")
+                    .style("top", (e.pageY - 28) + "px");
+           })
+           .on("mouseout", function() {
+             tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+           });
+
+    // Exit and remove old elements
+    circles.exit().remove();
+
+    // Update all existing elements
+    circles.attr("cy", d => yScale(new Date(d.date)));
   }
 
-  // Initial update
+  // Event listener for the country filter dropdown
+  d3.select("#countryFilter").on("change", function(event) {
+    updateTimeline(this.value);
+  });
+
+  // Initial rendering of the timeline
   updateTimeline("All");
 });
