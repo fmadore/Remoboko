@@ -1,0 +1,14 @@
+#timeline {
+  font-family: Arial, sans-serif;
+}
+
+.line {
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.event {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 1px;
+}
