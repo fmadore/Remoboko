@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
 const events = [
-  { date: "1968-05-01", event: "Expulsion of Beninese and Togolese students from the University of Dakar" },
-  { date: "1969-05-01", event: "Dahomean May" },
-  { date: "1970-08-21", event: "Creation of the Université du Dahomey in Abomey-Calavi" },
-  // Add the rest of your events here
+  { date: "1968-05-01", event: "Expulsion of Beninese and Togolese students from the University of Dakar", country: "Senegal" },
+  { date: "1969-05-01", event: "Dahomean May", country: "Benin" },
+  // ... other events
 ];
 
   const svg = d3.select("#timeline").append("svg")
