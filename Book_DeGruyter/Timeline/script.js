@@ -1,21 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
   // Array of events with date, event description, and country
   const events = [
-    {"country": "Togo", "event": "Independance of Togo", "date": "1960-04-27"},
-    {"country": "Benin", "event": "Independance of Benin", "date": "1960-08-01"},
-    {"country": "Togo", "event": "Coup d'Etat Togo", "date": "1963-01-13"},
+    {"country": "Togo", "event": "Independance of Togo", "date": "1960-04-27", "category": Politics},
+    {"country": "Benin", "event": "Independance of Benin", "date": "1960-08-01", "category": Politics},
+    {"country": "Togo", "event": "Coup d'Etat Togo", "date": "1963-01-13", "category": Politics},
     {"country": "Benin-Togo", "event": "Creation of the Institut d’Enseignement Supérieur du Bénin (IESB)", "date": "1965-07-14"},
-    {"country": "Togo", "event": "Gnassingbé Eyadéma comes to power", "date": "1967-04-15"},
+    {"country": "Togo", "event": "Gnassingbé Eyadéma comes to power", "date": "1967-04-15", "category": Politics},
     {"country": "Benin-Togo", "event": "Expulsion of Beninese and Togolese students from the University of Dakar", "date": "1968-05-01"},
     {"country": "Benin", "event": "Dahomean May", "date": "1969-05-01"},
     {"country": "Benin", "event": "Creation of the Université du Dahomey in Abomey-Calavi", "date": "1970-08-21"},
     {"country": "Togo", "event": "Creation of the Université du Bénin (UB) in Lomé", "date": "1970-09-14"},
     {"country": "Benin", "event": "Creation of the Emmaüs Community at the Université du Dahomey", "date": "1972-01-01"},
     {"country": "Togo", "event": "Dissolution of all youth associations except for the JRPT", "date": "1972-02-12"},
-    {"country": "Benin", "event": "Mathieu Kérékou comes to power", "date": "1972-10-26"},
+    {"country": "Benin", "event": "Mathieu Kérékou comes to power", "date": "1972-10-26", "category": Politics},
     {"country": "Togo", "event": "Official inauguration of the UB", "date": "1973-11-29"},
     {"country": "Togo", "event": "Creation of a Bible study group at the UB", "date": "1974-09-01"},
-    {"country": "Benin", "event": "Adoption of Marxism-Leninism as the state ideology", "date": "1974-11-30"},
+    {"country": "Benin", "event": "Adoption of Marxism-Leninism as the state ideology", "date": "1974-11-30", "category": Politics},
     {"country": "Benin", "event": "École Nouvelle reform", "date": "1975-06-01"},
     {"country": "Togo", "event": "École Nouvelle reform", "date": "1975-05-06"},
     {"country": "Benin", "event": "University of Dahomey renamed to Université Nationale du Bénin (UNB)", "date": "1975-11-30"},
@@ -47,12 +47,16 @@ document.addEventListener("DOMContentLoaded", function() {
 const width = 800, height = events.length * 50 + 100;
 const margin = {top: 20, right: 20, bottom: 30, left: 100};
 
-// Create the SVG container
-const svg = d3.select("#timeline").append("svg")
-              .attr("width", width)
-              .attr("height", height)
-              .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  // Create the SVG container
+  const svg = d3.select("#timeline").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g");
+
+  // Define a color scale
+  const colorScale = d3.scaleOrdinal()
+    .domain(events.map(e => e.country).filter((v, i, a) => a.indexOf(v) === i)) // get unique countries
+    .range(d3.schemeCategory10); // use one of d3's color schemes, or define your own array of colors
 
   // Create a scale for the y-axis
   const yScale = d3.scaleTime()
