@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         d.date = parseDate(d.date);
     });
 
-    x.domain(d3.extent(data, d => d.date));
+    x.domain([new Date(1960, 0, 1), new Date(2024, 11, 31)]);
 
     const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y"));
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .data(data)
       .enter().append("g")
         .attr("class", d => `event-group ${d.country}`)
-        .attr("transform", d => `translate(${x(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+        .attr("transform", d => `translate(${x(d.date)}, ${height / 2})`);
 
     eventGroup.append("line")
         .attr("class", "event-line")
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const eventGroupEnter = eventGroupUpdate.enter().append("g")
             .attr("class", d => `event-group ${d.country}`)
-            .attr("transform", d => `translate(${x(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+            .attr("transform", d => `translate(${x(d.date)}, ${height / 2})`);
 
         eventGroupEnter.append("line")
             .attr("class", "event-line")
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .style("fill", "black");
 
         eventGroupEnter.merge(eventGroupUpdate)
-            .attr("transform", d => `translate(${x(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+            .attr("transform", d => `translate(${x(d.date)}, ${height / 2})`);
 
         eventGroupEnter.select(".event-line")
             .attr("y2", d => d.country === "Togo" ? -20 : 20)
@@ -167,31 +167,32 @@ document.addEventListener('DOMContentLoaded', function() {
         svg.selectAll(".x.axis").call(xAxis.scale(newX));
 
         svg.selectAll(".event-group")
-            .attr("transform", d => `translate(${newX(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+            .attr("transform", d => `translate(${newX(d.date)}, ${height / 2})`);
         
         adjustTextPosition();
     }
 
     function adjustTextPosition() {
-        const texts = svg.selectAll("text");
+        const texts = svg.selectAll(".event-group text");
 
         texts.each(function(d, i) {
             const thisText = d3.select(this);
             const thisBBox = thisText.node().getBBox();
-            let dy = thisText.attr("dy");
+            let dy = parseFloat(thisText.attr("dy"));
 
             texts.each(function(d2, j) {
-                if (i === j) return;
+                if (i === j || d.country !== d2.country) return;
                 const otherText = d3.select(this);
                 const otherBBox = otherText.node().getBBox();
 
-                if (isOverlapping(thisBBox, otherBBox)) {
+                while (isOverlapping(thisBBox, otherBBox)) {
                     if (d.country === "Togo") {
                         dy -= 15;
                     } else {
                         dy += 15;
                     }
                     thisText.attr("dy", dy);
+                    thisBBox.y = dy + height / 2;
                 }
             });
         });
