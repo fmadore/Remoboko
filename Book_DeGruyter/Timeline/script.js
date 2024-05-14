@@ -1,126 +1,118 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // Array of events with date, event description, and country
-  const events = [
-    {"country": "Togo", "event": "Independance of Togo", "date": "1960-04-27", "category": Politics},
-    {"country": "Benin", "event": "Independance of Benin", "date": "1960-08-01", "category": Politics},
-    {"country": "Togo", "event": "Coup d'Etat Togo", "date": "1963-01-13", "category": Politics},
-    {"country": "Benin-Togo", "event": "Creation of the Institut d’Enseignement Supérieur du Bénin (IESB)", "date": "1965-07-14"},
-    {"country": "Togo", "event": "Gnassingbé Eyadéma comes to power", "date": "1967-04-15", "category": Politics},
-    {"country": "Benin-Togo", "event": "Expulsion of Beninese and Togolese students from the University of Dakar", "date": "1968-05-01"},
-    {"country": "Benin", "event": "Dahomean May", "date": "1969-05-01"},
-    {"country": "Benin", "event": "Creation of the Université du Dahomey in Abomey-Calavi", "date": "1970-08-21"},
-    {"country": "Togo", "event": "Creation of the Université du Bénin (UB) in Lomé", "date": "1970-09-14"},
-    {"country": "Benin", "event": "Creation of the Emmaüs Community at the Université du Dahomey", "date": "1972-01-01"},
-    {"country": "Togo", "event": "Dissolution of all youth associations except for the JRPT", "date": "1972-02-12"},
-    {"country": "Benin", "event": "Mathieu Kérékou comes to power", "date": "1972-10-26", "category": Politics},
-    {"country": "Togo", "event": "Official inauguration of the UB", "date": "1973-11-29"},
-    {"country": "Togo", "event": "Creation of a Bible study group at the UB", "date": "1974-09-01"},
-    {"country": "Benin", "event": "Adoption of Marxism-Leninism as the state ideology", "date": "1974-11-30", "category": Politics},
-    {"country": "Benin", "event": "École Nouvelle reform", "date": "1975-06-01"},
-    {"country": "Togo", "event": "École Nouvelle reform", "date": "1975-05-06"},
-    {"country": "Benin", "event": "University of Dahomey renamed to Université Nationale du Bénin (UNB)", "date": "1975-11-30"},
-    {"country": "Togo", "event": "Creation of the Mouvement National des Étudiants et Stagiaires Togolais (MONESTO)", "date": "1977-08-01"},
-    {"country": "Benin", "event": "Creation of the Groupe Biblique des Élèves et Étudiants du Bénin (GBEEB)", "date": "1977-12-01"},
-    {"country": "Benin", "event": "Official recognition of the Communauté Islamique Universitaire du Bénin (CIUB)", "date": "1979-01-01"},
-    {"country": "Togo", "event": "Ban of religious sects in Togo", "date": "1979-02-27"},
-    {"country": "Benin", "event": "Laying of the foundation stone of the Institut de la Langue Arabe et de la Culture Islamique (ILACI)", "date": "1979-10-06"},
-    {"country": "Togo", "event": "Creation of the JEC-Universitaire (JEC-U) at the UB", "date": "1981-01-01"},
-    {"country": "Togo", "event": "Official recognition of the Groupes Bibliques Universitaires et Scolaires du Togo (GBUST)", "date": "1987-01-01"},
-    {"country": "Togo", "event": "8th Triennial Congress of the GBUAF in Lomé", "date": "1988-08-02"},
-    {"country": "Benin", "event": "National Conference", "date": "1990-02-19"},
-    {"country": "Togo", "event": "National Conference", "date": "1991-07-08"},
-    {"country": "Togo", "event": "Construction of the Centre Catholique Universitaire (CCU)", "date": "1996-01-01"},
-    {"country": "Togo", "event": "Creation of the Réseau des Anciens Jécistes in Togo", "date": "1998-01-01"},
-    {"country": "Benin", "event": "Creation of the Amicale des Intellectuels Musulmans du Bénin (AIMB)", "date": "1999-01-01"},
-    {"country": "Togo", "event": "Creation of the Université de Kara", "date": "1999-01-21"},
-    {"country": "Benin", "event": "UNB renamed Université d'Abomey-Calavi", "date": "2001-01-01"},
-    {"country": "Togo", "event": "UB renamed University of Lomé", "date": "2001-03-09"},
-    {"country": "Benin", "event": "Creation of the Université de Parakou", "date": "2001-09-18"},
-    {"country": "Togo", "event": "Death of President Eyadéma", "date": "2005-02-05"},
-    {"country": "Benin", "event": "Creation of the Réseau des Anciens de la Jeunesse Étudiante Catholique du Bénin (RAJEC)", "date": "2005-08-01"},
-    {"country": "Togo", "event": "Creation of the Association des Cadres Musulmans au Togo (ACMT)", "date": "2006-08-01"},
-    {"country": "Togo", "event": "Implementation of the LMD reform", "date": "2008-07-21"},
-    {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
-  ];
+document.addEventListener('DOMContentLoaded', function() {
+    const data = [
+        {"country": "Togo", "event": "Independance of Togo", "date": "1960-04-27", "category": "Politics"},
+        {"country": "Benin", "event": "Independance of Benin", "date": "1960-08-01", "category": "Politics"},
+        {"country": "Togo", "event": "Coup d'Etat Togo", "date": "1963-01-13", "category": Politics},
+        {"country": "Benin-Togo", "event": "Creation of the Institut d’Enseignement Supérieur du Bénin (IESB)", "date": "1965-07-14"},
+        {"country": "Togo", "event": "Gnassingbé Eyadéma comes to power", "date": "1967-04-15", "category": Politics},
+        {"country": "Benin-Togo", "event": "Expulsion of Beninese and Togolese students from the University of Dakar", "date": "1968-05-01"},
+        {"country": "Benin", "event": "Dahomean May", "date": "1969-05-01"},
+        {"country": "Benin", "event": "Creation of the Université du Dahomey in Abomey-Calavi", "date": "1970-08-21"},
+        {"country": "Togo", "event": "Creation of the Université du Bénin (UB) in Lomé", "date": "1970-09-14"},
+        {"country": "Benin", "event": "Creation of the Emmaüs Community at the Université du Dahomey", "date": "1972-01-01"},
+        {"country": "Togo", "event": "Dissolution of all youth associations except for the JRPT", "date": "1972-02-12"},
+        {"country": "Benin", "event": "Mathieu Kérékou comes to power", "date": "1972-10-26", "category": Politics},
+        {"country": "Togo", "event": "Official inauguration of the UB", "date": "1973-11-29"},
+        {"country": "Togo", "event": "Creation of a Bible study group at the UB", "date": "1974-09-01"},
+        {"country": "Benin", "event": "Adoption of Marxism-Leninism as the state ideology", "date": "1974-11-30", "category": Politics},
+        {"country": "Benin", "event": "École Nouvelle reform", "date": "1975-06-01"},
+        {"country": "Togo", "event": "École Nouvelle reform", "date": "1975-05-06"},
+        {"country": "Benin", "event": "University of Dahomey renamed to Université Nationale du Bénin (UNB)", "date": "1975-11-30"},
+        {"country": "Togo", "event": "Creation of the Mouvement National des Étudiants et Stagiaires Togolais (MONESTO)", "date": "1977-08-01"},
+        {"country": "Benin", "event": "Creation of the Groupe Biblique des Élèves et Étudiants du Bénin (GBEEB)", "date": "1977-12-01"},
+        {"country": "Benin", "event": "Official recognition of the Communauté Islamique Universitaire du Bénin (CIUB)", "date": "1979-01-01"},
+        {"country": "Togo", "event": "Ban of religious sects in Togo", "date": "1979-02-27"},
+        {"country": "Benin", "event": "Laying of the foundation stone of the Institut de la Langue Arabe et de la Culture Islamique (ILACI)", "date": "1979-10-06"},
+        {"country": "Togo", "event": "Creation of the JEC-Universitaire (JEC-U) at the UB", "date": "1981-01-01"},
+        {"country": "Togo", "event": "Official recognition of the Groupes Bibliques Universitaires et Scolaires du Togo (GBUST)", "date": "1987-01-01"},
+        {"country": "Togo", "event": "8th Triennial Congress of the GBUAF in Lomé", "date": "1988-08-02"},
+        {"country": "Benin", "event": "National Conference", "date": "1990-02-19"},
+        {"country": "Togo", "event": "National Conference", "date": "1991-07-08"},
+        {"country": "Togo", "event": "Construction of the Centre Catholique Universitaire (CCU)", "date": "1996-01-01"},
+        {"country": "Togo", "event": "Creation of the Réseau des Anciens Jécistes in Togo", "date": "1998-01-01"},
+        {"country": "Benin", "event": "Creation of the Amicale des Intellectuels Musulmans du Bénin (AIMB)", "date": "1999-01-01"},
+        {"country": "Togo", "event": "Creation of the Université de Kara", "date": "1999-01-21"},
+        {"country": "Benin", "event": "UNB renamed Université d'Abomey-Calavi", "date": "2001-01-01"},
+        {"country": "Togo", "event": "UB renamed University of Lomé", "date": "2001-03-09"},
+        {"country": "Benin", "event": "Creation of the Université de Parakou", "date": "2001-09-18"},
+        {"country": "Togo", "event": "Death of President Eyadéma", "date": "2005-02-05"},
+        {"country": "Benin", "event": "Creation of the Réseau des Anciens de la Jeunesse Étudiante Catholique du Bénin (RAJEC)", "date": "2005-08-01"},
+        {"country": "Togo", "event": "Creation of the Association des Cadres Musulmans au Togo (ACMT)", "date": "2006-08-01"},
+        {"country": "Togo", "event": "Implementation of the LMD reform", "date": "2008-07-21"},
+        {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
+    ];
 
-// Set the dimensions for the SVG
-const width = 800, height = events.length * 50 + 100;
-const margin = {top: 20, right: 20, bottom: 30, left: 100};
+    const margin = {top: 20, right: 20, bottom: 30, left: 50},
+          width = 960 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
 
-  // Create the SVG container
-  const svg = d3.select("#timeline").append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g");
+    const svg = d3.select("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // Define a color scale
-  const colorScale = d3.scaleOrdinal()
-    .domain(events.map(e => e.country).filter((v, i, a) => a.indexOf(v) === i)) // get unique countries
-    .range(d3.schemeCategory10); // use one of d3's color schemes, or define your own array of colors
+    const parseDate = d3.timeParse("%Y-%m-%d");
+    const x = d3.scaleTime().range([0, width]);
+    const y = d3.scaleBand().range([height, 0]).padding(0.1);
 
-  // Create a scale for the y-axis
-  const yScale = d3.scaleTime()
-                   .domain(d3.extent(events, d => new Date(d.date)))
-                   .range([0, height - margin.top - margin.bottom]);
+    data.forEach(d => {
+        d.date = parseDate(d.date);
+    });
 
-  // Add the y-axis to the SVG
-  svg.append("g")
-     .call(d3.axisLeft(yScale));
+    x.domain(d3.extent(data, d => d.date));
+    y.domain(data.map(d => d.country));
 
-  // Draw the vertical line for the timeline
-  svg.append("line")
-     .attr("x1", 0)
-     .attr("y1", 0)
-     .attr("x2", 0)
-     .attr("y2", height - margin.top - margin.bottom)
-     .attr("stroke", "black");
+    const xAxis = d3.axisBottom(x);
+    const yAxis = d3.axisLeft(y);
 
-  // Tooltip for event details
-  const tooltip = d3.select("body").append("div")
-                    .attr("id", "tooltip")
-                    .style("opacity", 0);
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-  // Function to update the timeline based on the selected country
-  function updateTimeline(selectedCountry) {
-    // Filter events based on the selected country
-    const filteredEvents = selectedCountry === "All" ? events : events.filter(d => d.country === selectedCountry);
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
-    // Bind the filtered events data to the circles
-    const circles = svg.selectAll("circle")
-                       .data(filteredEvents, d => d.date);
+    const eventPoints = svg.selectAll(".event")
+        .data(data)
+      .enter().append("circle")
+        .attr("class", d => `event ${d.country}`)
+        .attr("cx", d => x(d.date))
+        .attr("cy", d => y(d.country) + y.bandwidth() / 2)
+        .attr("r", 5);
 
-    // Enter new elements
-    circles.enter().append("circle")
-           .attr("cx", 0)
-           .attr("cy", d => yScale(new Date(d.date)))
-           .attr("r", 5)
-           .attr("fill", "blue")
-           .on("mouseover", function(e, d) {
-             tooltip.transition()
-                    .duration(200)
-                    .style("opacity", 0.9);
-             tooltip.html(d.event + "<br/>" + d.date)
-                    .style("left", (e.pageX) + "px")
-                    .style("top", (e.pageY - 28) + "px");
-           })
-           .on("mouseout", function() {
-             tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0);
-           });
+    d3.select("#categorySelect").on("change", function() {
+        const selectedCategory = this.value;
 
-    // Exit and remove old elements
-    circles.exit().remove();
+        const filteredData = selectedCategory === "all" ? data : data.filter(d => d.category === selectedCategory);
 
-    // Update all existing elements
-    circles.attr("cy", d => yScale(new Date(d.date)));
-  }
+        eventPoints.data(filteredData)
+            .attr("cx", d => x(d.date))
+            .attr("cy", d => y(d.country) + y.bandwidth() / 2)
+            .attr("r", 5);
+    });
 
-  // Event listener for the country filter dropdown
-  d3.select("#countryFilter").on("change", function(event) {
-    updateTimeline(this.value);
-  });
+    const zoom = d3.zoom()
+        .scaleExtent([1, 10])
+        .extent([[0, 0], [width, height]])
+        .on("zoom", zoomed);
 
-  // Initial rendering of the timeline
-  updateTimeline("All");
+    svg.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "zoom")
+        .call(zoom);
+
+    function zoomed(event) {
+        const newX = event.transform.rescaleX(x);
+        const newY = event.transform.rescaleY(y);
+
+        svg.selectAll(".x.axis").call(xAxis.scale(newX));
+        svg.selectAll(".y.axis").call(yAxis.scale(newY));
+        svg.selectAll(".event")
+            .attr("cx", d => newX(d.date))
+            .attr("cy", d => newY(d.country) + y.bandwidth() / 2);
+    }
 });
