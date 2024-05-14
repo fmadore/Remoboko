@@ -52,14 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const parseDate = d3.timeParse("%Y-%m-%d");
     const x = d3.scaleTime().range([0, width]);
-    const y = d3.scalePoint().range([height / 2, height / 2]).padding(0.5);
 
     data.forEach(d => {
         d.date = parseDate(d.date);
     });
 
     x.domain(d3.extent(data, d => d.date));
-    y.domain(data.map(d => d.country));
 
     const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y"));
 
@@ -94,6 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .text(d => d.event)
         .style("font-size", "12px")
         .style("fill", "black");
+
+    adjustTextPosition();
 
     d3.select("#categorySelect").on("change", function() {
         const selectedCategory = this.value;
@@ -144,6 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
         eventGroupEnter.select("text")
             .attr("dy", d => d.country === "Togo" ? -25 : 25)
             .text(d => d.event);
+
+        adjustTextPosition();
     });
 
     const zoom = d3.zoom()
@@ -166,5 +168,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
         svg.selectAll(".event-group")
             .attr("transform", d => `translate(${newX(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+        
+        adjustTextPosition();
+    }
+
+    function adjustTextPosition() {
+        const texts = svg.selectAll("text");
+
+        texts.each(function(d, i) {
+            const thisText = d3.select(this);
+            const thisBBox = thisText.node().getBBox();
+            let dy = thisText.attr("dy");
+
+            texts.each(function(d2, j) {
+                if (i === j) return;
+                const otherText = d3.select(this);
+                const otherBBox = otherText.node().getBBox();
+
+                if (isOverlapping(thisBBox, otherBBox)) {
+                    if (d.country === "Togo") {
+                        dy -= 15;
+                    } else {
+                        dy += 15;
+                    }
+                    thisText.attr("dy", dy);
+                }
+            });
+        });
+    }
+
+    function isOverlapping(bbox1, bbox2) {
+        return !(
+            bbox1.right < bbox2.left ||
+            bbox1.left > bbox2.right ||
+            bbox1.bottom < bbox2.top ||
+            bbox1.top > bbox2.bottom
+        );
     }
 });
