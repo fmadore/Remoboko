@@ -136,6 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("width", width)
         .attr("height", height)
         .attr("class", "zoom")
+        .style("fill", "none")
+        .style("pointer-events", "all")
         .call(zoom);
 
     function zoomed(event) {
@@ -146,6 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
         svg.selectAll(".y.axis").call(yAxis.scale(newY));
 
         svg.selectAll(".event-group")
-            .attr("transform", d => `translate(${newX(d.date)}, ${newY(d.country) + y.bandwidth() / 2})`);
+            .attr("transform", d => `translate(${newX(d.date)}, ${newY(d.country) + newY.bandwidth() / 2})`);
     }
 });
