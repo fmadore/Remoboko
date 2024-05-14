@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const parseDate = d3.timeParse("%Y-%m-%d");
     const x = d3.scaleTime().range([0, width]);
-    const y = d3.scaleBand().range([height, 0]).padding(0.1);
+    const y = d3.scalePoint().range([height / 2, height / 2]).padding(0.5);
 
     data.forEach(d => {
         d.date = parseDate(d.date);
@@ -63,31 +63,36 @@ document.addEventListener('DOMContentLoaded', function() {
     x.domain(d3.extent(data, d => d.date));
     y.domain(data.map(d => d.country));
 
-    const xAxis = d3.axisBottom(x);
-    const yAxis = d3.axisLeft(y);
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y"));
 
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + height / 2 + ")")
         .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
 
     const eventGroup = svg.selectAll(".event-group")
         .data(data)
       .enter().append("g")
         .attr("class", d => `event-group ${d.country}`)
-        .attr("transform", d => `translate(${x(d.date)}, ${y(d.country) + y.bandwidth() / 2})`);
+        .attr("transform", d => `translate(${x(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+
+    eventGroup.append("line")
+        .attr("class", "event-line")
+        .attr("y1", 0)
+        .attr("y2", d => d.country === "Togo" ? -20 : 20)
+        .attr("stroke", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4")
+        .attr("stroke-width", 2);
 
     eventGroup.append("circle")
         .attr("class", "event")
-        .attr("r", 5);
+        .attr("r", 5)
+        .attr("cy", d => d.country === "Togo" ? -20 : 20)
+        .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
     eventGroup.append("text")
         .attr("dx", 10)
-        .attr("dy", 5)
+        .attr("dy", d => d.country === "Togo" ? -25 : 25)
+        .attr("text-anchor", "start")
         .text(d => d.event)
         .style("font-size", "12px")
         .style("fill", "black");
@@ -104,26 +109,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const eventGroupEnter = eventGroupUpdate.enter().append("g")
             .attr("class", d => `event-group ${d.country}`)
-            .attr("transform", d => `translate(${x(d.date)}, ${y(d.country) + y.bandwidth() / 2})`);
+            .attr("transform", d => `translate(${x(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
+
+        eventGroupEnter.append("line")
+            .attr("class", "event-line")
+            .attr("y1", 0)
+            .attr("y2", d => d.country === "Togo" ? -20 : 20)
+            .attr("stroke", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4")
+            .attr("stroke-width", 2);
 
         eventGroupEnter.append("circle")
             .attr("class", "event")
-            .attr("r", 5);
+            .attr("r", 5)
+            .attr("cy", d => d.country === "Togo" ? -20 : 20)
+            .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
         eventGroupEnter.append("text")
             .attr("dx", 10)
-            .attr("dy", 5)
+            .attr("dy", d => d.country === "Togo" ? -25 : 25)
+            .attr("text-anchor", "start")
             .text(d => d.event)
             .style("font-size", "12px")
             .style("fill", "black");
 
         eventGroupEnter.merge(eventGroupUpdate)
-            .attr("transform", d => `translate(${x(d.date)}, ${y(d.country) + y.bandwidth() / 2})`);
+            .attr("transform", d => `translate(${x(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
 
-        eventGroupEnter.select("circle")
-            .attr("class", "event");
+        eventGroupEnter.select(".event-line")
+            .attr("y2", d => d.country === "Togo" ? -20 : 20)
+            .attr("stroke", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
+
+        eventGroupEnter.select(".event")
+            .attr("cy", d => d.country === "Togo" ? -20 : 20)
+            .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
         eventGroupEnter.select("text")
+            .attr("dy", d => d.country === "Togo" ? -25 : 25)
             .text(d => d.event);
     });
 
@@ -142,12 +163,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function zoomed(event) {
         const newX = event.transform.rescaleX(x);
-        const newY = event.transform.rescaleY(y);
 
         svg.selectAll(".x.axis").call(xAxis.scale(newX));
-        svg.selectAll(".y.axis").call(yAxis.scale(newY));
 
         svg.selectAll(".event-group")
-            .attr("transform", d => `translate(${newX(d.date)}, ${newY(d.country) + newY.bandwidth() / 2})`);
+            .attr("transform", d => `translate(${newX(d.date)}, ${d.country === "Togo" ? height / 2 - 40 : height / 2 + 40})`);
     }
 });
