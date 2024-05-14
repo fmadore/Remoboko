@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {"country": "Togo", "event": "Implementation of the LMD reform", "date": "2008-07-21"},
         {"country": "Benin", "event": "Implementation of the LMD reform", "date": "2010-06-11"},
     ];
-
+    
     const margin = {top: 20, right: 20, bottom: 30, left: 50},
           width = 960 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
@@ -88,7 +88,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const filteredData = selectedCategory === "all" ? data : data.filter(d => d.category === selectedCategory);
 
-        eventPoints.data(filteredData)
+        const circles = svg.selectAll(".event")
+            .data(filteredData, d => d.event);
+
+        circles.exit().remove();
+
+        circles.enter().append("circle")
+            .attr("class", d => `event ${d.country}`)
+            .attr("cx", d => x(d.date))
+            .attr("cy", d => y(d.country) + y.bandwidth() / 2)
+            .attr("r", 5)
+          .merge(circles)
             .attr("cx", d => x(d.date))
             .attr("cy", d => y(d.country) + y.bandwidth() / 2)
             .attr("r", 5);
