@@ -185,14 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const otherText = d3.select(this);
                 const otherBBox = otherText.node().getBBox();
 
-                while (isOverlapping(thisBBox, otherBBox)) {
+                if (isOverlapping(thisBBox, otherBBox)) {
                     if (d.country === "Togo") {
                         dy -= 15;
                     } else {
                         dy += 15;
                     }
                     thisText.attr("dy", dy);
-                    thisBBox.y = dy + height / 2;
                 }
             });
         });
