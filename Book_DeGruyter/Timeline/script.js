@@ -75,33 +75,56 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("class", "y axis")
         .call(yAxis);
 
-    const eventPoints = svg.selectAll(".event")
+    const eventGroup = svg.selectAll(".event-group")
         .data(data)
-      .enter().append("circle")
-        .attr("class", d => `event ${d.country}`)
-        .attr("cx", d => x(d.date))
-        .attr("cy", d => y(d.country) + y.bandwidth() / 2)
+      .enter().append("g")
+        .attr("class", d => `event-group ${d.country}`)
+        .attr("transform", d => `translate(${x(d.date)}, ${y(d.country) + y.bandwidth() / 2})`);
+
+    eventGroup.append("circle")
+        .attr("class", "event")
         .attr("r", 5);
+
+    eventGroup.append("text")
+        .attr("dx", 10)
+        .attr("dy", 5)
+        .text(d => d.event)
+        .style("font-size", "12px")
+        .style("fill", "black");
 
     d3.select("#categorySelect").on("change", function() {
         const selectedCategory = this.value;
 
         const filteredData = selectedCategory === "all" ? data : data.filter(d => d.category === selectedCategory);
 
-        const circles = svg.selectAll(".event")
+        const eventGroupUpdate = svg.selectAll(".event-group")
             .data(filteredData, d => d.event);
 
-        circles.exit().remove();
+        eventGroupUpdate.exit().remove();
 
-        circles.enter().append("circle")
-            .attr("class", d => `event ${d.country}`)
-            .attr("cx", d => x(d.date))
-            .attr("cy", d => y(d.country) + y.bandwidth() / 2)
-            .attr("r", 5)
-          .merge(circles)
-            .attr("cx", d => x(d.date))
-            .attr("cy", d => y(d.country) + y.bandwidth() / 2)
+        const eventGroupEnter = eventGroupUpdate.enter().append("g")
+            .attr("class", d => `event-group ${d.country}`)
+            .attr("transform", d => `translate(${x(d.date)}, ${y(d.country) + y.bandwidth() / 2})`);
+
+        eventGroupEnter.append("circle")
+            .attr("class", "event")
             .attr("r", 5);
+
+        eventGroupEnter.append("text")
+            .attr("dx", 10)
+            .attr("dy", 5)
+            .text(d => d.event)
+            .style("font-size", "12px")
+            .style("fill", "black");
+
+        eventGroupEnter.merge(eventGroupUpdate)
+            .attr("transform", d => `translate(${x(d.date)}, ${y(d.country) + y.bandwidth() / 2})`);
+
+        eventGroupEnter.select("circle")
+            .attr("class", "event");
+
+        eventGroupEnter.select("text")
+            .text(d => d.event);
     });
 
     const zoom = d3.zoom()
@@ -121,8 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         svg.selectAll(".x.axis").call(xAxis.scale(newX));
         svg.selectAll(".y.axis").call(yAxis.scale(newY));
-        svg.selectAll(".event")
-            .attr("cx", d => newX(d.date))
-            .attr("cy", d => newY(d.country) + y.bandwidth() / 2);
+
+        svg.selectAll(".event-group")
+            .attr("transform", d => `translate(${newX(d.date)}, ${newY(d.country) + y.bandwidth() / 2})`);
     }
 });
