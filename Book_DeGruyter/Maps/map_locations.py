@@ -49,7 +49,7 @@ def create_legend_html():
     """
     return '''
     <div style="position: fixed; 
-    bottom: 50px; left: 50px; width: 200px; height: 150px; 
+    bottom: 50px; left: 50px; width: 125px; height: 75px; 
     border:2px solid grey; z-index:9999; font-size:14px;
     background-color:white;
     ">&nbsp; Points of Interest <br>
