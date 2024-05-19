@@ -63,7 +63,7 @@ def create_legend_html():
     bottom: 50px; left: 50px; width: 150px; height: 90px; 
     border:2px solid grey; z-index:9999; font-size:14px;
     background-color:white; padding: 10px;
-    ">&nbsp; Points of Interest <br>
+    ">&nbsp; Points of interest <br>
     &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin <br>
     &nbsp; <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo
     </div>
