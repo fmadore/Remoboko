@@ -36,12 +36,23 @@ def calculate_map_center(locations):
     latitudes, longitudes = zip(*locations.values())
     return [np.mean(latitudes), np.mean(longitudes)]
 
-def add_markers(map_obj, locations, icon_color):
+def add_markers_with_labels(map_obj, locations, icon_color):
     """
-    Add markers to the map for the given locations.
+    Add markers to the map for the given locations with always-visible labels.
     """
     for name, coords in locations.items():
-        folium.Marker(location=coords, popup=name, icon=folium.Icon(color=icon_color)).add_to(map_obj)
+        folium.Marker(
+            location=coords,
+            icon=folium.Icon(color=icon_color),
+        ).add_to(map_obj)
+        folium.map.Marker(
+            coords,
+            icon=folium.DivIcon(
+                icon_size=(150, 36),
+                icon_anchor=(0, 0),
+                html=f'<div style="font-size: 12px; color: {icon_color};">{name}</div>',
+            )
+        ).add_to(map_obj)
 
 def create_legend_html():
     """
@@ -49,9 +60,9 @@ def create_legend_html():
     """
     return '''
     <div style="position: fixed; 
-    bottom: 50px; left: 50px; width: 125px; height: 75px; 
+    bottom: 50px; left: 50px; width: 150px; height: 90px; 
     border:2px solid grey; z-index:9999; font-size:14px;
-    background-color:white;
+    background-color:white; padding: 10px;
     ">&nbsp; Points of Interest <br>
     &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin <br>
     &nbsp; <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo
@@ -67,9 +78,9 @@ map_center = calculate_map_center(all_locations)
 # Create a base map
 m = folium.Map(location=map_center, zoom_start=8)
 
-# Add markers for Benin and Togo locations
-add_markers(m, benin_locations, 'blue')
-add_markers(m, togo_locations, 'green')
+# Add markers with labels for Benin and Togo locations
+add_markers_with_labels(m, benin_locations, 'blue')
+add_markers_with_labels(m, togo_locations, 'green')
 
 # Add the legend to the map
 legend_html = create_legend_html()
