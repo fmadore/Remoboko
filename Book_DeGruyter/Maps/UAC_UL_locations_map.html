@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_8c26f0b3ab13c596ef9b4d24eba5aa61 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+    bottom: 50px; left: 50px; width: 200px; height: 150px; 
+    border:2px solid grey; z-index:9999; font-size:14px;
+    background-color:white;
+    ">&nbsp; Points of Interest <br>
+    &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin <br>
+    &nbsp; <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo
+    </div>
+    
+    
+            <div class="folium-map" id="map_8c26f0b3ab13c596ef9b4d24eba5aa61" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_8c26f0b3ab13c596ef9b4d24eba5aa61 = L.map(
+                "map_8c26f0b3ab13c596ef9b4d24eba5aa61",
+                {
+                    center: [6.26468249306546, 1.7053693925241575],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 8,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_26693e737dde1427af39fa4ffa1b9d8f = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_26693e737dde1427af39fa4ffa1b9d8f.addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var marker_8b6b9b931779de39ed8f7de49788a779 = L.marker(
+                [6.42047, 2.34345],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_325ac1017c7708a1064767bf682a4e36 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_8b6b9b931779de39ed8f7de49788a779.setIcon(icon_325ac1017c7708a1064767bf682a4e36);
+        
+    
+        var popup_e3ced435655262a1cb5ed6d569228d86 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_81b00acd86ae379961677f7a66aa560d = $(`<div id="html_81b00acd86ae379961677f7a66aa560d" style="width: 100.0%; height: 100.0%;">Institut de Langue Arabe et de la Culture Islamique</div>`)[0];
+                popup_e3ced435655262a1cb5ed6d569228d86.setContent(html_81b00acd86ae379961677f7a66aa560d);
+            
+        
+
+        marker_8b6b9b931779de39ed8f7de49788a779.bindPopup(popup_e3ced435655262a1cb5ed6d569228d86)
+        ;
+
+        
+    
+    
+            var marker_eb12aa413422e8eaa19f5a2353ddd930 = L.marker(
+                [6.41478, 2.33682],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_62875fbcb92625d3ee41e970cb670858 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_eb12aa413422e8eaa19f5a2353ddd930.setIcon(icon_62875fbcb92625d3ee41e970cb670858);
+        
+    
+        var popup_df159442248d59c454369c6a597a926c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f445dba3a75eb99e0a96d7c9b9afd3fa = $(`<div id="html_f445dba3a75eb99e0a96d7c9b9afd3fa" style="width: 100.0%; height: 100.0%;">Oumar Ibn Khattab Mosque (ACEEMUB)</div>`)[0];
+                popup_df159442248d59c454369c6a597a926c.setContent(html_f445dba3a75eb99e0a96d7c9b9afd3fa);
+            
+        
+
+        marker_eb12aa413422e8eaa19f5a2353ddd930.bindPopup(popup_df159442248d59c454369c6a597a926c)
+        ;
+
+        
+    
+    
+            var marker_dd4dbaf922d562e4892c5e3946bebe82 = L.marker(
+                [6.42431, 2.33785],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_da6a8e60ab74e3828984d5ce39f1c79b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_dd4dbaf922d562e4892c5e3946bebe82.setIcon(icon_da6a8e60ab74e3828984d5ce39f1c79b);
+        
+    
+        var popup_fed973dd69aa300bbe6eeb521e96ecc2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_012d10c520a8e421628182f0b990ada2 = $(`<div id="html_012d10c520a8e421628182f0b990ada2" style="width: 100.0%; height: 100.0%;">Catholic Chaplaincy of the Université d’Abomey-Calavi et des grandes écoles du Bénin</div>`)[0];
+                popup_fed973dd69aa300bbe6eeb521e96ecc2.setContent(html_012d10c520a8e421628182f0b990ada2);
+            
+        
+
+        marker_dd4dbaf922d562e4892c5e3946bebe82.bindPopup(popup_fed973dd69aa300bbe6eeb521e96ecc2)
+        ;
+
+        
+    
+    
+            var marker_39b0e0fa54be10fd6d27ed1553466f66 = L.marker(
+                [6.3558124810442935, 2.421426082297773],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_fd20a9c4119fe6d9471ce7bd01bfcc67 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_39b0e0fa54be10fd6d27ed1553466f66.setIcon(icon_fd20a9c4119fe6d9471ce7bd01bfcc67);
+        
+    
+        var popup_c50495dd02860f827e84081b010d1dd7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_523f5acd7e47f9c9170f56ddc7e34d5c = $(`<div id="html_523f5acd7e47f9c9170f56ddc7e34d5c" style="width: 100.0%; height: 100.0%;">Saint-Dominique Cotonou convent</div>`)[0];
+                popup_c50495dd02860f827e84081b010d1dd7.setContent(html_523f5acd7e47f9c9170f56ddc7e34d5c);
+            
+        
+
+        marker_39b0e0fa54be10fd6d27ed1553466f66.bindPopup(popup_c50495dd02860f827e84081b010d1dd7)
+        ;
+
+        
+    
+    
+            var marker_15766121558a332e89207f4160a3fc6b = L.marker(
+                [6.3570692871919885, 2.398772893785117],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_c1a10829f22be6704230577996e68ccd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_15766121558a332e89207f4160a3fc6b.setIcon(icon_c1a10829f22be6704230577996e68ccd);
+        
+    
+        var popup_eea3db243e232713ef2d8d563f8a1b7d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1497568c8185654580e3fa9336ef5bae = $(`<div id="html_1497568c8185654580e3fa9336ef5bae" style="width: 100.0%; height: 100.0%;">Bon Pasteur Parish</div>`)[0];
+                popup_eea3db243e232713ef2d8d563f8a1b7d.setContent(html_1497568c8185654580e3fa9336ef5bae);
+            
+        
+
+        marker_15766121558a332e89207f4160a3fc6b.bindPopup(popup_eea3db243e232713ef2d8d563f8a1b7d)
+        ;
+
+        
+    
+    
+            var marker_042a844caaaca47a8b1433f817999ac0 = L.marker(
+                [6.41449, 2.3424],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_57f6d8c9f8f50da5bf9dec694e10d9d5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_042a844caaaca47a8b1433f817999ac0.setIcon(icon_57f6d8c9f8f50da5bf9dec694e10d9d5);
+        
+    
+        var popup_7e6fc2d76caca286e86ec231ecc9cc57 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9efd6ac4270b7845071cf1d3c9991d2c = $(`<div id="html_9efd6ac4270b7845071cf1d3c9991d2c" style="width: 100.0%; height: 100.0%;">Bâtiment C</div>`)[0];
+                popup_7e6fc2d76caca286e86ec231ecc9cc57.setContent(html_9efd6ac4270b7845071cf1d3c9991d2c);
+            
+        
+
+        marker_042a844caaaca47a8b1433f817999ac0.bindPopup(popup_7e6fc2d76caca286e86ec231ecc9cc57)
+        ;
+
+        
+    
+    
+            var marker_0679fa086d13aa8e10c6de8e60c3f8a6 = L.marker(
+                [6.372156046604895, 2.4974942706506096],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_01ed6fcadef68b8a72e83476e741f547 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_0679fa086d13aa8e10c6de8e60c3f8a6.setIcon(icon_01ed6fcadef68b8a72e83476e741f547);
+        
+    
+        var popup_f25219550fdc4a646a16e3fbadcc04c0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4fd169db83353ae3861cc69c2557cced = $(`<div id="html_4fd169db83353ae3861cc69c2557cced" style="width: 100.0%; height: 100.0%;">GBEEB Headquarters</div>`)[0];
+                popup_f25219550fdc4a646a16e3fbadcc04c0.setContent(html_4fd169db83353ae3861cc69c2557cced);
+            
+        
+
+        marker_0679fa086d13aa8e10c6de8e60c3f8a6.bindPopup(popup_f25219550fdc4a646a16e3fbadcc04c0)
+        ;
+
+        
+    
+    
+            var marker_7e8dc4dd397455295a90c6f31543ebd8 = L.marker(
+                [6.41389, 2.34348],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_6b986d168b0d06d03ce72206edb71a3a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_7e8dc4dd397455295a90c6f31543ebd8.setIcon(icon_6b986d168b0d06d03ce72206edb71a3a);
+        
+    
+        var popup_8e2f573e17b363416323d5e7aeb55897 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d31a03d2b289321195b8f43067925f92 = $(`<div id="html_d31a03d2b289321195b8f43067925f92" style="width: 100.0%; height: 100.0%;">Jardin U</div>`)[0];
+                popup_8e2f573e17b363416323d5e7aeb55897.setContent(html_d31a03d2b289321195b8f43067925f92);
+            
+        
+
+        marker_7e8dc4dd397455295a90c6f31543ebd8.bindPopup(popup_8e2f573e17b363416323d5e7aeb55897)
+        ;
+
+        
+    
+    
+            var marker_60c570b562a4abc5f31b0e8c7b819cbd = L.marker(
+                [6.17428, 1.21188],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_5e8d39331ed9ef962c18ececb30d96bc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_60c570b562a4abc5f31b0e8c7b819cbd.setIcon(icon_5e8d39331ed9ef962c18ececb30d96bc);
+        
+    
+        var popup_cdd5612bd3a4d2004f1d10bc6b82636b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b709ffcfa0ba014c0af64347fd02d5df = $(`<div id="html_b709ffcfa0ba014c0af64347fd02d5df" style="width: 100.0%; height: 100.0%;">Centre Catholique Universitaire (CCU)</div>`)[0];
+                popup_cdd5612bd3a4d2004f1d10bc6b82636b.setContent(html_b709ffcfa0ba014c0af64347fd02d5df);
+            
+        
+
+        marker_60c570b562a4abc5f31b0e8c7b819cbd.bindPopup(popup_cdd5612bd3a4d2004f1d10bc6b82636b)
+        ;
+
+        
+    
+    
+            var marker_079c986606bacc1f1d51c20b02ef77a8 = L.marker(
+                [6.1717, 1.21159],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_0d769cfd3bcc68ed1f6d7f05a3057d7b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_079c986606bacc1f1d51c20b02ef77a8.setIcon(icon_0d769cfd3bcc68ed1f6d7f05a3057d7b);
+        
+    
+        var popup_2d46b0c95fe550a8dc816f1946f56125 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4001f2fd86fee79b82fee5370315aa72 = $(`<div id="html_4001f2fd86fee79b82fee5370315aa72" style="width: 100.0%; height: 100.0%;">Mosquée de l'AEEMT</div>`)[0];
+                popup_2d46b0c95fe550a8dc816f1946f56125.setContent(html_4001f2fd86fee79b82fee5370315aa72);
+            
+        
+
+        marker_079c986606bacc1f1d51c20b02ef77a8.bindPopup(popup_2d46b0c95fe550a8dc816f1946f56125)
+        ;
+
+        
+    
+    
+            var marker_1fbab1fe72b859bbfb3eaa2b5f97e4a2 = L.marker(
+                [6.17349, 1.21336],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_2e35c194321970e4498f8b2e8c78ee86 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_1fbab1fe72b859bbfb3eaa2b5f97e4a2.setIcon(icon_2e35c194321970e4498f8b2e8c78ee86);
+        
+    
+        var popup_718544040e4fd16563284045aa964349 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8a3574e08d8f4bff3d8ba081129d0e06 = $(`<div id="html_8a3574e08d8f4bff3d8ba081129d0e06" style="width: 100.0%; height: 100.0%;">Amphi 600</div>`)[0];
+                popup_718544040e4fd16563284045aa964349.setContent(html_8a3574e08d8f4bff3d8ba081129d0e06);
+            
+        
+
+        marker_1fbab1fe72b859bbfb3eaa2b5f97e4a2.bindPopup(popup_718544040e4fd16563284045aa964349)
+        ;
+
+        
+    
+    
+            var marker_ebf4047a61e713df85bcc94cf3a51c10 = L.marker(
+                [6.16872, 1.21665],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_73b40c1e7c4c76bed7ea643039d02b4d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_ebf4047a61e713df85bcc94cf3a51c10.setIcon(icon_73b40c1e7c4c76bed7ea643039d02b4d);
+        
+    
+        var popup_91d0b6c1ad472a311b555262b641fb54 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b88d7cbe20d3cf7478451cfbbf927bce = $(`<div id="html_b88d7cbe20d3cf7478451cfbbf927bce" style="width: 100.0%; height: 100.0%;">Cité A</div>`)[0];
+                popup_91d0b6c1ad472a311b555262b641fb54.setContent(html_b88d7cbe20d3cf7478451cfbbf927bce);
+            
+        
+
+        marker_ebf4047a61e713df85bcc94cf3a51c10.bindPopup(popup_91d0b6c1ad472a311b555262b641fb54)
+        ;
+
+        
+    
+    
+            var marker_ba5c70a65c5ce597ac20e4de270edde6 = L.marker(
+                [6.16807, 1.21573],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_1874ead6568dcaaef3777f2f9f63d01f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_ba5c70a65c5ce597ac20e4de270edde6.setIcon(icon_1874ead6568dcaaef3777f2f9f63d01f);
+        
+    
+        var popup_a116aa4e40d5e5218654d668a38c7f0e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a55f8dcfc57f74febfe6150844ab1d45 = $(`<div id="html_a55f8dcfc57f74febfe6150844ab1d45" style="width: 100.0%; height: 100.0%;">Cité B</div>`)[0];
+                popup_a116aa4e40d5e5218654d668a38c7f0e.setContent(html_a55f8dcfc57f74febfe6150844ab1d45);
+            
+        
+
+        marker_ba5c70a65c5ce597ac20e4de270edde6.bindPopup(popup_a116aa4e40d5e5218654d668a38c7f0e)
+        ;
+
+        
+    
+    
+            var marker_919770ef2b6ed79bc309d414ea30aaf7 = L.marker(
+                [6.17522, 1.21385],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_a71ca9903c00b39b389d4777a9c299b8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_919770ef2b6ed79bc309d414ea30aaf7.setIcon(icon_a71ca9903c00b39b389d4777a9c299b8);
+        
+    
+        var popup_07296e566ccecf39b4234c7ee5c9e116 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_93cc138d32876e810145089ff749bb33 = $(`<div id="html_93cc138d32876e810145089ff749bb33" style="width: 100.0%; height: 100.0%;">Grand Amphi</div>`)[0];
+                popup_07296e566ccecf39b4234c7ee5c9e116.setContent(html_93cc138d32876e810145089ff749bb33);
+            
+        
+
+        marker_919770ef2b6ed79bc309d414ea30aaf7.bindPopup(popup_07296e566ccecf39b4234c7ee5c9e116)
+        ;
+
+        
+    
+    
+            var marker_4a4299c2e0a2d12e63df8df7284529ae = L.marker(
+                [6.17387, 1.21318],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_f58c875431ac315997f404b4c429e793 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_4a4299c2e0a2d12e63df8df7284529ae.setIcon(icon_f58c875431ac315997f404b4c429e793);
+        
+    
+        var popup_ccdb974eb035abd32745b8fff461cfcd = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ea1ac093476e313954fc45e939d63b12 = $(`<div id="html_ea1ac093476e313954fc45e939d63b12" style="width: 100.0%; height: 100.0%;">Amphi 20 ans</div>`)[0];
+                popup_ccdb974eb035abd32745b8fff461cfcd.setContent(html_ea1ac093476e313954fc45e939d63b12);
+            
+        
+
+        marker_4a4299c2e0a2d12e63df8df7284529ae.bindPopup(popup_ccdb974eb035abd32745b8fff461cfcd)
+        ;
+
+        
+    
+    
+            var marker_6586acf8716727c471b09121349a1f83 = L.marker(
+                [6.17423, 1.21462],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_9ade05684025a17150dff29634062abe = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_6586acf8716727c471b09121349a1f83.setIcon(icon_9ade05684025a17150dff29634062abe);
+        
+    
+        var popup_0f60d041c80b54d5fe9e45fdf42123ab = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7007ebd7400340c49c8b1237489abae1 = $(`<div id="html_7007ebd7400340c49c8b1237489abae1" style="width: 100.0%; height: 100.0%;">Benches near the Library</div>`)[0];
+                popup_0f60d041c80b54d5fe9e45fdf42123ab.setContent(html_7007ebd7400340c49c8b1237489abae1);
+            
+        
+
+        marker_6586acf8716727c471b09121349a1f83.bindPopup(popup_0f60d041c80b54d5fe9e45fdf42123ab)
+        ;
+
+        
+    
+    
+            var marker_5a937fd9463db2f41f51371d4facbb52 = L.marker(
+                [6.1607, 1.2175],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_cab8b5384e2446d7dbf7de286815ffd1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_5a937fd9463db2f41f51371d4facbb52.setIcon(icon_cab8b5384e2446d7dbf7de286815ffd1);
+        
+    
+        var popup_15ebbb1e838fe6902e723afe3ee03e41 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_14674542a938dfedf12d65eec6fb1220 = $(`<div id="html_14674542a938dfedf12d65eec6fb1220" style="width: 100.0%; height: 100.0%;">Quartier de Doumasséssé</div>`)[0];
+                popup_15ebbb1e838fe6902e723afe3ee03e41.setContent(html_14674542a938dfedf12d65eec6fb1220);
+            
+        
+
+        marker_5a937fd9463db2f41f51371d4facbb52.bindPopup(popup_15ebbb1e838fe6902e723afe3ee03e41)
+        ;
+
+        
+    
+    
+            var marker_260c6b59e3335d9c02479b75ad3860cd = L.marker(
+                [6.148969553402552, 1.2346652112254952],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_a357465f1fd7678d4263af067376d5a0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_260c6b59e3335d9c02479b75ad3860cd.setIcon(icon_a357465f1fd7678d4263af067376d5a0);
+        
+    
+        var popup_101bf8fbb3eae5c594cdef2dbd0d3d5b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5e8b256836efe1e904ddd16961e8beb9 = $(`<div id="html_5e8b256836efe1e904ddd16961e8beb9" style="width: 100.0%; height: 100.0%;">Centre Saint Jean Lomé (University Parish)</div>`)[0];
+                popup_101bf8fbb3eae5c594cdef2dbd0d3d5b.setContent(html_5e8b256836efe1e904ddd16961e8beb9);
+            
+        
+
+        marker_260c6b59e3335d9c02479b75ad3860cd.bindPopup(popup_101bf8fbb3eae5c594cdef2dbd0d3d5b)
+        ;
+
+        
+    
+    
+            var marker_38d1ea2bf30fdd52221b35409e6988f3 = L.marker(
+                [6.16674, 1.2173],
+                {}
+            ).addTo(map_8c26f0b3ab13c596ef9b4d24eba5aa61);
+        
+    
+            var icon_5fb8423110254d0ab35fe333b8033cc0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_38d1ea2bf30fdd52221b35409e6988f3.setIcon(icon_5fb8423110254d0ab35fe333b8033cc0);
+        
+    
+        var popup_a32bb66079975739ffa42dd55e624546 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5900b9b10bd82f297374125911adff4f = $(`<div id="html_5900b9b10bd82f297374125911adff4f" style="width: 100.0%; height: 100.0%;">Village du Bénin</div>`)[0];
+                popup_a32bb66079975739ffa42dd55e624546.setContent(html_5900b9b10bd82f297374125911adff4f);
+            
+        
+
+        marker_38d1ea2bf30fdd52221b35409e6988f3.bindPopup(popup_a32bb66079975739ffa42dd55e624546)
+        ;
+
+        
+    
+</script>
+</html>
