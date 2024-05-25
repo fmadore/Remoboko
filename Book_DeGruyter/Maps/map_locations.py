@@ -13,6 +13,7 @@ benin_locations = {
     'GBEEB Headquarters': (6.372156046604895, 2.4974942706506096),
     'Père Aupiais College': (6.388846482524025, 2.3474732769556033),
     'Jardin U': (6.41389, 2.34348),
+    'Lycée Béhanzin': (6.479698137720823, 2.6149709960150442),
 }
 
 # Define the locations for Togo
