@@ -28,6 +28,7 @@ togo_locations = {
     'Quartier de Doumasséssé': (6.1607, 1.2175),
     'Centre Saint Jean Lomé (University Parish)': (6.148969553402552, 1.2346652112254952),
     'Village du Bénin': (6.16674, 1.21730),
+    'Lycée de Tokoin': (6.151229331563282, 1.2280969671765716),
 }
 
 def calculate_map_center(locations):
