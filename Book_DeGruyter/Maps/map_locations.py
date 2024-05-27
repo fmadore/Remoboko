@@ -15,6 +15,7 @@ benin_locations = {
     'Jardin U': (6.41389, 2.34348),
     'Lycée Béhanzin': (6.479698137720823, 2.6149709960150442),
     'University of Parakou': (9.335122564235926, 2.6466825672064243),
+    'Zogbo Parish': (6.39321349885147, 2.3915586634006054),
 }
 
 # Define the locations for Togo
