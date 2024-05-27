@@ -37,8 +37,8 @@ togo_locations = {
 
 # Define the locations for West Africa
 west_africa_locations = {
-    'Université Félix Houphouët-Boigny, Côte d\'Ivoire': (5.345317, -3.979144),
-    'Cheikh Anta Diop University': (14.692778, -17.451389),
+    'Université Félix Houphouët-Boigny': (5.345626890265415, -3.9862531136424355),
+    'Cheikh Anta Diop University': (14.692546490588276, -17.461838944294787),
 }
 
 def calculate_map_center(locations):
