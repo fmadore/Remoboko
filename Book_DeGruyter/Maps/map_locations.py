@@ -14,6 +14,7 @@ benin_locations = {
     'Père Aupiais College': (6.388846482524025, 2.3474732769556033),
     'Jardin U': (6.41389, 2.34348),
     'Lycée Béhanzin': (6.479698137720823, 2.6149709960150442),
+    'University of Parakou': (9.335122564235926, 2.6466825672064243),
 }
 
 # Define the locations for Togo
@@ -30,6 +31,7 @@ togo_locations = {
     'Centre Saint Jean Lomé (University Parish)': (6.148969553402552, 1.2346652112254952),
     'Village du Bénin': (6.16674, 1.21730),
     'Lycée de Tokoin': (6.151229331563282, 1.2280969671765716),
+    'University of Kara': (9.53171555198078, 1.2075454248806252),
 }
 
 def calculate_map_center(locations):
