@@ -43,6 +43,10 @@ except UnicodeDecodeError:
 # Initialize lemmatizer
 lemmatizer = WordNetLemmatizer()
 
+# Exception lists
+english_exceptions = {'vincent'}  # Add English exceptions here
+french_exceptions = {'vincent'}  # Add French exceptions here
+
 # Function to preprocess text
 def preprocess_text(text, language):
     if text is None:
@@ -50,12 +54,12 @@ def preprocess_text(text, language):
     # Tokenize the text
     tokens = word_tokenize(text.lower())
     
-    # Remove stop words and lemmatize
+    # Remove stop words, exceptions, and lemmatize
     if language == 'English':
-        stop_words = set(stopwords.words('english'))
+        stop_words = set(stopwords.words('english')).union(english_exceptions)
         processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
     elif language == 'French':
-        stop_words = set(stopwords.words('french'))
+        stop_words = set(stopwords.words('french')).union(french_exceptions)
         processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
     
     return ' '.join(processed_tokens)
