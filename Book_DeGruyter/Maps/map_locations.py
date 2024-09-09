@@ -51,7 +51,7 @@ def calculate_map_center(locations):
 
 def add_markers_with_labels(map_obj, locations, icon_color):
     """
-    Add markers to the map for the given locations with always-visible labels on white backgrounds.
+    Add markers to the map for the given locations with toggleable labels.
     """
     for name, coords in locations.items():
         folium.Marker(
@@ -63,13 +63,13 @@ def add_markers_with_labels(map_obj, locations, icon_color):
             icon=folium.DivIcon(
                 icon_size=(150, 36),
                 icon_anchor=(0, 0),
-                html=f'<div style="background-color: white; padding: 2px; border: 1px solid {icon_color}; border-radius: 3px; font-size: 12px; color: {icon_color};">{name}</div>',
+                html=f'<div class="label-container" style="display: none; background-color: white; padding: 2px; border: 1px solid {icon_color}; border-radius: 3px; font-size: 12px; color: {icon_color};">{name}</div>',
             )
         ).add_to(map_obj)
 
 def create_legend_html():
     """
-    Create the HTML for the map legend with white boxes for each item.
+    Create the HTML for the map legend with white boxes for each item and a toggle button.
     """
     return '''
     <div style="position: fixed; 
@@ -87,8 +87,31 @@ def create_legend_html():
     <div style="background-color: white; margin: 2px; padding: 2px;">
         <i class="fa fa-map-marker" style="color:red"></i>&nbsp; West Africa
     </div>
+    <div style="margin-top: 10px;">
+        <button onclick="toggleLabels()">Toggle Labels</button>
+    </div>
     </div>
     '''
+
+def add_toggle_script(map_obj):
+    """
+    Add JavaScript to handle label toggling.
+    """
+    toggle_script = """
+    <script>
+    function toggleLabels() {
+        var labels = document.getElementsByClassName('label-container');
+        for (var i = 0; i < labels.length; i++) {
+            if (labels[i].style.display === 'none') {
+                labels[i].style.display = 'block';
+            } else {
+                labels[i].style.display = 'none';
+            }
+        }
+    }
+    </script>
+    """
+    map_obj.get_root().html.add_child(Element(toggle_script))
 
 # Combine all locations
 all_locations = {**benin_locations, **togo_locations, **west_africa_locations}
@@ -107,6 +130,9 @@ add_markers_with_labels(m, west_africa_locations, 'red')
 # Add the legend to the map
 legend_html = create_legend_html()
 m.get_root().html.add_child(Element(legend_html))
+
+# Add the toggle script to the map
+add_toggle_script(m)
 
 # Save the map to an HTML file in the same folder as the script
 script_dir = os.path.dirname(os.path.abspath(__file__))

@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_3670eb7daac72532957282e74ac2a2c8 {
+                #map_6bb48084c80fef9d69a0c24eadf11917 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -54,17 +54,34 @@
     <div style="background-color: white; margin: 2px; padding: 2px;">
         <i class="fa fa-map-marker" style="color:red"></i>&nbsp; West Africa
     </div>
+    <div style="margin-top: 10px;">
+        <button onclick="toggleLabels()">Toggle Labels</button>
+    </div>
     </div>
     
     
-            <div class="folium-map" id="map_3670eb7daac72532957282e74ac2a2c8" ></div>
+    <script>
+    function toggleLabels() {
+        var labels = document.getElementsByClassName('label-container');
+        for (var i = 0; i < labels.length; i++) {
+            if (labels[i].style.display === 'none') {
+                labels[i].style.display = 'block';
+            } else {
+                labels[i].style.display = 'none';
+            }
+        }
+    }
+    </script>
+    
+    
+            <div class="folium-map" id="map_6bb48084c80fef9d69a0c24eadf11917" ></div>
         
 </body>
 <script>
     
     
-            var map_3670eb7daac72532957282e74ac2a2c8 = L.map(
-                "map_3670eb7daac72532957282e74ac2a2c8",
+            var map_6bb48084c80fef9d69a0c24eadf11917 = L.map(
+                "map_6bb48084c80fef9d69a0c24eadf11917",
                 {
                     center: [6.790720867272362, 0.866228365238394],
                     crs: L.CRS.EPSG3857,
@@ -78,607 +95,607 @@
 
         
     
-            var tile_layer_d4bf1a08bc1ab7375f82490660425736 = L.tileLayer(
+            var tile_layer_e94f993abbcff83a4094558953fe132c = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_d4bf1a08bc1ab7375f82490660425736.addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            tile_layer_e94f993abbcff83a4094558953fe132c.addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var marker_9a5a805e03f04438369b2cb3d6b6064d = L.marker(
+            var marker_81f626a2cefe71145287b95298266dbd = L.marker(
                 [6.42047, 2.34345],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_9c1afbc404486b49eb528645bfe58667 = L.AwesomeMarkers.icon(
+            var icon_3154a073faf4a4049596e8f30c0bc971 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_9a5a805e03f04438369b2cb3d6b6064d.setIcon(icon_9c1afbc404486b49eb528645bfe58667);
+            marker_81f626a2cefe71145287b95298266dbd.setIcon(icon_3154a073faf4a4049596e8f30c0bc971);
         
     
-            var marker_b6dd923025c909d465c391ed7c01db43 = L.marker(
+            var marker_b5c21b5a9fc08504ea38bf539b3f9001 = L.marker(
                 [6.42047, 2.34345],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_d7b438dd797d0b35aed4a126b4f208f5 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eInstitut de Langue Arabe et de la Culture Islamique\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_b6dd923025c909d465c391ed7c01db43.setIcon(div_icon_d7b438dd797d0b35aed4a126b4f208f5);
+            var div_icon_9061b8c3c5e26b527c4ce31e7c515519 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eInstitut de Langue Arabe et de la Culture Islamique\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_b5c21b5a9fc08504ea38bf539b3f9001.setIcon(div_icon_9061b8c3c5e26b527c4ce31e7c515519);
         
     
-            var marker_2ae959f5bb35bbd96e1a924e9f821a2e = L.marker(
+            var marker_7617d1d05027a40a49c48e3e871b0f65 = L.marker(
                 [6.41478, 2.33682],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_df1da05704d66bef53caf66038a2d69a = L.AwesomeMarkers.icon(
+            var icon_dcfb8f0f8c6c89e7893137c9c7b6603b = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_2ae959f5bb35bbd96e1a924e9f821a2e.setIcon(icon_df1da05704d66bef53caf66038a2d69a);
+            marker_7617d1d05027a40a49c48e3e871b0f65.setIcon(icon_dcfb8f0f8c6c89e7893137c9c7b6603b);
         
     
-            var marker_cceba269981e2ed636ef5c7d5a21c14f = L.marker(
+            var marker_e2a70b6c0574fc0d225aa5adbc68cdd1 = L.marker(
                 [6.41478, 2.33682],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_f260c84a8ea915e3f61389fd2a08cd20 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eOumar Ibn Khattab Mosque (ACEEMUB)\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_cceba269981e2ed636ef5c7d5a21c14f.setIcon(div_icon_f260c84a8ea915e3f61389fd2a08cd20);
+            var div_icon_7bb33542f6b75e900653895877e7aa0b = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eOumar Ibn Khattab Mosque (ACEEMUB)\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_e2a70b6c0574fc0d225aa5adbc68cdd1.setIcon(div_icon_7bb33542f6b75e900653895877e7aa0b);
         
     
-            var marker_1b3254c746966ce37792dc621e434803 = L.marker(
+            var marker_11920345e9864e52e28e9e9b018f6376 = L.marker(
                 [6.42431, 2.33785],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_1810ff0c0dac5378ed7000e6a2add8f1 = L.AwesomeMarkers.icon(
+            var icon_78707328243ff05589393d928acb4a3a = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_1b3254c746966ce37792dc621e434803.setIcon(icon_1810ff0c0dac5378ed7000e6a2add8f1);
+            marker_11920345e9864e52e28e9e9b018f6376.setIcon(icon_78707328243ff05589393d928acb4a3a);
         
     
-            var marker_1d4a4fbc4cb9269a6feae4bf0ea19c10 = L.marker(
+            var marker_b326ea8a04561427ce91f547926ceec1 = L.marker(
                 [6.42431, 2.33785],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_c503e4b37518fb6564010f3b170ea3e6 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eCatholic Chaplaincy of the Universit\u00e9 d\u2019Abomey-Calavi et des grandes \u00e9coles du B\u00e9nin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_1d4a4fbc4cb9269a6feae4bf0ea19c10.setIcon(div_icon_c503e4b37518fb6564010f3b170ea3e6);
+            var div_icon_081ce7031abc94a1b4257b93b450db8a = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eCatholic Chaplaincy of the Universit\u00e9 d\u2019Abomey-Calavi et des grandes \u00e9coles du B\u00e9nin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_b326ea8a04561427ce91f547926ceec1.setIcon(div_icon_081ce7031abc94a1b4257b93b450db8a);
         
     
-            var marker_72aab14110e0f1f7b5cb7ba2ba3324c0 = L.marker(
+            var marker_7951f2f13f6f7732aa1ad3a4957120c1 = L.marker(
                 [6.3558124810442935, 2.421426082297773],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_f98608a78ef6643539891532423d4eb9 = L.AwesomeMarkers.icon(
+            var icon_8cb8b242dffe634cd6a17c116a8f6460 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_72aab14110e0f1f7b5cb7ba2ba3324c0.setIcon(icon_f98608a78ef6643539891532423d4eb9);
+            marker_7951f2f13f6f7732aa1ad3a4957120c1.setIcon(icon_8cb8b242dffe634cd6a17c116a8f6460);
         
     
-            var marker_8ae28ea0e6bfafa002b21b3919dcdaf1 = L.marker(
+            var marker_37a7c8feb3a0613f3742f9fdc35eeb72 = L.marker(
                 [6.3558124810442935, 2.421426082297773],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_fc6dca66ecec7ffc4777013c45f43176 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eSaint-Dominique Cotonou convent\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_8ae28ea0e6bfafa002b21b3919dcdaf1.setIcon(div_icon_fc6dca66ecec7ffc4777013c45f43176);
+            var div_icon_c72742e3734b47f0501d4b52322e8517 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eSaint-Dominique Cotonou convent\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_37a7c8feb3a0613f3742f9fdc35eeb72.setIcon(div_icon_c72742e3734b47f0501d4b52322e8517);
         
     
-            var marker_456319790d9e2f2ea30b3a5e1f1a986b = L.marker(
+            var marker_abc75db58bb76a03d9c75d9db5598aa1 = L.marker(
                 [6.3570692871919885, 2.398772893785117],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_0a8ca14be4cfe45c1af0115dcb9d305b = L.AwesomeMarkers.icon(
+            var icon_7cc9a024dc6a3e961c083ac0fc1d54d5 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_456319790d9e2f2ea30b3a5e1f1a986b.setIcon(icon_0a8ca14be4cfe45c1af0115dcb9d305b);
+            marker_abc75db58bb76a03d9c75d9db5598aa1.setIcon(icon_7cc9a024dc6a3e961c083ac0fc1d54d5);
         
     
-            var marker_ac7e876e1803a1bf4ffce73c5e7cac41 = L.marker(
+            var marker_75f4ebf9fa3979ff0547e4488af866f5 = L.marker(
                 [6.3570692871919885, 2.398772893785117],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_a9001a7b7a58f9098661b969d6f0f428 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eBon Pasteur parish\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_ac7e876e1803a1bf4ffce73c5e7cac41.setIcon(div_icon_a9001a7b7a58f9098661b969d6f0f428);
+            var div_icon_6a3c59dbcd71929bb166145ae021a93b = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eBon Pasteur parish\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_75f4ebf9fa3979ff0547e4488af866f5.setIcon(div_icon_6a3c59dbcd71929bb166145ae021a93b);
         
     
-            var marker_d98e66fb4c1b4c6d5bcc8daa7a6a6c15 = L.marker(
+            var marker_182ec8cfe17455143b0a650ab729a3f4 = L.marker(
                 [6.41449, 2.3424],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_5c6c407510aa4049d8b5288e59734953 = L.AwesomeMarkers.icon(
+            var icon_47085c27d6f397f71db4dc4a87b09912 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_d98e66fb4c1b4c6d5bcc8daa7a6a6c15.setIcon(icon_5c6c407510aa4049d8b5288e59734953);
+            marker_182ec8cfe17455143b0a650ab729a3f4.setIcon(icon_47085c27d6f397f71db4dc4a87b09912);
         
     
-            var marker_9777094cdf3c2b89966afa1647f04d8a = L.marker(
+            var marker_aee04aceba3ababd2025d76967c38114 = L.marker(
                 [6.41449, 2.3424],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_7f07db758b0e67f666c009d1da6a4e3d = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eB\u00e2timent C\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_9777094cdf3c2b89966afa1647f04d8a.setIcon(div_icon_7f07db758b0e67f666c009d1da6a4e3d);
+            var div_icon_207fd291391a52cb4c0cf0e7900a0e0a = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eB\u00e2timent C\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_aee04aceba3ababd2025d76967c38114.setIcon(div_icon_207fd291391a52cb4c0cf0e7900a0e0a);
         
     
-            var marker_5235b61af566009a02f15615cec02b3d = L.marker(
+            var marker_d6074ca424f81149eb97bc01f2cc556c = L.marker(
                 [6.372156046604895, 2.4974942706506096],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_d1b4e664eb722b51522bbb0dcb459f4e = L.AwesomeMarkers.icon(
+            var icon_b3d3fcd02a1a539de50b4f11b32f0e2e = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_5235b61af566009a02f15615cec02b3d.setIcon(icon_d1b4e664eb722b51522bbb0dcb459f4e);
+            marker_d6074ca424f81149eb97bc01f2cc556c.setIcon(icon_b3d3fcd02a1a539de50b4f11b32f0e2e);
         
     
-            var marker_dd04c44742a2cae39b60d2a27d6d8fec = L.marker(
+            var marker_e86fe7c4987fc9930b1c20e55331eccf = L.marker(
                 [6.372156046604895, 2.4974942706506096],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_1c7a4fb8bfcb4317bcc7c2d06e245d60 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eGBEEB Headquarters\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_dd04c44742a2cae39b60d2a27d6d8fec.setIcon(div_icon_1c7a4fb8bfcb4317bcc7c2d06e245d60);
+            var div_icon_597e1872695be2d0f4de4672a18db130 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eGBEEB Headquarters\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_e86fe7c4987fc9930b1c20e55331eccf.setIcon(div_icon_597e1872695be2d0f4de4672a18db130);
         
     
-            var marker_72f3726982a1044163fc19f4f749661c = L.marker(
+            var marker_6eda6b2df88f7003bd674d7541446a6e = L.marker(
                 [6.388846482524025, 2.3474732769556033],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_6f34e421dfb2c89e54a393619e4748ca = L.AwesomeMarkers.icon(
+            var icon_0df8f9ad9f7b51a5340e4b4fee23dafc = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_72f3726982a1044163fc19f4f749661c.setIcon(icon_6f34e421dfb2c89e54a393619e4748ca);
+            marker_6eda6b2df88f7003bd674d7541446a6e.setIcon(icon_0df8f9ad9f7b51a5340e4b4fee23dafc);
         
     
-            var marker_a4bb3b03ceb09d4594483a69a140305e = L.marker(
+            var marker_0f446857368b0d2f9f193cece7dee4ee = L.marker(
                 [6.388846482524025, 2.3474732769556033],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_2cb4d1d7e49fde4fc17f4222a143f15b = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eP\u00e8re Aupiais College\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_a4bb3b03ceb09d4594483a69a140305e.setIcon(div_icon_2cb4d1d7e49fde4fc17f4222a143f15b);
+            var div_icon_81350e1616c1de5e010643e3ae439197 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eP\u00e8re Aupiais College\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_0f446857368b0d2f9f193cece7dee4ee.setIcon(div_icon_81350e1616c1de5e010643e3ae439197);
         
     
-            var marker_4defbb3ec000d5855ce46c0deac8ac24 = L.marker(
+            var marker_f883f545a9aa293959a238247df28cae = L.marker(
                 [6.41389, 2.34348],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_3ec2029081fdc06df0fe4c9bf988fefc = L.AwesomeMarkers.icon(
+            var icon_6e99e6cbdc584cfeb1e8ba13f4397e3a = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_4defbb3ec000d5855ce46c0deac8ac24.setIcon(icon_3ec2029081fdc06df0fe4c9bf988fefc);
+            marker_f883f545a9aa293959a238247df28cae.setIcon(icon_6e99e6cbdc584cfeb1e8ba13f4397e3a);
         
     
-            var marker_762667488304ce5082ed9c25c20f8fbf = L.marker(
+            var marker_ec3d548ae279b043f7f75922f06bac33 = L.marker(
                 [6.41389, 2.34348],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_b9b746db39a68531f9c995768176d558 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eJardin U\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_762667488304ce5082ed9c25c20f8fbf.setIcon(div_icon_b9b746db39a68531f9c995768176d558);
+            var div_icon_3e235ecc8ffe51c20fd686b46783ba6f = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eJardin U\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_ec3d548ae279b043f7f75922f06bac33.setIcon(div_icon_3e235ecc8ffe51c20fd686b46783ba6f);
         
     
-            var marker_b2cb201b3ba78fbc95be25d65c46f714 = L.marker(
+            var marker_da4807b98075b0fc980a87c57189d64e = L.marker(
                 [6.479698137720823, 2.6149709960150442],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_74acd0b804930fdac0d3df71b7467d8c = L.AwesomeMarkers.icon(
+            var icon_99dc00e1cc8882e446722c574bb7c106 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_b2cb201b3ba78fbc95be25d65c46f714.setIcon(icon_74acd0b804930fdac0d3df71b7467d8c);
+            marker_da4807b98075b0fc980a87c57189d64e.setIcon(icon_99dc00e1cc8882e446722c574bb7c106);
         
     
-            var marker_61b8621b60660f353f5363be2dded577 = L.marker(
+            var marker_8b7bb9645f3732a4cd2f1e24884abd12 = L.marker(
                 [6.479698137720823, 2.6149709960150442],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_fd33f2759bee8fb3b45eeb8bce5c1ec0 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eLyc\u00e9e B\u00e9hanzin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_61b8621b60660f353f5363be2dded577.setIcon(div_icon_fd33f2759bee8fb3b45eeb8bce5c1ec0);
+            var div_icon_89625897ec16627c88b64e437938c2d2 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eLyc\u00e9e B\u00e9hanzin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_8b7bb9645f3732a4cd2f1e24884abd12.setIcon(div_icon_89625897ec16627c88b64e437938c2d2);
         
     
-            var marker_a57d335bf438f74168a4a0c54610a62c = L.marker(
+            var marker_cbf3550b2ffd1e8c749276082022ac7c = L.marker(
                 [9.337619664615962, 2.644594132986409],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_de75d2660c2ccc77509e39d18548f1fc = L.AwesomeMarkers.icon(
+            var icon_dad0c2b654b2b80993771c911d495e48 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_a57d335bf438f74168a4a0c54610a62c.setIcon(icon_de75d2660c2ccc77509e39d18548f1fc);
+            marker_cbf3550b2ffd1e8c749276082022ac7c.setIcon(icon_dad0c2b654b2b80993771c911d495e48);
         
     
-            var marker_ae67088b1ef6d6e41510a507527a9b39 = L.marker(
+            var marker_c70a28a79801ce06ec77d34b53c0bf9f = L.marker(
                 [9.337619664615962, 2.644594132986409],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_b1b1bb3a41158c22f1a166b0e2ebe41b = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eUniversity of Parakou\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_ae67088b1ef6d6e41510a507527a9b39.setIcon(div_icon_b1b1bb3a41158c22f1a166b0e2ebe41b);
+            var div_icon_ffce8ca0f8717e328df4238ca19e142e = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eUniversity of Parakou\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_c70a28a79801ce06ec77d34b53c0bf9f.setIcon(div_icon_ffce8ca0f8717e328df4238ca19e142e);
         
     
-            var marker_f6ecc9904b8136dbbc9c67721c21a9b7 = L.marker(
+            var marker_012215fbc7aa032c350ca3c317b3a801 = L.marker(
                 [6.39321349885147, 2.3915586634006054],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_ae54b81bc4457fb0b9285c6a998c244d = L.AwesomeMarkers.icon(
+            var icon_d5ac6897a0ff9fb1871beb7dd60fec94 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_f6ecc9904b8136dbbc9c67721c21a9b7.setIcon(icon_ae54b81bc4457fb0b9285c6a998c244d);
+            marker_012215fbc7aa032c350ca3c317b3a801.setIcon(icon_d5ac6897a0ff9fb1871beb7dd60fec94);
         
     
-            var marker_5f4b5d2b6c4e4541e248b6d7291c44f2 = L.marker(
+            var marker_6c28a4b42ce6e831b5a01415d7b41176 = L.marker(
                 [6.39321349885147, 2.3915586634006054],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_c7b957fc57a1a2daea3580df558d7061 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eZogbo parish\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_5f4b5d2b6c4e4541e248b6d7291c44f2.setIcon(div_icon_c7b957fc57a1a2daea3580df558d7061);
+            var div_icon_25c0ef8c480b03d8253ed7bce0e5ebfa = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid blue; border-radius: 3px; font-size: 12px; color: blue;\"\u003eZogbo parish\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_6c28a4b42ce6e831b5a01415d7b41176.setIcon(div_icon_25c0ef8c480b03d8253ed7bce0e5ebfa);
         
     
-            var marker_a9977f7a639355753bf04c8a4d51f751 = L.marker(
+            var marker_c8330ae7368fe09ef67a101c99aa2ba5 = L.marker(
                 [6.17428, 1.21188],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_30ac54243729c81dde099d932f7a674e = L.AwesomeMarkers.icon(
+            var icon_48c2d0723727edaee0986bb3ed551a54 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_a9977f7a639355753bf04c8a4d51f751.setIcon(icon_30ac54243729c81dde099d932f7a674e);
+            marker_c8330ae7368fe09ef67a101c99aa2ba5.setIcon(icon_48c2d0723727edaee0986bb3ed551a54);
         
     
-            var marker_d1a50b3a453ec4a6af742a99d960c623 = L.marker(
+            var marker_ed9cd1d9b0851819bcb2c4e380635c24 = L.marker(
                 [6.17428, 1.21188],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_5c911f9388af7f61110de014c5bbcc70 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCentre Catholique Universitaire (CCU)\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_d1a50b3a453ec4a6af742a99d960c623.setIcon(div_icon_5c911f9388af7f61110de014c5bbcc70);
+            var div_icon_8c9e0b94b82ddff35704c83a723db433 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCentre Catholique Universitaire (CCU)\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_ed9cd1d9b0851819bcb2c4e380635c24.setIcon(div_icon_8c9e0b94b82ddff35704c83a723db433);
         
     
-            var marker_1e22af7d3fd9ea5d66dfa5bbb95cf21c = L.marker(
+            var marker_19f9870ebac197d32b6ed9a5ee500948 = L.marker(
                 [6.1717, 1.21159],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_c43ec9fbb96aaa97a32896fa4ce64a28 = L.AwesomeMarkers.icon(
+            var icon_68606f43a0def6909812fcd303facc68 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_1e22af7d3fd9ea5d66dfa5bbb95cf21c.setIcon(icon_c43ec9fbb96aaa97a32896fa4ce64a28);
+            marker_19f9870ebac197d32b6ed9a5ee500948.setIcon(icon_68606f43a0def6909812fcd303facc68);
         
     
-            var marker_79642b4e8cce8cf99d6c79285a7cf3a8 = L.marker(
+            var marker_1005d0c7b2293839fa56aba3047930f1 = L.marker(
                 [6.1717, 1.21159],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_72b272ea693e3e84918660ca3ef5846c = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eMosqu\u00e9e de l\u0027AEEMT\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_79642b4e8cce8cf99d6c79285a7cf3a8.setIcon(div_icon_72b272ea693e3e84918660ca3ef5846c);
+            var div_icon_310def95a19ae7016d3d534e9a41f81e = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eMosqu\u00e9e de l\u0027AEEMT\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_1005d0c7b2293839fa56aba3047930f1.setIcon(div_icon_310def95a19ae7016d3d534e9a41f81e);
         
     
-            var marker_1271cf5fde64a5f86c12ec1f53cea4e6 = L.marker(
+            var marker_8355775bb2560854fe7c1b7c4616289f = L.marker(
                 [6.17349, 1.21336],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_c69ad6a24e5361c88d186c86d36a532e = L.AwesomeMarkers.icon(
+            var icon_ee15f56175dd779e121c5463c9fdcdd6 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_1271cf5fde64a5f86c12ec1f53cea4e6.setIcon(icon_c69ad6a24e5361c88d186c86d36a532e);
+            marker_8355775bb2560854fe7c1b7c4616289f.setIcon(icon_ee15f56175dd779e121c5463c9fdcdd6);
         
     
-            var marker_a6559def0e88cff67eeaefb764464a0e = L.marker(
+            var marker_4644263691965b423afbbe866b8b63f3 = L.marker(
                 [6.17349, 1.21336],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_73c41e3ae2491effc2a81b0f18471c52 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eAmphi 600\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_a6559def0e88cff67eeaefb764464a0e.setIcon(div_icon_73c41e3ae2491effc2a81b0f18471c52);
+            var div_icon_d46f64738b0e246951849acb3012487c = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eAmphi 600\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_4644263691965b423afbbe866b8b63f3.setIcon(div_icon_d46f64738b0e246951849acb3012487c);
         
     
-            var marker_cb1c4e4fe27a990e8eb50ba227207c12 = L.marker(
+            var marker_cd59fb821e976570beec95e3aad14c16 = L.marker(
                 [6.16872, 1.21665],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_14789ee8ae458dfbb741cddac2efca15 = L.AwesomeMarkers.icon(
+            var icon_43e8615808fef21b4b2d77adb700af48 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_cb1c4e4fe27a990e8eb50ba227207c12.setIcon(icon_14789ee8ae458dfbb741cddac2efca15);
+            marker_cd59fb821e976570beec95e3aad14c16.setIcon(icon_43e8615808fef21b4b2d77adb700af48);
         
     
-            var marker_9ae868003841b9fdfe896dc6b0a8af1b = L.marker(
+            var marker_2008d103468c721661ad3f3b627c19aa = L.marker(
                 [6.16872, 1.21665],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_0c59e31d571e72735580c29a8b766b1b = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCit\u00e9 A\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_9ae868003841b9fdfe896dc6b0a8af1b.setIcon(div_icon_0c59e31d571e72735580c29a8b766b1b);
+            var div_icon_936d0b8947223babffd29db864aabe47 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCit\u00e9 A\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_2008d103468c721661ad3f3b627c19aa.setIcon(div_icon_936d0b8947223babffd29db864aabe47);
         
     
-            var marker_156f1ebf27369c148e7366d4ad45387c = L.marker(
+            var marker_6a0bc99e8042c0bcf604297a6425aca2 = L.marker(
                 [6.16807, 1.21573],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_9b082ca5b9b814a686a463e6da89964f = L.AwesomeMarkers.icon(
+            var icon_c28a1ff5630ee5d551e9c2707348f7fc = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_156f1ebf27369c148e7366d4ad45387c.setIcon(icon_9b082ca5b9b814a686a463e6da89964f);
+            marker_6a0bc99e8042c0bcf604297a6425aca2.setIcon(icon_c28a1ff5630ee5d551e9c2707348f7fc);
         
     
-            var marker_e9289d81dee80ae1a7e390e5dae70400 = L.marker(
+            var marker_1599d24b58329b92ad5ec2378c59809f = L.marker(
                 [6.16807, 1.21573],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_ed8575dd3707198419f4f026b6aee41c = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCit\u00e9 B\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_e9289d81dee80ae1a7e390e5dae70400.setIcon(div_icon_ed8575dd3707198419f4f026b6aee41c);
+            var div_icon_f4973653622327537b03aefe02ab94f9 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCit\u00e9 B\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_1599d24b58329b92ad5ec2378c59809f.setIcon(div_icon_f4973653622327537b03aefe02ab94f9);
         
     
-            var marker_15ddf1af6d7ac5d9960bdf938fcf6c7c = L.marker(
+            var marker_8a26422e09fbdf076822341f97f6a6c6 = L.marker(
                 [6.17522, 1.21385],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_934bcd445a5b1fae315025b194598f66 = L.AwesomeMarkers.icon(
+            var icon_9582de04967510e641e78dee9dc98829 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_15ddf1af6d7ac5d9960bdf938fcf6c7c.setIcon(icon_934bcd445a5b1fae315025b194598f66);
+            marker_8a26422e09fbdf076822341f97f6a6c6.setIcon(icon_9582de04967510e641e78dee9dc98829);
         
     
-            var marker_c8b6be158c7f2bbd963d598561476873 = L.marker(
+            var marker_5e290daefcdddc5ce6c9aa61d061439a = L.marker(
                 [6.17522, 1.21385],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_446d96464aeb0140b50a30ed73a334df = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eGrand Amphi\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_c8b6be158c7f2bbd963d598561476873.setIcon(div_icon_446d96464aeb0140b50a30ed73a334df);
+            var div_icon_c094c4a25ccdb54b3cf5c93182c80d53 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eGrand Amphi\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_5e290daefcdddc5ce6c9aa61d061439a.setIcon(div_icon_c094c4a25ccdb54b3cf5c93182c80d53);
         
     
-            var marker_195a9fd486982c5e007cf3c8c0773d17 = L.marker(
+            var marker_dacc995bb9367fef8638bb91b294fb7f = L.marker(
                 [6.17387, 1.21318],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_25cb82bd643b42a00c3563c9025baf27 = L.AwesomeMarkers.icon(
+            var icon_a3bf42b6af51f0d3a6e154c3a80948b3 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_195a9fd486982c5e007cf3c8c0773d17.setIcon(icon_25cb82bd643b42a00c3563c9025baf27);
+            marker_dacc995bb9367fef8638bb91b294fb7f.setIcon(icon_a3bf42b6af51f0d3a6e154c3a80948b3);
         
     
-            var marker_22569b0d74b101b24c85ffa8fe8bebc4 = L.marker(
+            var marker_5a7ff6ab53e8c4515df8c652d903898a = L.marker(
                 [6.17387, 1.21318],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_e65429eed78fda618b94d5840cff86f2 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eAmphi 20 ans\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_22569b0d74b101b24c85ffa8fe8bebc4.setIcon(div_icon_e65429eed78fda618b94d5840cff86f2);
+            var div_icon_e8187bc3793b7d4eabff2e9d25507b3e = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eAmphi 20 ans\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_5a7ff6ab53e8c4515df8c652d903898a.setIcon(div_icon_e8187bc3793b7d4eabff2e9d25507b3e);
         
     
-            var marker_310de86720786c93084599b0ead39488 = L.marker(
+            var marker_92ad573273079aacab12a0ad24dbc82c = L.marker(
                 [6.17423, 1.21462],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_e5d93c73bc42017b3f3c7bc171b6de68 = L.AwesomeMarkers.icon(
+            var icon_d22b0ef2932ee1de7a6d13bffaf4e924 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_310de86720786c93084599b0ead39488.setIcon(icon_e5d93c73bc42017b3f3c7bc171b6de68);
+            marker_92ad573273079aacab12a0ad24dbc82c.setIcon(icon_d22b0ef2932ee1de7a6d13bffaf4e924);
         
     
-            var marker_14cd807364b2da6214e837eacbcd6b7e = L.marker(
+            var marker_524e323a032753f524db8dcb21f3a856 = L.marker(
                 [6.17423, 1.21462],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_53fc285b99bab82e41aa88f49d0b5bbf = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eBenches near the Library\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_14cd807364b2da6214e837eacbcd6b7e.setIcon(div_icon_53fc285b99bab82e41aa88f49d0b5bbf);
+            var div_icon_83e3298472f90a6f85e457c72a88433e = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eBenches near the Library\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_524e323a032753f524db8dcb21f3a856.setIcon(div_icon_83e3298472f90a6f85e457c72a88433e);
         
     
-            var marker_87d7dd84579f5bf5d151309c0911cce9 = L.marker(
+            var marker_42419d69824d02362821a16e401fff57 = L.marker(
                 [6.1607, 1.2175],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_7d8e0b2d593fae290edfe2aefb097364 = L.AwesomeMarkers.icon(
+            var icon_6f7de80d4c03d337caf0cf856e94723b = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_87d7dd84579f5bf5d151309c0911cce9.setIcon(icon_7d8e0b2d593fae290edfe2aefb097364);
+            marker_42419d69824d02362821a16e401fff57.setIcon(icon_6f7de80d4c03d337caf0cf856e94723b);
         
     
-            var marker_d252d958cdfffe95d24465a9caa06d51 = L.marker(
+            var marker_db9b5c424ced18ae922a0e8318592ecb = L.marker(
                 [6.1607, 1.2175],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_30ce6cee10e0317c5e549b0523231a70 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eQuartier de Doumass\u00e9ss\u00e9\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_d252d958cdfffe95d24465a9caa06d51.setIcon(div_icon_30ce6cee10e0317c5e549b0523231a70);
+            var div_icon_cb3fd1fe5c0a958f1be06933ce0e67e2 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eQuartier de Doumass\u00e9ss\u00e9\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_db9b5c424ced18ae922a0e8318592ecb.setIcon(div_icon_cb3fd1fe5c0a958f1be06933ce0e67e2);
         
     
-            var marker_20cb7b70caf0224f93f665f7b17b2cc5 = L.marker(
+            var marker_606e41c4f3eca47126424b20ef6cbddd = L.marker(
                 [6.148969553402552, 1.2346652112254952],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_4de8e3afc835aa490e4cea18329bedc9 = L.AwesomeMarkers.icon(
+            var icon_049a02ecee6d489df64ec1df81731795 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_20cb7b70caf0224f93f665f7b17b2cc5.setIcon(icon_4de8e3afc835aa490e4cea18329bedc9);
+            marker_606e41c4f3eca47126424b20ef6cbddd.setIcon(icon_049a02ecee6d489df64ec1df81731795);
         
     
-            var marker_dd8870e7885b0697b44105197e763fff = L.marker(
+            var marker_3060709dfa75231c985b82db1873d67f = L.marker(
                 [6.148969553402552, 1.2346652112254952],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_550a3357b0427943e862f6e2e585bf15 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCentre Saint Jean Lom\u00e9 (University Parish)\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_dd8870e7885b0697b44105197e763fff.setIcon(div_icon_550a3357b0427943e862f6e2e585bf15);
+            var div_icon_8b1016640cbb5d8bdedb8069e4724ddd = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eCentre Saint Jean Lom\u00e9 (University Parish)\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_3060709dfa75231c985b82db1873d67f.setIcon(div_icon_8b1016640cbb5d8bdedb8069e4724ddd);
         
     
-            var marker_3086f6bb0647f21cd19667374275b1c7 = L.marker(
+            var marker_201f5f25e1ea1bfdf248b33ac8c6abef = L.marker(
                 [6.16674, 1.2173],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_6a215b9c8e9ae4c0e2163766ff1868f6 = L.AwesomeMarkers.icon(
+            var icon_1073422b769c42f5249b58b715f0ffcd = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_3086f6bb0647f21cd19667374275b1c7.setIcon(icon_6a215b9c8e9ae4c0e2163766ff1868f6);
+            marker_201f5f25e1ea1bfdf248b33ac8c6abef.setIcon(icon_1073422b769c42f5249b58b715f0ffcd);
         
     
-            var marker_e8aa52fba89068bb7f054549377d52af = L.marker(
+            var marker_3045866480ce975643f04d31fdb737b6 = L.marker(
                 [6.16674, 1.2173],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_3909d8a03f7c2e715bb922596fee1c4a = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eVillage du B\u00e9nin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_e8aa52fba89068bb7f054549377d52af.setIcon(div_icon_3909d8a03f7c2e715bb922596fee1c4a);
+            var div_icon_7f0e6bfa3e7187ebd15e11f6aaa1fa5f = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eVillage du B\u00e9nin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_3045866480ce975643f04d31fdb737b6.setIcon(div_icon_7f0e6bfa3e7187ebd15e11f6aaa1fa5f);
         
     
-            var marker_a6c137de2b4674b36abcd9ef82022ead = L.marker(
+            var marker_555b6036758f2479307e2f1709e20900 = L.marker(
                 [6.151229331563282, 1.2280969671765716],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_bee4e2f2d8082f7d62aa432329951508 = L.AwesomeMarkers.icon(
+            var icon_5ddb70a1c319fba611890415c2db8737 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_a6c137de2b4674b36abcd9ef82022ead.setIcon(icon_bee4e2f2d8082f7d62aa432329951508);
+            marker_555b6036758f2479307e2f1709e20900.setIcon(icon_5ddb70a1c319fba611890415c2db8737);
         
     
-            var marker_5f7be02e0445ffe0379decc2e7ca31d8 = L.marker(
+            var marker_aa3073ef90c34af05c0f9dc299ac371c = L.marker(
                 [6.151229331563282, 1.2280969671765716],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_67e51577f475aaed315651f344b6d3b2 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eLyc\u00e9e de Tokoin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_5f7be02e0445ffe0379decc2e7ca31d8.setIcon(div_icon_67e51577f475aaed315651f344b6d3b2);
+            var div_icon_9edaeaa4cfcbc9aa6a24ed328e4f8937 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eLyc\u00e9e de Tokoin\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_aa3073ef90c34af05c0f9dc299ac371c.setIcon(div_icon_9edaeaa4cfcbc9aa6a24ed328e4f8937);
         
     
-            var marker_064da2887e61f81bd411de545df705c6 = L.marker(
+            var marker_8567c8b423f563a928c39291a2e2ae3f = L.marker(
                 [9.53171555198078, 1.2075454248806252],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_4ab0bf21ecca79e8b2f813f8bc7341f2 = L.AwesomeMarkers.icon(
+            var icon_c78fdd4dfda93bbcd8cf745a863786f9 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
             );
-            marker_064da2887e61f81bd411de545df705c6.setIcon(icon_4ab0bf21ecca79e8b2f813f8bc7341f2);
+            marker_8567c8b423f563a928c39291a2e2ae3f.setIcon(icon_c78fdd4dfda93bbcd8cf745a863786f9);
         
     
-            var marker_74c3fe4dac78d9461c84feadf6cd592e = L.marker(
+            var marker_57724ba5cacd90fd31cd6d3ee22a8321 = L.marker(
                 [9.53171555198078, 1.2075454248806252],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_054dc77c1b60b18baff6d8f66deabaab = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eUniversity of Kara\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_74c3fe4dac78d9461c84feadf6cd592e.setIcon(div_icon_054dc77c1b60b18baff6d8f66deabaab);
+            var div_icon_699e9d652d580a308a65f7d6c11ce653 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid green; border-radius: 3px; font-size: 12px; color: green;\"\u003eUniversity of Kara\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_57724ba5cacd90fd31cd6d3ee22a8321.setIcon(div_icon_699e9d652d580a308a65f7d6c11ce653);
         
     
-            var marker_552d4914ab7ac0eeee4bc1ca30f93461 = L.marker(
+            var marker_9bd90a6c1b1f7324a0baf4632cad1388 = L.marker(
                 [5.345626890265415, -3.9862531136424355],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_4f92bb29620651173b5d98b853270ed5 = L.AwesomeMarkers.icon(
+            var icon_dec5f60e4bf13a50ea16ec117f26692e = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
             );
-            marker_552d4914ab7ac0eeee4bc1ca30f93461.setIcon(icon_4f92bb29620651173b5d98b853270ed5);
+            marker_9bd90a6c1b1f7324a0baf4632cad1388.setIcon(icon_dec5f60e4bf13a50ea16ec117f26692e);
         
     
-            var marker_695b7de7c3ec0fbd78b61822c7709780 = L.marker(
+            var marker_927ff699bbe83013e1d722339d50ac65 = L.marker(
                 [5.345626890265415, -3.9862531136424355],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_c3688202276f6a11bc2e41a367571ed6 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid red; border-radius: 3px; font-size: 12px; color: red;\"\u003eUniversit\u00e9 F\u00e9lix Houphou\u00ebt-Boigny\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_695b7de7c3ec0fbd78b61822c7709780.setIcon(div_icon_c3688202276f6a11bc2e41a367571ed6);
+            var div_icon_3fc5c0f932caae9d0b7514e797090f89 = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid red; border-radius: 3px; font-size: 12px; color: red;\"\u003eUniversit\u00e9 F\u00e9lix Houphou\u00ebt-Boigny\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_927ff699bbe83013e1d722339d50ac65.setIcon(div_icon_3fc5c0f932caae9d0b7514e797090f89);
         
     
-            var marker_829b83eb05567752b76fcc41d9c27e65 = L.marker(
+            var marker_a080ffaa1bda8e1124199e2dd56d7788 = L.marker(
                 [14.692546490588276, -17.461838944294787],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var icon_91cf2725d0ed8ccf9c2cf4360417c74d = L.AwesomeMarkers.icon(
+            var icon_7fa55f7dd93f8c0784cb90cb1bb703b7 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
             );
-            marker_829b83eb05567752b76fcc41d9c27e65.setIcon(icon_91cf2725d0ed8ccf9c2cf4360417c74d);
+            marker_a080ffaa1bda8e1124199e2dd56d7788.setIcon(icon_7fa55f7dd93f8c0784cb90cb1bb703b7);
         
     
-            var marker_25b9a65aef654817216ddb903fb17463 = L.marker(
+            var marker_2aac1efd4e30efde2a33e7bb734bb4e0 = L.marker(
                 [14.692546490588276, -17.461838944294787],
                 {}
-            ).addTo(map_3670eb7daac72532957282e74ac2a2c8);
+            ).addTo(map_6bb48084c80fef9d69a0c24eadf11917);
         
     
-            var div_icon_23630b80cad5e983c4a39516e38f576d = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"background-color: white; padding: 2px; border: 1px solid red; border-radius: 3px; font-size: 12px; color: red;\"\u003eCheikh Anta Diop University\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
-            marker_25b9a65aef654817216ddb903fb17463.setIcon(div_icon_23630b80cad5e983c4a39516e38f576d);
+            var div_icon_213e71b7d43d79bdb4513186f6c9a18c = L.divIcon({"className": "empty", "html": "\u003cdiv class=\"label-container\" style=\"display: none; background-color: white; padding: 2px; border: 1px solid red; border-radius: 3px; font-size: 12px; color: red;\"\u003eCheikh Anta Diop University\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [150, 36]});
+            marker_2aac1efd4e30efde2a33e7bb734bb4e0.setIcon(div_icon_213e71b7d43d79bdb4513186f6c9a18c);
         
 </script>
 </html>
