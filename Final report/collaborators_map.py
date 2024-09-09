@@ -1,18 +1,19 @@
+import json
 import pandas as pd
 import folium
-import requests
-from io import BytesIO
 from folium import IFrame
+import os
 
-# URL of the Excel file on GitHub
-excel_url = 'https://github.com/fmadore/Remoboko/raw/master/Final%20report/Report_data.xlsx'
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Fetch the content of the Excel file
-response = requests.get(excel_url)
-data = BytesIO(response.content)
+# Load the data from the local JSON file
+json_path = os.path.join(script_dir, 'Collaborators_data.json')
+with open(json_path, 'r') as file:
+    data = json.load(file)
 
-# Load the data into a Pandas DataFrame
-df = pd.read_excel(data, sheet_name='Collaborators')
+# Convert the JSON data to a pandas DataFrame
+df = pd.DataFrame(data)
 
 # Group the data by affiliation to aggregate collaborators
 grouped = df.groupby('Affiliation')
@@ -22,7 +23,7 @@ map = folium.Map(location=[0, 0], zoom_start=2)
 
 # Iterate over each affiliation group
 for affiliation, group in grouped:
-    # Parse the first row to get the location (assuming all rows in the group have the same location)
+    # Parse the first row to get the location
     try:
         location = [float(coord) for coord in group.iloc[0]['Coordinate location'].split(',')]
     except ValueError:
@@ -47,5 +48,8 @@ for affiliation, group in grouped:
         tooltip=affiliation  # Shows the affiliation when hovering over the marker
     ).add_to(map)
 
-# Save the map to an HTML file
-map.save('collaborators_map.html')
+# Save the map to an HTML file in the same folder
+output_path = os.path.join(script_dir, 'collaborators_map.html')
+map.save(output_path)
+
+print(f"Map saved to: {output_path}")
