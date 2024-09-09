@@ -29,15 +29,29 @@ types = sorted(set(type for counts in type_by_year.values() for type in counts))
 traces = []
 for type in types:
     counts = [type_by_year[year][type] for year in years]
-    trace = go.Bar(x=years, y=counts, name=type)
+    trace = go.Bar(
+        x=years, 
+        y=counts, 
+        name=type,
+        hovertemplate='<b>%{x}</b><br>' +
+                      'Type: ' + type + '<br>' +
+                      'Count: %{y}<br>' +
+                      '<extra></extra>'
+    )
     traces.append(trace)
 
-# Create the layout
+# Update the layout for better readability
 layout = go.Layout(
     title='Remoboko publications and activities by type over time',
     xaxis=dict(title='Year'),
     yaxis=dict(title='Count'),
-    barmode='stack'
+    barmode='stack',
+    hovermode='closest',
+    hoverlabel=dict(
+        bgcolor="white",
+        font_size=12,
+        font_family="Rockwell"
+    )
 )
 
 # Create the figure
