@@ -33,5 +33,5 @@ for uni, details in universities.items():
     icon = folium.CustomIcon(details['logo'], icon_size=(50, 50))  # Adjust icon size as needed
     folium.Marker(location=details['coords'], icon=icon, tooltip=uni).add_to(m)
 
-# Save the map to an HTML file
-m.save('universities_map.html')
+# Save the map to an HTML file in the same folder
+m.save('Book_DeGruyter/Maps/universities_map.html')
