@@ -62,9 +62,11 @@ def preprocess_text(text, language):
         stop_words = set(stopwords.words('english')).union(english_exceptions)
         processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
     elif language == 'French':
-        stop_words = set(stopwords.words('french')).union(french_exceptions)
+        nltk_stop_words = set(stopwords.words('french'))
+        spacy_stop_words = nlp_fr.Defaults.stop_words
+        all_stop_words = nltk_stop_words.union(spacy_stop_words).union(french_exceptions)
         doc = nlp_fr(text.lower())
-        processed_tokens = [token.lemma_ for token in doc if token.text.isalnum() and token.text not in stop_words]
+        processed_tokens = [token.lemma_ for token in doc if token.text.isalnum() and token.text not in all_stop_words]
     
     return ' '.join(processed_tokens)
 
