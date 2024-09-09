@@ -19,6 +19,9 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 wordclouds_dir = os.path.join(current_dir, 'WordClouds')
 os.makedirs(wordclouds_dir, exist_ok=True)
 
+# Define path to Data folder
+data_dir = os.path.join(current_dir, 'Data')
+
 # Download necessary NLTK data
 logging.info("Downloading NLTK data...")
 nltk.download('punkt', quiet=True)
@@ -28,7 +31,7 @@ nltk.download('punkt_tab', quiet=True)  # Add this line
 
 # Read the JSON file
 logging.info("Reading JSON file...")
-json_path = os.path.join(current_dir, 'Publications_and_activities_data.json')
+json_path = os.path.join(data_dir, 'Publications_and_activities_data.json')
 try:
     with open(json_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
