@@ -34,7 +34,7 @@ for type in types:
 
 # Create the layout
 layout = go.Layout(
-    title='Publication Types Over Time',
+    title='Remoboko publications and activities by type over time',
     xaxis=dict(title='Year'),
     yaxis=dict(title='Count'),
     barmode='stack'
