@@ -2,9 +2,11 @@ import json
 import plotly.graph_objects as go
 from collections import defaultdict
 from datetime import datetime
+import os
 
 # Load the JSON data
-with open('Final report/Data/Publications_and_activities_data.json', 'r', encoding='utf-8') as f:
+data_path = os.path.join('Final report', 'Data', 'Publications_and_activities_data.json')
+with open(data_path, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Process the data
