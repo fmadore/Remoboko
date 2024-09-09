@@ -1,11 +1,14 @@
+import json
 import pandas as pd
 import plotly.express as px
 import plotly.offline as pyo
 
 # Step 1: Load the Data
-# Direct URL to the raw Excel file on GitHub
-url = 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Final%20report/Report_data.xlsx'
-df = pd.read_excel(url, sheet_name='Collaborators')
+with open('Final report/collaborators_data.json', 'r') as file:
+    data = json.load(file)
+
+# Convert JSON data to DataFrame
+df = pd.DataFrame(data)
 
 # Step 2: Prepare the Data
 # Convert each collaborator's name into a list element for later joining with line breaks
@@ -38,8 +41,8 @@ fig.update_layout({
 fig.update_traces(hovertemplate='%{y}:<br>%{customdata[0]}')
 
 # Step 4: Save the Chart as an HTML File
-# Save the interactive chart to an HTML file
-html_file_path = 'collaborators_by_country.html'
+# Save the interactive chart to an HTML file in the same folder
+html_file_path = 'Final report/collaborators_by_country.html'
 pyo.plot(fig, filename=html_file_path, auto_open=False)
 
 print(f"Chart saved as {html_file_path}.")
