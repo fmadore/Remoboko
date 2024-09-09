@@ -51,7 +51,7 @@ def calculate_map_center(locations):
 
 def add_markers_with_labels(map_obj, locations, icon_color):
     """
-    Add markers to the map for the given locations with always-visible labels.
+    Add markers to the map for the given locations with always-visible labels on white backgrounds.
     """
     for name, coords in locations.items():
         folium.Marker(
@@ -63,23 +63,30 @@ def add_markers_with_labels(map_obj, locations, icon_color):
             icon=folium.DivIcon(
                 icon_size=(150, 36),
                 icon_anchor=(0, 0),
-                html=f'<div style="font-size: 12px; color: {icon_color};">{name}</div>',
+                html=f'<div style="background-color: white; padding: 2px; border: 1px solid {icon_color}; border-radius: 3px; font-size: 12px; color: {icon_color};">{name}</div>',
             )
         ).add_to(map_obj)
 
 def create_legend_html():
     """
-    Create the HTML for the map legend.
+    Create the HTML for the map legend with white boxes for each item.
     """
     return '''
     <div style="position: fixed; 
-    bottom: 50px; left: 50px; width: 150px; height: 110px; 
+    bottom: 50px; left: 50px; width: 170px; 
     border:2px solid grey; z-index:9999; font-size:14px;
     background-color:white; padding: 10px;
-    ">&nbsp; Points of interest <br>
-    &nbsp; <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin <br>
-    &nbsp; <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo <br>
-    &nbsp; <i class="fa fa-map-marker" style="color:red"></i>&nbsp; West Africa
+    ">
+    <div style="font-weight: bold; margin-bottom: 5px;">Points of interest</div>
+    <div style="background-color: white; margin: 2px; padding: 2px;">
+        <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin
+    </div>
+    <div style="background-color: white; margin: 2px; padding: 2px;">
+        <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo
+    </div>
+    <div style="background-color: white; margin: 2px; padding: 2px;">
+        <i class="fa fa-map-marker" style="color:red"></i>&nbsp; West Africa
+    </div>
     </div>
     '''
 
