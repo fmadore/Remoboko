@@ -1,6 +1,7 @@
 import folium
 from branca.element import Element
 import numpy as np
+import os
 
 # Define the locations for Benin
 benin_locations = {
@@ -100,5 +101,7 @@ add_markers_with_labels(m, west_africa_locations, 'red')
 legend_html = create_legend_html()
 m.get_root().html.add_child(Element(legend_html))
 
-# Save the map to an HTML file
-m.save('UAC_UL_locations_map.html')
+# Save the map to an HTML file in the same folder as the script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+output_path = os.path.join(script_dir, 'UAC_UL_locations_map.html')
+m.save(output_path)
