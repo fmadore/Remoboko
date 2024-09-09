@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.offline as pyo
 
 # Step 1: Load the Data
-with open('Final report/collaborators_data.json', 'r') as file:
+with open('Final report/Collaborators_data.json', 'r') as file:
     data = json.load(file)
 
 # Convert JSON data to DataFrame
