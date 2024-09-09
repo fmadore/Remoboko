@@ -53,13 +53,13 @@ def add_markers_with_labels(map_obj, locations, icon_color, category):
     """
     Add markers to the map for the given locations with toggleable labels.
     """
-    marker_cluster = folium.FeatureGroup(name=category)
+    feature_group = folium.FeatureGroup(name=category)
     for name, coords in locations.items():
         folium.Marker(
             location=coords,
             icon=folium.Icon(color=icon_color),
             popup=name
-        ).add_to(marker_cluster)
+        ).add_to(feature_group)
         folium.map.Marker(
             coords,
             icon=folium.DivIcon(
@@ -67,12 +67,12 @@ def add_markers_with_labels(map_obj, locations, icon_color, category):
                 icon_anchor=(0, 0),
                 html=f'<div class="label-container {category}-label" style="display: none; background-color: white; padding: 2px; border: 1px solid {icon_color}; border-radius: 3px; font-size: 12px; color: {icon_color};">{name}</div>',
             )
-        ).add_to(marker_cluster)
-    marker_cluster.add_to(map_obj)
+        ).add_to(feature_group)
+    feature_group.add_to(map_obj)
 
 def create_legend_html():
     """
-    Create the HTML for the map legend with white boxes for each item and toggle buttons.
+    Create the HTML for the map legend with only the toggle button for labels.
     """
     return '''
     <div style="position: fixed; 
@@ -82,15 +82,12 @@ def create_legend_html():
     ">
     <div style="font-weight: bold; margin-bottom: 5px;">Points of interest</div>
     <div style="background-color: white; margin: 2px; padding: 2px;">
-        <input type="checkbox" id="benin-toggle" onclick="toggleLayer('benin')" checked>
         <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin
     </div>
     <div style="background-color: white; margin: 2px; padding: 2px;">
-        <input type="checkbox" id="togo-toggle" onclick="toggleLayer('togo')" checked>
         <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo
     </div>
     <div style="background-color: white; margin: 2px; padding: 2px;">
-        <input type="checkbox" id="west-africa-toggle" onclick="toggleLayer('west-africa')" checked>
         <i class="fa fa-map-marker" style="color:red"></i>&nbsp; West Africa
     </div>
     <div style="margin-top: 10px;">
@@ -101,19 +98,10 @@ def create_legend_html():
 
 def add_toggle_script(map_obj):
     """
-    Add JavaScript to handle layer and label toggling.
+    Add JavaScript to handle label toggling.
     """
     toggle_script = """
     <script>
-    function toggleLayer(layerName) {
-        var layer = map_obj.layerControl._layers.find(layer => layer.name === layerName).layer;
-        if (map_obj.hasLayer(layer)) {
-            map_obj.removeLayer(layer);
-        } else {
-            map_obj.addLayer(layer);
-        }
-    }
-
     function toggleAllLabels() {
         var labels = document.getElementsByClassName('label-container');
         var displayStyle = labels[0].style.display === 'none' ? 'block' : 'none';
@@ -121,12 +109,6 @@ def add_toggle_script(map_obj):
             labels[i].style.display = displayStyle;
         }
     }
-
-    // Initialize the layer control
-    document.addEventListener('DOMContentLoaded', function() {
-        var layerControl = map_obj.layerControl;
-        layerControl._container.style.display = 'none';  // Hide the default layer control
-    });
     </script>
     """
     map_obj.get_root().html.add_child(Element(toggle_script))
