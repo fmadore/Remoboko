@@ -86,8 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
     eventGroup.append("text")
-        .attr("dx", 10)
-        .attr("dy", d => d.country === "Togo" ? -25 : 25)
+        .attr("class", "event-label")
+        .attr("x", 10)
+        .attr("y", d => d.country === "Togo" ? -25 : 25)
         .attr("text-anchor", "start")
         .text(d => d.event)
         .style("font-size", "12px")
@@ -123,8 +124,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
         eventGroupEnter.append("text")
-            .attr("dx", 10)
-            .attr("dy", d => d.country === "Togo" ? -25 : 25)
+            .attr("class", "event-label")
+            .attr("x", 10)
+            .attr("y", d => d.country === "Togo" ? -25 : 25)
             .attr("text-anchor", "start")
             .text(d => d.event)
             .style("font-size", "12px")
@@ -142,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
         eventGroupEnter.select("text")
-            .attr("dy", d => d.country === "Togo" ? -25 : 25)
+            .attr("y", d => d.country === "Togo" ? -25 : 25)
             .text(d => d.event);
 
         adjustTextPosition();
@@ -173,12 +175,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function adjustTextPosition() {
-        const texts = svg.selectAll(".event-group text");
+        const texts = svg.selectAll(".event-label");
 
         texts.each(function(d, i) {
             const thisText = d3.select(this);
             const thisBBox = thisText.node().getBBox();
-            let dy = parseFloat(thisText.attr("dy"));
+            let y = d.country === "Togo" ? -25 : 25;
 
             texts.each(function(d2, j) {
                 if (i === j || d.country !== d2.country) return;
@@ -187,13 +189,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (isOverlapping(thisBBox, otherBBox)) {
                     if (d.country === "Togo") {
-                        dy -= 15;
+                        y -= 15;
                     } else {
-                        dy += 15;
+                        y += 15;
                     }
-                    thisText.attr("dy", dy);
                 }
             });
+
+            thisText.attr("y", y);
         });
     }
 
