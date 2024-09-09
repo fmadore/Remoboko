@@ -3,13 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
-            // Call a function to initialize the timeline with the loaded data
+            console.log('Data loaded:', data); // Add this line
             initializeTimeline(data);
         })
         .catch(error => console.error('Error loading the JSON file:', error));
 });
 
 function initializeTimeline(data) {
+    if (!data || data.length === 0) {
+        console.error('No data available to render timeline');
+        return;
+    }
+
     const margin = {top: 20, right: 20, bottom: 30, left: 50},
           width = 960 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
@@ -19,6 +24,8 @@ function initializeTimeline(data) {
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    console.log('SVG created');
 
     const parseDate = d3.timeParse("%Y-%m-%d");
     const x = d3.scaleTime().range([0, width]);
@@ -41,6 +48,8 @@ function initializeTimeline(data) {
       .enter().append("g")
         .attr("class", d => `event-group ${d.country}`)
         .attr("transform", d => `translate(${x(d.date)}, ${height / 2})`);
+
+    console.log('Event groups created:', eventGroup.size());
 
     eventGroup.append("line")
         .attr("class", "event-line")
