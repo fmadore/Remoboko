@@ -67,15 +67,14 @@ def preprocess_text(text, language):
 # Function to generate and save word cloud
 def generate_wordcloud(text, language):
     logging.info(f"Generating {language} word cloud...")
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
+    wordcloud = WordCloud(width=1600, height=800, background_color=None, mode="RGBA", max_words=200).generate(text)
     
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(20, 10), dpi=300)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
-    plt.title(f'{language} Word Cloud')
     
     output_path = os.path.join(wordclouds_dir, f'{language.lower()}_wordcloud.png')
-    plt.savefig(output_path)
+    plt.savefig(output_path, bbox_inches='tight', pad_inches=0, transparent=True)
     plt.close()
     logging.info(f"{language} word cloud saved as {output_path}")
 
