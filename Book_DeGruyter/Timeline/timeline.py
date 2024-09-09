@@ -2,9 +2,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import os
+
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load the spreadsheet data
-file_path = 'Timeline.xlsx'
+file_path = os.path.join(current_dir, 'Timeline.xlsx')
 data = pd.read_excel(file_path)
 
 # Preprocess the data
@@ -48,8 +52,9 @@ ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
 ax.spines['bottom'].set_visible(False)
 
-# Save the figure
-plt.savefig('Timeline.png', dpi=300, bbox_inches='tight')
+# Save the figure in the same directory
+output_path = os.path.join(current_dir, 'Timeline.png')
+plt.savefig(output_path, dpi=300, bbox_inches='tight')
 
 # Show the plot
 plt.show()
