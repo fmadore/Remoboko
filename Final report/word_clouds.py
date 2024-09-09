@@ -49,7 +49,7 @@ lemmatizer = WordNetLemmatizer()
 
 # Exception lists
 english_exceptions = {'vincent'}  # Add English exceptions here
-french_exceptions = {'vincent'}  # Add French exceptions here
+french_exceptions = {'vincent', 'source', 'auteur', 'texte'}  # Add French exceptions here
 
 # Function to preprocess text
 def preprocess_text(text, language):
