@@ -7,3 +7,4 @@ branca
 numpy
 wordcloud
 nltk
+spacy
