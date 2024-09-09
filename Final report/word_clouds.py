@@ -5,6 +5,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+import spacy
 from tqdm import tqdm
 import logging
 import os
@@ -29,6 +30,9 @@ nltk.download('stopwords', quiet=True)
 nltk.download('wordnet', quiet=True)
 nltk.download('punkt_tab', quiet=True)  # Add this line
 
+# Load spaCy French model
+nlp_fr = spacy.load('fr_core_news_lg')
+
 # Read the JSON file
 logging.info("Reading JSON file...")
 json_path = os.path.join(data_dir, 'Publications_and_activities_data.json')
@@ -40,7 +44,7 @@ except UnicodeDecodeError:
     with open(json_path, 'r', encoding='iso-8859-1') as file:
         data = json.load(file)
 
-# Initialize lemmatizer
+# Initialize lemmatizer for English
 lemmatizer = WordNetLemmatizer()
 
 # Exception lists
@@ -54,13 +58,13 @@ def preprocess_text(text, language):
     # Tokenize the text
     tokens = word_tokenize(text.lower())
     
-    # Remove stop words, exceptions, and lemmatize
     if language == 'English':
         stop_words = set(stopwords.words('english')).union(english_exceptions)
         processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
     elif language == 'French':
         stop_words = set(stopwords.words('french')).union(french_exceptions)
-        processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
+        doc = nlp_fr(text.lower())
+        processed_tokens = [token.lemma_ for token in doc if token.text.isalnum() and token.text not in stop_words]
     
     return ' '.join(processed_tokens)
 
