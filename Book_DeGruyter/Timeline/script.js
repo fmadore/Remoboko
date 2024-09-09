@@ -64,14 +64,41 @@ function initializeTimeline(data) {
         .attr("cy", d => d.country === "Togo" ? -20 : 20)
         .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
-    eventGroup.append("text")
-        .attr("class", "event-label")
-        .attr("x", 10)
-        .attr("y", d => d.country === "Togo" ? -25 : 25)
-        .attr("text-anchor", "start")
-        .text(d => d.event)
-        .style("font-size", "12px")
-        .style("fill", "black");
+    eventGroup.append("title")
+        .text(d => d.event);
+
+    eventGroup
+        .on("mouseover", function(event, d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(d.event)
+                .style("left", (event.pageX) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
+
+    eventGroup
+        .on("click", function(event, d) {
+            detailsPanel.html(`
+                <h3>${d.event}</h3>
+                <p>Date: ${d3.timeFormat("%B %d, %Y")(d.date)}</p>
+                <p>Country: ${d.country}</p>
+                <p>Category: ${d.category}</p>
+            `)
+            .style("display", "block");
+        });
+
+    // Add a close button to the details panel
+    detailsPanel.append("button")
+        .text("Close")
+        .on("click", function() {
+            detailsPanel.style("display", "none");
+        });
 
     adjustTextPosition();
 
@@ -102,14 +129,23 @@ function initializeTimeline(data) {
             .attr("cy", d => d.country === "Togo" ? -20 : 20)
             .attr("fill", d => d.country === "Togo" ? "#ff7f0e" : "#1f77b4");
 
-        eventGroupEnter.append("text")
-            .attr("class", "event-label")
-            .attr("x", 10)
-            .attr("y", d => d.country === "Togo" ? -25 : 25)
-            .attr("text-anchor", "start")
-            .text(d => d.event)
-            .style("font-size", "12px")
-            .style("fill", "black");
+        eventGroupEnter.append("title")
+            .text(d => d.event);
+
+        eventGroupEnter
+            .on("mouseover", function(event, d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(d.event)
+                    .style("left", (event.pageX) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
 
         eventGroupEnter.merge(eventGroupUpdate)
             .attr("transform", d => `translate(${x(d.date)}, ${height / 2})`);
