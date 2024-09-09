@@ -121,6 +121,12 @@ def add_toggle_script(map_obj):
             labels[i].style.display = displayStyle;
         }
     }
+
+    // Initialize the layer control
+    document.addEventListener('DOMContentLoaded', function() {
+        var layerControl = map_obj.layerControl;
+        layerControl._container.style.display = 'none';  // Hide the default layer control
+    });
     </script>
     """
     map_obj.get_root().html.add_child(Element(toggle_script))
@@ -139,7 +145,7 @@ add_markers_with_labels(m, benin_locations, 'blue', 'benin')
 add_markers_with_labels(m, togo_locations, 'green', 'togo')
 add_markers_with_labels(m, west_africa_locations, 'red', 'west-africa')
 
-# Add layer control
+# Add layer control (it will be hidden, but we need it for the toggleLayer function)
 folium.LayerControl().add_to(m)
 
 # Add the legend to the map
