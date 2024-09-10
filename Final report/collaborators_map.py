@@ -9,7 +9,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load the data from the local JSON file in the Data folder
 json_path = os.path.join(script_dir, 'Data', 'Collaborators_data.json')
-with open(json_path, 'r') as file:
+with open(json_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 # Convert the JSON data to a pandas DataFrame
