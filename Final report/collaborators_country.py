@@ -2,9 +2,11 @@ import json
 import pandas as pd
 import plotly.express as px
 import plotly.offline as pyo
+import os
 
 # Step 1: Load the Data
-with open('Final report/Collaborators_data.json', 'r') as file:
+data_file_path = os.path.join('Final report', 'Data', 'Collaborators_data.json')
+with open(data_file_path, 'r') as file:
     data = json.load(file)
 
 # Convert JSON data to DataFrame
@@ -26,10 +28,13 @@ country_contributors['Contributors Count'] = country_contributors['hover_text'].
 # Sort countries by the number of contributors in descending order
 country_contributors_sorted = country_contributors.sort_values(by='Contributors Count', ascending=True)
 
+# Count the total number of collaborators
+total_collaborators = df['Collaborator'].nunique()
+
 # Step 3: Generate an Interactive Plotly Chart
 fig = px.bar(country_contributors_sorted, x='Contributors Count', y='Country',
              hover_data=['hover_text'], labels={'hover_text': 'Contributors'},
-             title='Distribution of Collaborators by Country')
+             title=f'Distribution of Collaborators by Country (Total: {total_collaborators})')
 
 # Make the background transparent
 fig.update_layout({
