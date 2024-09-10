@@ -7,8 +7,8 @@ import os
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Load the data from the local JSON file
-json_path = os.path.join(script_dir, 'Collaborators_data.json')
+# Load the data from the local JSON file in the Data folder
+json_path = os.path.join(script_dir, 'Data', 'Collaborators_data.json')
 with open(json_path, 'r') as file:
     data = json.load(file)
 
