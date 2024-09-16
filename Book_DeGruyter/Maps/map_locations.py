@@ -17,6 +17,13 @@ benin_locations = {
     'Lycée Béhanzin': (6.479698137720823, 2.6149709960150442),
     'University of Parakou': (9.337619664615962, 2.644594132986409),
     'Zogbo parish': (6.39321349885147, 2.3915586634006054),
+    'CEG Gbégamey': (6.359403662261627, 2.4172856048142135),
+    'Cours secondaire Notre-Dame des Apôtres': (6.360689579780806, 2.4175906695021823),
+    'Université d’Agriculture de Kétou ': (7.36033789536867, 2.604034046121942),
+    'Université Nationale des Sciences, Technologies, Ingénierie et Mathématiques': (7.160651258439677, 2.0208896494132866),
+    'Institut National Supérieur de Technologie Industrielle de Lokossa': (6.652598412860042, 1.725566066731119),
+    'Bon Pasteur parish': (6.357065573930122, 2.398786735584982),
+    'Sainte-Thérèse de l’Enfant Jésus parish': (6.388992725155074, 2.3469247082733733),
 }
 
 # Define the locations for Togo
@@ -34,6 +41,7 @@ togo_locations = {
     'Village du Bénin': (6.16674, 1.21730),
     'Lycée de Tokoin': (6.151229331563282, 1.2280969671765716),
     'University of Kara': (9.53171555198078, 1.2075454248806252),
+    'Collège Saint-Joseph': (6.150308464664608, 1.2330026950072206),
 }
 
 # Define the locations for West Africa
