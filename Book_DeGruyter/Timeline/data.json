@@ -1,6 +1,6 @@
 [
-    {"country": "Togo", "event": "Independance of Togo", "date": "1960-04-27", "category": "Politics"},
-    {"country": "Benin", "event": "Independance of Benin", "date": "1960-08-01", "category": "Politics"},
+    {"country": "Togo", "event": "Independence of Togo", "date": "1960-04-27", "category": "Politics"},
+    {"country": "Benin", "event": "Independence of Benin", "date": "1960-08-01", "category": "Politics"},
     {"country": "Togo", "event": "Coup d'Etat Togo", "date": "1963-01-13", "category": "Politics"},
     {"country": "Togo", "event": "Gnassingbé Eyadéma comes to power", "date": "1967-04-15", "category": "Politics"},
     {"country": "Benin", "event": "Dahomean May", "date": "1969-05-01", "category": "Politics"},
