@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import os
 
+# Set the font to a Unicode-compatible font
+plt.rcParams['font.family'] = 'DejaVu Sans'
+
 def create_timeline(data, categories, filename):
     # Filter data for the specified categories
     filtered_data = [item for item in data if item['category'] in categories]
@@ -12,11 +15,14 @@ def create_timeline(data, categories, filename):
     df = df.sort_values('date', ascending=False)
 
     # Create the figure and axis for the timeline
-    fig, ax = plt.subplots(figsize=(10, 23))
-    plt.subplots_adjust(left=0.5, bottom=0, top=1)
+    # Convert cm to inches (1 inch = 2.54 cm)
+    width_inches = 16.51 / 2.54
+    height_inches = 24.13 / 2.54
+    fig, ax = plt.subplots(figsize=(width_inches, height_inches))
+    plt.subplots_adjust(left=0.5, right=0.95, bottom=0.05, top=0.95)
 
     # Draw a central vertical timeline
-    ax.axvline(x=0, color='black', linewidth=2)
+    ax.axvline(x=0, color='black', linewidth=1.5)
 
     # Invert the y-axis to have the oldest dates at the top
     ax.set_ylim([max(df['date']) + pd.DateOffset(years=1), min(df['date']) - pd.DateOffset(years=1)])
@@ -31,7 +37,7 @@ def create_timeline(data, categories, filename):
 
         # Add text with appropriate alignment
         ha = 'left' if country == 'Togo' else 'right'
-        ax.text(text_position, date, event, verticalalignment='center', horizontalalignment=ha, fontsize=10, wrap=True)
+        ax.text(text_position, date, event, verticalalignment='center', horizontalalignment=ha, fontsize=7, wrap=True)
 
     # Adjust the y-axis to use dates and format them
     ax.yaxis_date()
@@ -45,9 +51,6 @@ def create_timeline(data, categories, filename):
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-    # Add title
-    plt.title(f"Timeline of {', '.join(categories)} Events", fontsize=16, y=1.02)
-
     # Save the figure
     plt.savefig(filename, dpi=300, bbox_inches='tight')
     plt.close()
@@ -56,7 +59,7 @@ def create_timeline(data, categories, filename):
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load the JSON data
-with open(os.path.join(current_dir, 'data.json'), 'r') as f:
+with open(os.path.join(current_dir, 'data.json'), 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Create Religion timeline
