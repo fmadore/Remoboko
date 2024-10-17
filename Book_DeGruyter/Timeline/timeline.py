@@ -8,7 +8,7 @@ import textwrap
 # Set the font to a Unicode-compatible font
 plt.rcParams['font.family'] = 'DejaVu Sans'
 
-def create_timeline(data, categories, filename):
+def create_timeline(data, categories, filename_base):
     filtered_data = [item for item in data if item['category'] in categories]
     df = pd.DataFrame(filtered_data)
     df['date'] = pd.to_datetime(df['date'])
@@ -25,7 +25,7 @@ def create_timeline(data, categories, filename):
     max_date = max(df['date'])
     ax.set_ylim([max_date + pd.DateOffset(years=1), min_date - pd.DateOffset(years=1)])
 
-    def wrap_text(text, max_width=18):  # Reduced max_width to accommodate larger font
+    def wrap_text(text, max_width=18):
         return '\n'.join(textwrap.wrap(text, width=max_width))
 
     events_by_country = {'Benin': [], 'Togo': []}
@@ -40,18 +40,17 @@ def create_timeline(data, categories, filename):
             date_num = mdates.date2num(date)
             y_position = date_num + y_offset
             
-            # Alternate between left and right side within the column
             x_position = base_x - 0.1 if left_side else base_x + 0.1
             
             bbox_props = dict(boxstyle="round,pad=0.4", fc="white", ec="gray", alpha=0.8)
             text = ax.text(x_position, y_position, event, verticalalignment='center',
                            horizontalalignment='center' if left_side else 'center',
-                           fontsize=9, wrap=True, bbox=bbox_props)  # Increased fontsize to 9
+                           fontsize=9, wrap=True, bbox=bbox_props)
             
             bbox = text.get_bbox_patch()
-            y_offset += bbox.get_height() / (max_date - min_date).days * 1.8  # Increased spacing
+            y_offset += bbox.get_height() / (max_date - min_date).days * 1.8
             
-            left_side = not left_side  # Switch sides for the next event
+            left_side = not left_side
 
     ax.yaxis_date()
     date_format = mdates.DateFormatter('%Y')
@@ -66,7 +65,12 @@ def create_timeline(data, categories, filename):
     ax.text(0.25, 1.02, 'Benin', ha='center', va='bottom', transform=ax.transAxes, fontsize=12, fontweight='bold')
     ax.text(0.75, 1.02, 'Togo', ha='center', va='bottom', transform=ax.transAxes, fontsize=12, fontweight='bold')
 
-    plt.savefig(filename, dpi=300, bbox_inches='tight')
+    # Save as PNG
+    plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
+    
+    # Save as SVG
+    plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
+    
     plt.close()
 
 # Get the current directory
@@ -77,9 +81,9 @@ with open(os.path.join(current_dir, 'data.json'), 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Create Religion timeline
-create_timeline(data, ['Religion'], os.path.join(current_dir, 'Religion_Timeline.png'))
+create_timeline(data, ['Religion'], os.path.join(current_dir, 'Religion_Timeline'))
 
 # Create Education and Politics timeline
-create_timeline(data, ['Education', 'Politics'], os.path.join(current_dir, 'Education_Politics_Timeline.png'))
+create_timeline(data, ['Education', 'Politics'], os.path.join(current_dir, 'Education_Politics_Timeline'))
 
-print("Timelines have been created successfully.")
+print("Timelines have been created successfully in both PNG and SVG formats.")
