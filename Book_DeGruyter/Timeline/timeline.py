@@ -25,7 +25,7 @@ def create_timeline(data, categories, filename):
     max_date = max(df['date'])
     ax.set_ylim([max_date + pd.DateOffset(years=1), min_date - pd.DateOffset(years=1)])
 
-    def wrap_text(text, max_width=20):
+    def wrap_text(text, max_width=18):  # Reduced max_width to accommodate larger font
         return '\n'.join(textwrap.wrap(text, width=max_width))
 
     events_by_country = {'Benin': [], 'Togo': []}
@@ -43,13 +43,13 @@ def create_timeline(data, categories, filename):
             # Alternate between left and right side within the column
             x_position = base_x - 0.1 if left_side else base_x + 0.1
             
-            bbox_props = dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8)
+            bbox_props = dict(boxstyle="round,pad=0.4", fc="white", ec="gray", alpha=0.8)
             text = ax.text(x_position, y_position, event, verticalalignment='center',
                            horizontalalignment='center' if left_side else 'center',
-                           fontsize=7, wrap=True, bbox=bbox_props)
+                           fontsize=9, wrap=True, bbox=bbox_props)  # Increased fontsize to 9
             
             bbox = text.get_bbox_patch()
-            y_offset += bbox.get_height() / (max_date - min_date).days * 1.5  # Increased spacing
+            y_offset += bbox.get_height() / (max_date - min_date).days * 1.8  # Increased spacing
             
             left_side = not left_side  # Switch sides for the next event
 
@@ -63,8 +63,8 @@ def create_timeline(data, categories, filename):
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-    ax.text(0.25, 1.02, 'Benin', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
-    ax.text(0.75, 1.02, 'Togo', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
+    ax.text(0.25, 1.02, 'Benin', ha='center', va='bottom', transform=ax.transAxes, fontsize=12, fontweight='bold')
+    ax.text(0.75, 1.02, 'Togo', ha='center', va='bottom', transform=ax.transAxes, fontsize=12, fontweight='bold')
 
     plt.savefig(filename, dpi=300, bbox_inches='tight')
     plt.close()
