@@ -33,14 +33,12 @@ def create_timeline(data, categories, filename):
         
         if country == 'Benin':
             x_position = 0.5
-            ha = 'center'
         elif country == 'Togo':
             x_position = 0.83
-            ha = 'left'
         
         # Convert date to a number
         date_num = mdates.date2num(date)
-        ax.text(x_position, date_num, event, verticalalignment='center', horizontalalignment=ha, fontsize=7, wrap=True)
+        ax.text(x_position, date_num, event, verticalalignment='center', horizontalalignment='center', fontsize=7, wrap=True)
 
     ax.yaxis_date()
     date_format = mdates.DateFormatter('%Y')
@@ -54,7 +52,7 @@ def create_timeline(data, categories, filename):
 
     # Add column headers
     ax.text(0.5, 1.02, 'Benin', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
-    ax.text(0.83, 1.02, 'Togo', ha='left', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
+    ax.text(0.83, 1.02, 'Togo', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
 
     plt.savefig(filename, dpi=300, bbox_inches='tight')
     plt.close()
