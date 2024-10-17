@@ -24,7 +24,7 @@ def create_timeline(data, categories, filename):
 
     min_date = min(df['date'])
     max_date = max(df['date'])
-    ax.set_ylim([min_date - pd.DateOffset(years=1), max_date + pd.DateOffset(years=1)])
+    ax.set_ylim([max_date + pd.DateOffset(years=1), min_date - pd.DateOffset(years=1)])  # Reverse the y-axis limits
 
     for _, row in df.iterrows():
         date = row['date']
