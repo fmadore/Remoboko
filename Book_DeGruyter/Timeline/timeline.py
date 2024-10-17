@@ -18,13 +18,12 @@ def create_timeline(data, categories, filename):
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
     plt.subplots_adjust(left=0.15, right=0.95, bottom=0.05, top=0.95)
 
-    # Draw vertical lines to separate columns
-    ax.axvline(x=0.33, color='gray', linestyle='--', linewidth=0.5)
-    ax.axvline(x=0.66, color='gray', linestyle='--', linewidth=0.5)
+    # Adjust the positions of vertical lines and text
+    ax.axvline(x=0.5, color='gray', linestyle='--', linewidth=0.5)
 
     min_date = min(df['date'])
     max_date = max(df['date'])
-    ax.set_ylim([max_date + pd.DateOffset(years=1), min_date - pd.DateOffset(years=1)])  # Reverse the y-axis limits
+    ax.set_ylim([max_date + pd.DateOffset(years=1), min_date - pd.DateOffset(years=1)])
 
     for _, row in df.iterrows():
         date = row['date']
@@ -32,11 +31,10 @@ def create_timeline(data, categories, filename):
         country = row['country']
         
         if country == 'Benin':
-            x_position = 0.5
+            x_position = 0.25  # Moved to the left
         elif country == 'Togo':
-            x_position = 0.83
+            x_position = 0.75  # Moved to the right
         
-        # Convert date to a number
         date_num = mdates.date2num(date)
         ax.text(x_position, date_num, event, verticalalignment='center', horizontalalignment='center', fontsize=7, wrap=True)
 
@@ -50,9 +48,9 @@ def create_timeline(data, categories, filename):
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-    # Add column headers
-    ax.text(0.5, 1.02, 'Benin', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
-    ax.text(0.83, 1.02, 'Togo', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
+    # Adjust column headers
+    ax.text(0.25, 1.02, 'Benin', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
+    ax.text(0.75, 1.02, 'Togo', ha='center', va='bottom', transform=ax.transAxes, fontsize=10, fontweight='bold')
 
     plt.savefig(filename, dpi=300, bbox_inches='tight')
     plt.close()
