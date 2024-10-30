@@ -88,15 +88,15 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     df = df.sort_values('date', ascending=True)
 
     # Compact figure size suitable for book
-    width_inches = 7.5  # Increased from 6.0 to give more room
+    width_inches = 8.0  # Changed from 9.0 to 8.0 for a middle ground
     height_inches = 8   # keep same height
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
     
     # Set specific subplot parameters from the beginning
     plt.subplots_adjust(
-        left=0.25,     # Moved left margin in slightly
+        left=0.22,     # Slightly adjusted from 0.20
         bottom=0.05,   
-        right=0.75,    # Moved right margin out slightly
+        right=0.78,    # Slightly adjusted from 0.80
         top=0.95,      
         wspace=0.2,    
         hspace=0.2     
@@ -165,10 +165,10 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             # Special handling for École Nouvelle reform, Youth associations banned, and Official inauguration of UB
             if event == "École Nouvelle reform" and country == "Togo":
                 text_x = 0.55  # Togo side, closer to center
-            elif event == "Youth associations banned":
+            elif event == "Youth associations banned":  # Fixed exact event name
                 text_x = 0.55  # Same position as École Nouvelle reform Togo
-            elif event == "Official inauguration of the UB":
-                text_x = 0.80  # Changed from 0.75 to 0.80 - even further from center
+            elif event == "Official inauguration of UB":  # Fixed exact event name
+                text_x = 0.90  # Changed from 0.95 to 0.90 - slightly less far from center
             elif event == "École Nouvelle reform" and country == "Benin":
                 text_x = 0.42  # Benin side, closer to center
             else:
