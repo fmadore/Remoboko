@@ -15,63 +15,73 @@ class DraggableTextBox:
         self.press = None
         self.background = None
         
-        # Make text box always pickable
-        self.text_obj.set_picker(True)
-        if self.text_obj.get_bbox_patch():
-            self.text_obj.get_bbox_patch().set_picker(True)
-        
         # Connect events
-        self.cid_press = text_obj.figure.canvas.mpl_connect(
+        self.cidpress = text_obj.figure.canvas.mpl_connect(
             'button_press_event', self.on_press)
-        self.cid_motion = text_obj.figure.canvas.mpl_connect(
-            'motion_notify_event', self.on_motion)
-        self.cid_release = text_obj.figure.canvas.mpl_connect(
+        self.cidrelease = text_obj.figure.canvas.mpl_connect(
             'button_release_event', self.on_release)
+        self.cidmotion = text_obj.figure.canvas.mpl_connect(
+            'motion_notify_event', self.on_motion)
 
     def on_press(self, event):
         """Called when a mouse button is pressed"""
         if event.inaxes != self.text_obj.axes:
             return
         
-        contains, _ = self.text_obj.contains(event)
+        contains, attrd = self.text_obj.contains(event)
         if not contains:
             return
-            
-        # Store current position and mouse coordinates
+        
+        # Store the initial position in display coordinates
         self.press = self.text_obj.get_position()
-        self.mouse_start = (event.xdata, event.ydata)
-
+        self.mouse_start = (event.x, event.y)
+        
     def on_motion(self, event):
         """Called when mouse is moved"""
-        if self.press is None:
+        if self.press is None or self.mouse_start is None:
             return
-        if event.inaxes != self.text_obj.axes or event.xdata is None or event.ydata is None:
+        if event.inaxes != self.text_obj.axes:
             return
-
-        # Calculate movement
-        dx = event.xdata - self.mouse_start[0]
-        dy = event.ydata - self.mouse_start[1]
+        
+        # Calculate movement in display coordinates
+        dx = event.x - self.mouse_start[0]
+        dy = event.y - self.mouse_start[1]
+        
+        # Convert movement to data coordinates
+        dx_data = dx / self.text_obj.axes.figure.dpi * self.text_obj.axes.get_window_extent().width
+        dy_data = dy / self.text_obj.axes.figure.dpi * self.text_obj.axes.get_window_extent().height
         
         # Update position
-        new_pos = (self.press[0] + dx, self.press[1] + dy)
-        self.text_obj.set_position(new_pos)
-        self.text_obj.figure.canvas.draw_idle()
+        new_x = self.press[0] + dx_data * 0.1  # Scale factor to make movement less sensitive
+        new_y = self.press[1]  # Keep original y position (date)
+        
+        self.text_obj.set_position((new_x, new_y))
+        self.text_obj.figure.canvas.draw()
 
     def on_release(self, event):
         """Called when mouse button is released"""
         self.press = None
         self.mouse_start = None
-        if self.text_obj.figure:  # Check if figure still exists
-            self.text_obj.figure.canvas.draw_idle()
+        self.text_obj.figure.canvas.draw()
 
     def disconnect(self):
         """Disconnect all callbacks"""
-        if self.text_obj.figure:  # Check if figure still exists
-            self.text_obj.figure.canvas.mpl_disconnect(self.cid_press)
-            self.text_obj.figure.canvas.mpl_disconnect(self.cid_motion)
-            self.text_obj.figure.canvas.mpl_disconnect(self.cid_release)
+        self.text_obj.figure.canvas.mpl_disconnect(self.cidpress)
+        self.text_obj.figure.canvas.mpl_disconnect(self.cidrelease)
+        self.text_obj.figure.canvas.mpl_disconnect(self.cidmotion)
 
-def create_timeline(data, categories, filename_base):
+def create_timeline(data, categories, filename_base, manual_positions=None):
+    """
+    Create timeline with manual positions for specific events.
+    manual_positions should be a dict like:
+    {
+        "event_text": x_position,  # where x_position is between 0 and 1
+        ...
+    }
+    """
+    if manual_positions is None:
+        manual_positions = {}
+        
     filtered_data = [item for item in data if item['category'] in categories]
     df = pd.DataFrame(filtered_data)
     df['date'] = pd.to_datetime(df['date'])
@@ -124,35 +134,37 @@ def create_timeline(data, categories, filename_base):
     # Position text boxes
     for country, events in events_by_country.items():
         if country == 'Benin':
-            text_x = 0.35
+            default_x = 0.35
             align = 'right'
             line_start = 0.495
         else:  # Togo
-            text_x = 0.65
+            default_x = 0.65
             align = 'left'
             line_start = 0.505
         
         for date, event in events:
+            # Check if this event has a manual position
+            text_x = manual_positions.get(event, default_x)
+            
             ax.plot([line_start, text_x], [date, date],
                    color='gray', linestyle='-', linewidth=0.5)
             
             bbox_props = dict(
-                boxstyle="round,pad=0.3",  # Slightly increased padding for larger font
+                boxstyle="round,pad=0.3",
                 fc="white",
                 ec="black",
                 alpha=1.0,
-                linewidth=0.5,
-                picker=True
+                linewidth=0.5
             )
             
             text_obj = ax.text(text_x, date, event,
                              verticalalignment='center',
                              horizontalalignment=align,
-                             fontsize=11,  # Increased from 9
+                             fontsize=11,
                              bbox=bbox_props,
-                             picker=True)
+                             zorder=10)
             
-            draggable_texts.append(DraggableTextBox(text_obj))
+            draggable_texts.append(text_obj)
 
     # Clean up plot
     ax.spines['left'].set_visible(False)
@@ -184,10 +196,25 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(current_dir, 'data.json'), 'r', encoding='utf-8') as f:
     data = json.load(f)
 
-# Create Religion timeline
-create_timeline(data, ['Religion'], os.path.join(current_dir, 'Religion_Timeline'))
+# Print all events to help with positioning
+print("\nAvailable events for positioning:")
+for item in data:
+    wrapped = '\n'.join(textwrap.wrap(item['event'], width=18))
+    print(f"\nOriginal: {item['event']}")
+    print(f"Wrapped: {wrapped}")
+
+# Define manual positions
+manual_positions = {
+    "GBEEB founded": 0.15  # Move it far to the left (less than 0.35, which is the default Benin position)
+}
+
+# Create Religion timeline with manual positions
+create_timeline(data, ['Religion'], 
+               os.path.join(current_dir, 'Religion_Timeline'),
+               manual_positions=manual_positions)
 
 # Create Education and Politics timeline
-create_timeline(data, ['Education', 'Politics'], os.path.join(current_dir, 'Education_Politics_Timeline'))
+create_timeline(data, ['Education', 'Politics'],
+               os.path.join(current_dir, 'Education_Politics_Timeline'))
 
-print("Timelines have been created successfully in both PNG and SVG formats.")
+print("\nTimelines have been created successfully in both PNG and SVG formats.")
