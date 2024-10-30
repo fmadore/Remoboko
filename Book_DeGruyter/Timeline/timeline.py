@@ -134,7 +134,6 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "University of Kara founded",
             "Independence of Benin",
             "UB renamed University of Lomé",
-            "University of Parakou founded",
             "University of Dahomey founded",
             "Youth associations banned",
             "Mathieu Kérékou seizes power",
@@ -142,9 +141,13 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "University of Benin founded"
         ]
         
-        # Special case for UDahomey renamed event - force it to three lines
+        # Special cases for custom line breaks
         if text == "UDahomey renamed National University of Benin":
             return "UDahomey\nrenamed National\nUniversity of Benin"
+        elif text == "UNB renamed University of Abomey-Calavi":
+            return "UNB renamed\nUniversity of Abomey-Calavi"
+        elif text == "University of Parakou founded":
+            return "University of\nParakou founded"
             
         if text in no_wrap_events:
             return text  # Don't wrap these texts
@@ -184,8 +187,6 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
                 text_x = 0.45  # Close to center
             elif event == "Mathieu Kérékou seizes power":
                 text_x = 0.45  # Close to center
-            elif event == "University of Parakou founded":
-                text_x = 0.47  # Same close position as others
             elif event == "University of Dahomey founded":
                 text_x = 0.35  # Further from center than default
             elif event == "UDahomey renamed National University of Benin":
@@ -272,7 +273,7 @@ religion_positions = {
 }
 
 education_politics_positions = {
-    # Removed "Dahomean May" from here since we're handling it in the text box positioning
+    "University of\nParakou founded": 0.42  # IMPORTANT: Must match the wrapped text exactly!
 }
 
 # Create Religion timeline with its specific positions
