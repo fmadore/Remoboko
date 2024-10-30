@@ -88,18 +88,18 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     df = df.sort_values('date', ascending=True)
 
     # Compact figure size suitable for book
-    width_inches = 4.5  # narrow width for book column
-    height_inches = 8   # proportional height
+    width_inches = 6.0  # Increased from 4.5 to give more room
+    height_inches = 8   # keep same height
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
     
     # Set specific subplot parameters from the beginning
     plt.subplots_adjust(
-        left=0.374,    # matches your left value
-        bottom=0.05,   # matches your bottom value
-        right=0.617,   # matches your right value
-        top=0.95,      # matches your top value
-        wspace=0.2,    # matches your wspace value
-        hspace=0.2     # matches your hspace value
+        left=0.3,      # Adjusted for wider figure
+        bottom=0.05,   
+        right=0.7,     # Adjusted for wider figure
+        top=0.95,      
+        wspace=0.2,    
+        hspace=0.2     
     )
     
     # Timeline range setup
@@ -175,9 +175,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     ax.yaxis.set_visible(False)
 
     # Country labels - larger and bolder
-    ax.text(0.35, 1.02, 'Benin', ha='right', va='bottom',
+    ax.text(0.15, 1.02, 'Benin', ha='right', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
-    ax.text(0.65, 1.02, 'Togo', ha='left', va='bottom',
+    ax.text(0.85, 1.02, 'Togo', ha='left', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
 
     def on_key(event):
@@ -186,6 +186,12 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
             print(f"Timeline saved to {filename_base}.png and {filename_base}.svg")
 
+    # Save figures immediately with tight bbox
+    plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
+    print(f"Timeline saved to {filename_base}.png and {filename_base}.svg")
+
+    # Optional: keep the interactive save functionality
     fig.canvas.mpl_connect('key_press_event', on_key)
     plt.show()
 
@@ -205,7 +211,9 @@ for item in data:
 
 # Define manual positions
 manual_positions = {
-    "GBEEB founded": 0.15  # Move it far to the left (less than 0.35, which is the default Benin position)
+    "GBEEB founded": 0.15,         # Far left
+    "ILACI foundation\nstone laid": 0.15,  # Same position as GBEEB
+    "8th GBUAF\nTriennial Congress": 0.85  # Far right
 }
 
 # Create Religion timeline with manual positions
@@ -213,7 +221,7 @@ create_timeline(data, ['Religion'],
                os.path.join(current_dir, 'Religion_Timeline'),
                manual_positions=manual_positions)
 
-# Create Education and Politics timeline
+# Create Education and Politics timeline with the same figure parameters
 create_timeline(data, ['Education', 'Politics'],
                os.path.join(current_dir, 'Education_Politics_Timeline'))
 
