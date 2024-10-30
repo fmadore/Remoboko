@@ -130,7 +130,6 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "RAJEC Benin founded",
             "CIUB officially recognised",
             "Independence of Togo",
-            "École Nouvelle reform",
             "University of Kara founded",
             "Independence of Benin",
             "UB renamed University of Lomé",
@@ -139,7 +138,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "Mathieu Kérékou seizes power",
             "Official inauguration of UB",
             "University of Benin founded"
-        ]
+        ]  # Removed "École Nouvelle reform" from no_wrap_events
         
         # Special cases for custom line breaks
         if text == "UDahomey renamed National University of Benin":
@@ -148,6 +147,8 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             return "UNB renamed\nUniversity of Abomey-Calavi"
         elif text == "University of Parakou founded":
             return "University of\nParakou founded"
+        elif text == "École Nouvelle reform":
+            return "École Nouvelle\nreform"
             
         if text in no_wrap_events:
             return text  # Don't wrap these texts
@@ -174,7 +175,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
         
         for date, event in events:
             if event == "École Nouvelle reform" and country == "Togo":
-                text_x = 0.55  # Togo side, closer to center
+                text_x = 0.58  # Changed from 0.55 to 0.58 - moved further from center
             elif event == "Youth associations banned":
                 text_x = 0.53  # Even closer to center
             elif event == "Official inauguration of UB":
@@ -182,7 +183,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "University of Benin founded":
                 text_x = 0.60  # Changed to be closer to center
             elif event == "École Nouvelle reform" and country == "Benin":
-                text_x = 0.47  # Close to center
+                text_x = 0.46  # Close to center
             elif event == "Dahomean May":
                 text_x = 0.45  # Close to center
             elif event == "Mathieu Kérékou seizes power":
@@ -273,7 +274,8 @@ religion_positions = {
 }
 
 education_politics_positions = {
-    "University of\nParakou founded": 0.42  # IMPORTANT: Must match the wrapped text exactly!
+    "University of\nParakou founded": 0.46,  # Position for Parakou
+    "École Nouvelle\nreform": 0.46   # Keep same as Parakou
 }
 
 # Create Religion timeline with its specific positions
