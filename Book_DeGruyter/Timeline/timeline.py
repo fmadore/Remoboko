@@ -13,6 +13,12 @@ class DraggableTextBox:
     def __init__(self, text_obj):
         self.text_obj = text_obj
         self.press = None
+        self.background = None
+        
+        # Make text box always pickable
+        self.text_obj.set_picker(True)
+        if self.text_obj.get_bbox_patch():
+            self.text_obj.get_bbox_patch().set_picker(True)
         
         # Connect events
         self.cid_press = text_obj.figure.canvas.mpl_connect(
@@ -27,47 +33,43 @@ class DraggableTextBox:
         if event.inaxes != self.text_obj.axes:
             return
         
-        # Check if click is on text
         contains, _ = self.text_obj.contains(event)
         if not contains:
             return
             
         # Store current position and mouse coordinates
-        x0, y0 = self.text_obj.get_position()
-        # Convert y position to float if it's a Timestamp
-        if isinstance(y0, pd.Timestamp):
-            y0 = mdates.date2num(y0)
-        self.press = (x0, y0)
-        self.mouse_x = event.xdata
-        self.mouse_y = event.ydata
+        self.press = self.text_obj.get_position()
+        self.mouse_start = (event.xdata, event.ydata)
 
     def on_motion(self, event):
         """Called when mouse is moved"""
-        if self.press is None or event.inaxes != self.text_obj.axes:
+        if self.press is None:
+            return
+        if event.inaxes != self.text_obj.axes or event.xdata is None or event.ydata is None:
             return
 
         # Calculate movement
-        dx = event.xdata - self.mouse_x
-        dy = event.ydata - self.mouse_y
+        dx = event.xdata - self.mouse_start[0]
+        dy = event.ydata - self.mouse_start[1]
         
-        # Update position using float values
-        x0, y0 = self.press
-        new_x = x0 + dx
-        new_y = y0 + dy
-        
-        self.text_obj.set_position((new_x, new_y))
+        # Update position
+        new_pos = (self.press[0] + dx, self.press[1] + dy)
+        self.text_obj.set_position(new_pos)
         self.text_obj.figure.canvas.draw_idle()
 
     def on_release(self, event):
         """Called when mouse button is released"""
         self.press = None
-        self.text_obj.figure.canvas.draw_idle()
+        self.mouse_start = None
+        if self.text_obj.figure:  # Check if figure still exists
+            self.text_obj.figure.canvas.draw_idle()
 
     def disconnect(self):
         """Disconnect all callbacks"""
-        self.text_obj.figure.canvas.mpl_disconnect(self.cid_press)
-        self.text_obj.figure.canvas.mpl_disconnect(self.cid_motion)
-        self.text_obj.figure.canvas.mpl_disconnect(self.cid_release)
+        if self.text_obj.figure:  # Check if figure still exists
+            self.text_obj.figure.canvas.mpl_disconnect(self.cid_press)
+            self.text_obj.figure.canvas.mpl_disconnect(self.cid_motion)
+            self.text_obj.figure.canvas.mpl_disconnect(self.cid_release)
 
 def create_timeline(data, categories, filename_base):
     filtered_data = [item for item in data if item['category'] in categories]
@@ -79,6 +81,16 @@ def create_timeline(data, categories, filename_base):
     width_inches = 4.5  # narrow width for book column
     height_inches = 8   # proportional height
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
+    
+    # Set specific subplot parameters from the beginning
+    plt.subplots_adjust(
+        left=0.374,    # matches your left value
+        bottom=0.05,   # matches your bottom value
+        right=0.617,   # matches your right value
+        top=0.95,      # matches your top value
+        wspace=0.2,    # matches your wspace value
+        hspace=0.2     # matches your hspace value
+    )
     
     # Timeline range setup
     min_date = min(df['date'])
@@ -155,9 +167,6 @@ def create_timeline(data, categories, filename_base):
             transform=ax.transAxes, fontsize=14, fontweight='bold')
     ax.text(0.65, 1.02, 'Togo', ha='left', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
-
-    # Even tighter margins
-    plt.subplots_adjust(left=0.01, right=0.99, bottom=0.05, top=0.95)
 
     def on_key(event):
         if event.key == 's':
