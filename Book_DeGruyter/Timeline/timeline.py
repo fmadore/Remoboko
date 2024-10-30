@@ -4,9 +4,58 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import os
 import textwrap
+from matplotlib.patches import Rectangle
 
 # Set the font to a Unicode-compatible font
 plt.rcParams['font.family'] = 'DejaVu Sans'
+
+class DraggableTextBox:
+    def __init__(self, text_obj):
+        self.text_obj = text_obj
+        self.press = None
+        self.background = None
+        
+        # Get the bbox patch
+        self.bbox_patch = text_obj.get_bbox_patch()
+        
+        # Make both text and bbox pickable
+        self.text_obj.set_picker(5)  # 5 points tolerance
+        if self.bbox_patch:
+            self.bbox_patch.set_picker(5)
+        
+        self.connect()
+
+    def connect(self):
+        self.cidpress = self.text_obj.figure.canvas.mpl_connect('button_press_event', self.on_press)
+        self.cidrelease = self.text_obj.figure.canvas.mpl_connect('button_release_event', self.on_release)
+        self.cidmotion = self.text_obj.figure.canvas.mpl_connect('motion_notify_event', self.on_motion)
+
+    def on_press(self, event):
+        if event.inaxes != self.text_obj.axes:
+            return
+        contains, attrd = self.text_obj.contains(event)
+        if not contains:
+            return
+        x0, y0 = self.text_obj.get_position()
+        # Convert y0 to float if it's a Timestamp
+        if isinstance(y0, pd.Timestamp):
+            y0 = mdates.date2num(y0)
+        self.press = x0, y0, event.xdata, event.ydata
+
+    def on_motion(self, event):
+        if self.press is None:
+            return
+        if event.inaxes != self.text_obj.axes:
+            return
+        x0, y0, xpress, ypress = self.press
+        dx = event.xdata - xpress
+        dy = event.ydata - ypress
+        self.text_obj.set_position((x0 + dx, y0 + dy))
+        self.text_obj.figure.canvas.draw()
+
+    def on_release(self, event):
+        self.press = None
+        self.text_obj.figure.canvas.draw()
 
 def create_timeline(data, categories, filename_base):
     filtered_data = [item for item in data if item['category'] in categories]
@@ -41,6 +90,9 @@ def create_timeline(data, categories, filename_base):
     def wrap_text(text, max_width=25):
         return '\n'.join(textwrap.wrap(text, width=max_width))
 
+    # Initialize draggable_texts list
+    draggable_texts = []
+
     # Create events_by_country dictionary
     events_by_country = {'Benin': [], 'Togo': []}
     for _, row in df.iterrows():
@@ -62,20 +114,24 @@ def create_timeline(data, categories, filename_base):
             ax.plot([line_start, text_x], [date, date],
                    color='gray', linestyle='-', linewidth=0.5)
             
-            # Add event text box
+            # Add event text box with increased picking radius
             bbox_props = dict(
                 boxstyle="round,pad=0.5",
                 fc="white",
                 ec="black",
                 alpha=1.0,
-                linewidth=1.0
+                linewidth=1.0,
+                picker=True
             )
             
-            ax.text(text_x, date, event,
-                   verticalalignment='center',
-                   horizontalalignment=align,
-                   fontsize=9,
-                   bbox=bbox_props)
+            text_obj = ax.text(text_x, date, event,
+                             verticalalignment='center',
+                             horizontalalignment=align,
+                             fontsize=9,
+                             bbox=bbox_props,
+                             picker=True)
+            
+            draggable_texts.append(DraggableTextBox(text_obj))
 
     # Remove all spines and the x-axis
     ax.spines['left'].set_visible(False)
@@ -94,10 +150,14 @@ def create_timeline(data, categories, filename_base):
     # Adjust margins
     plt.subplots_adjust(left=0.2, right=0.9, bottom=0.05, top=0.95)
 
-    # Save files
-    plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
-    plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
-    plt.close()
+    def on_key(event):
+        if event.key == 's':
+            plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
+            plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
+            print(f"Timeline saved to {filename_base}.png and {filename_base}.svg")
+
+    fig.canvas.mpl_connect('key_press_event', on_key)
+    plt.show()
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
