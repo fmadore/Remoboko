@@ -168,7 +168,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             if event == "École Nouvelle reform" and country == "Togo":
                 text_x = 0.55  # Togo side, closer to center
             elif event == "Youth associations banned":
-                text_x = 0.53  # Changed from 0.55 to 0.53 - even closer to center
+                text_x = 0.53  # Even closer to center
             elif event == "Official inauguration of UB":
                 text_x = 0.75  # Closer to center
             elif event == "University of Benin founded":
@@ -181,6 +181,8 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
                 text_x = 0.45  # Close to center
             elif event == "University of Parakou founded":
                 text_x = 0.45  # Same close position as others
+            elif event == "University of Dahomey founded":
+                text_x = 0.30  # Added: further from center than default 0.35
             else:
                 # Check if this event has a manual position
                 text_x = manual_positions.get(event, default_x)
