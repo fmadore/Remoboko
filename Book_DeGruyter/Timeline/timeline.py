@@ -124,7 +124,11 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
         # Special cases for events that should stay on one line
         no_wrap_events = [
             "GBUST officially recognised",
-            "8th GBUAF Triennial Congress"
+            "8th GBUAF Triennial Congress",
+            "Ban of religious sects",
+            "Emmaüs Community founded",
+            "CCU construction begins",
+            "RAJEC Benin founded"
         ]
         if text in no_wrap_events:
             return text  # Don't wrap these texts
@@ -220,7 +224,7 @@ for item in data:
 manual_positions = {
     "GBEEB founded": 0.15,         # Far left
     "ILACI foundation\nstone laid": 0.15,  # Same position as GBEEB
-    "8th GBUAF Triennial Congress": 0.85,  # Far right, updated to match unwrapped text
+    "8th GBUAF Triennial Congress": 0.85,  # Far right
     "CIUB officially\nrecognised": 0.40,  # Slightly closer to center than default 0.35
     "GBUST officially recognised": 0.60   # Single line
 }
