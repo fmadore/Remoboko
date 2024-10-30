@@ -128,7 +128,14 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "Ban of religious sects",
             "CCU construction begins",
             "RAJEC Benin founded",
-            "CIUB officially recognised"
+            "CIUB officially recognised",
+            "Independence of Togo",
+            "École Nouvelle reform",
+            "University of Kara founded",
+            "Independence of Benin",
+            "UB renamed University of Lomé",
+            "University of Parakou founded",
+            "University of Dahomey founded"
         ]
         if text in no_wrap_events:
             return text  # Don't wrap these texts
@@ -154,8 +161,15 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             line_start = 0.505
         
         for date, event in events:
-            # Check if this event has a manual position
-            text_x = manual_positions.get(event, default_x)
+            # Special handling for École Nouvelle reform
+            if event == "École Nouvelle reform":
+                if country == "Benin":
+                    text_x = 0.42  # Benin side, closer to center
+                else:
+                    text_x = 0.58  # Togo side, closer to center
+            else:
+                # Check if this event has a manual position
+                text_x = manual_positions.get(event, default_x)
             
             ax.plot([line_start, text_x], [date, date],
                    color='gray', linestyle='-', linewidth=0.5)
@@ -188,7 +202,14 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     # Country labels - larger and bolder
     ax.text(0.15, 1.02, 'Benin', ha='right', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
-    ax.text(0.85, 1.02, 'Togo', ha='left', va='bottom',
+    
+    # Adjust Togo title position based on the category
+    if 'Religion' in categories:
+        togo_x = 1.15  # Changed from 1.05 to 1.15 for even further right
+    else:
+        togo_x = 0.85  # Original position for other timelines
+        
+    ax.text(togo_x, 1.02, 'Togo', ha='left', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
 
     def on_key(event):
@@ -220,20 +241,25 @@ for item in data:
     print(f"\nOriginal: {item['event']}")
     print(f"Wrapped: {wrapped}")
 
-# Define manual positions
-manual_positions = {
+# Define separate manual positions for each timeline
+religion_positions = {
     "GBEEB founded": 0.15,         # Far left
-    "ILACI foundation\nstone laid": 0.15,  # Same position as GBEEB
-    "CIUB officially recognised": 0.45,  # Changed from 0.40 to 0.45 to be closer to center
+    "ILACI foundation stone laid": 0.15,  # Same position as GBEEB
+    "CIUB officially recognised": 0.45,  # Close to center
 }
 
-# Create Religion timeline with manual positions
+education_politics_positions = {
+    "Dahomean May": 0.42,          # Closer to center from Benin side
+}
+
+# Create Religion timeline with its specific positions
 create_timeline(data, ['Religion'], 
                os.path.join(current_dir, 'Religion_Timeline'),
-               manual_positions=manual_positions)
+               manual_positions=religion_positions)
 
-# Create Education and Politics timeline with the same figure parameters
+# Create Education and Politics timeline with its specific positions
 create_timeline(data, ['Education', 'Politics'],
-               os.path.join(current_dir, 'Education_Politics_Timeline'))
+               os.path.join(current_dir, 'Education_Politics_Timeline'),
+               manual_positions=education_politics_positions)
 
 print("\nTimelines have been created successfully in both PNG and SVG formats.")
