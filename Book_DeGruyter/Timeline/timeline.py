@@ -121,6 +121,13 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
                fontsize=11, backgroundcolor='white')
 
     def wrap_text(text, max_width=18):  # Slightly reduced width to accommodate larger font
+        # Special cases for events that should stay on one line
+        no_wrap_events = [
+            "GBUST officially recognised",
+            "8th GBUAF Triennial Congress"
+        ]
+        if text in no_wrap_events:
+            return text  # Don't wrap these texts
         return '\n'.join(textwrap.wrap(text, width=max_width))
 
     # Initialize draggable_texts list
@@ -213,8 +220,9 @@ for item in data:
 manual_positions = {
     "GBEEB founded": 0.15,         # Far left
     "ILACI foundation\nstone laid": 0.15,  # Same position as GBEEB
-    "8th GBUAF\nTriennial Congress": 0.85,  # Far right
-    "CIUB officially\nrecognised": 0.40  # Slightly closer to center than default 0.35
+    "8th GBUAF Triennial Congress": 0.85,  # Far right, updated to match unwrapped text
+    "CIUB officially\nrecognised": 0.40,  # Slightly closer to center than default 0.35
+    "GBUST officially recognised": 0.60   # Single line
 }
 
 # Create Religion timeline with manual positions
