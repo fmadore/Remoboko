@@ -187,7 +187,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "University of Parakou founded":
                 text_x = 0.45  # Same close position as others
             elif event == "University of Dahomey founded":
-                text_x = 0.30  # Further from center than default
+                text_x = 0.35  # Further from center than default
             elif event == "UDahomey renamed National University of Benin":
                 text_x = 0.15  # Far from center
             else:
