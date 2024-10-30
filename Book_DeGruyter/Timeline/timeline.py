@@ -63,64 +63,62 @@ def create_timeline(data, categories, filename_base):
     df['date'] = pd.to_datetime(df['date'])
     df = df.sort_values('date', ascending=True)
 
-    width_inches = 16.51 / 2.54
-    height_inches = 24.13 / 2.54
+    # Compact figure size suitable for book
+    width_inches = 4.5  # narrow width for book column
+    height_inches = 8   # proportional height
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
     
-    # Set up the timeline range
+    # Timeline range setup
     min_date = min(df['date'])
     max_date = max(df['date'])
-    
-    # Round to nearest 5 years for clean boundaries
     start_year = (min_date.year // 5) * 5
     end_year = ((max_date.year + 4) // 5) * 5
     
     ax.set_ylim([pd.Timestamp(f"{end_year}-01-01"), pd.Timestamp(f"{start_year}-01-01")])
     
-    # Create vertical lines for timeline
-    ax.axvline(x=0.5, color='black', linestyle='-', linewidth=0.5)
+    # Central timeline
+    ax.axvline(x=0.5, color='black', linestyle='-', linewidth=0.75)
 
-    # Set up year labels on the central axis
+    # Year labels
     years = range(start_year, end_year + 1, 5)
     for year in years:
         y_pos = pd.Timestamp(f"{year}-01-01")
-        ax.axhline(y=y_pos, color='lightgray', linestyle='--', linewidth=0.5, xmin=0.48, xmax=0.52)
-        ax.text(0.5, y_pos, str(year), ha='center', va='center', fontsize=9)
+        ax.text(0.5, y_pos, str(year), ha='center', va='center', 
+               fontsize=9, backgroundcolor='white')
 
-    def wrap_text(text, max_width=25):
+    def wrap_text(text, max_width=20):  # Narrower text boxes
         return '\n'.join(textwrap.wrap(text, width=max_width))
 
     # Initialize draggable_texts list
     draggable_texts = []
 
-    # Create events_by_country dictionary
+    # Process events
     events_by_country = {'Benin': [], 'Togo': []}
     for _, row in df.iterrows():
         events_by_country[row['country']].append((row['date'], wrap_text(row['event'])))
 
-    # Process events for both countries
+    # Position text boxes extremely close to timeline
     for country, events in events_by_country.items():
         if country == 'Benin':
-            text_x = 0.15
+            text_x = 0.35  # Much closer to timeline
             align = 'right'
-            line_start = 0.45
+            line_start = 0.495  # Very short line
         else:  # Togo
-            text_x = 0.85
+            text_x = 0.65  # Much closer to timeline
             align = 'left'
-            line_start = 0.55
+            line_start = 0.505  # Very short line
         
         for date, event in events:
-            # Draw connecting line
+            # Minimal connecting lines
             ax.plot([line_start, text_x], [date, date],
                    color='gray', linestyle='-', linewidth=0.5)
             
-            # Add event text box with increased picking radius
             bbox_props = dict(
-                boxstyle="round,pad=0.5",
+                boxstyle="round,pad=0.2",  # Reduced padding
                 fc="white",
                 ec="black",
                 alpha=1.0,
-                linewidth=1.0,
+                linewidth=0.5,
                 picker=True
             )
             
@@ -133,7 +131,7 @@ def create_timeline(data, categories, filename_base):
             
             draggable_texts.append(DraggableTextBox(text_obj))
 
-    # Remove all spines and the x-axis
+    # Clean up plot
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
@@ -141,14 +139,14 @@ def create_timeline(data, categories, filename_base):
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)
 
-    # Add country labels
-    ax.text(0.15, 1.02, 'Benin', ha='center', va='bottom',
-            transform=ax.transAxes, fontsize=14, fontweight='bold')
-    ax.text(0.85, 1.02, 'Togo', ha='center', va='bottom',
-            transform=ax.transAxes, fontsize=14, fontweight='bold')
+    # Country labels - moved closer to timeline
+    ax.text(0.35, 1.02, 'Benin', ha='right', va='bottom',
+            transform=ax.transAxes, fontsize=10, fontweight='bold')
+    ax.text(0.65, 1.02, 'Togo', ha='left', va='bottom',
+            transform=ax.transAxes, fontsize=10, fontweight='bold')
 
-    # Adjust margins
-    plt.subplots_adjust(left=0.2, right=0.9, bottom=0.05, top=0.95)
+    # Even tighter margins
+    plt.subplots_adjust(left=0.01, right=0.99, bottom=0.05, top=0.95)
 
     def on_key(event):
         if event.key == 's':
