@@ -135,7 +135,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "Independence of Benin",
             "UB renamed University of Lomé",
             "University of Parakou founded",
-            "University of Dahomey founded"
+            "University of Dahomey founded",
+            "Official inauguration of UB",
+            "Youth associations banned"
         ]
         if text in no_wrap_events:
             return text  # Don't wrap these texts
