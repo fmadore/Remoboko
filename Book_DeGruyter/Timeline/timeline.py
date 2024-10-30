@@ -137,7 +137,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "University of Parakou founded",
             "University of Dahomey founded",
             "Youth associations banned",
-            "Mathieu Kérékou seizes power"
+            "Mathieu Kérékou seizes power",
+            "Official inauguration of UB",
+            "University of Benin founded"
         ]
         if text in no_wrap_events:
             return text  # Don't wrap these texts
@@ -168,7 +170,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "Youth associations banned":
                 text_x = 0.55  # Same position as École Nouvelle reform Togo
             elif event == "Official inauguration of UB":
-                text_x = 0.90  # Far from center
+                text_x = 0.75  # Closer to center
+            elif event == "University of Benin founded":
+                text_x = 0.75  # Same position as Official inauguration of UB
             elif event == "École Nouvelle reform" and country == "Benin":
                 text_x = 0.45  # Close to center
             elif event == "Dahomean May":
@@ -176,7 +180,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "Mathieu Kérékou seizes power":
                 text_x = 0.45  # Close to center
             elif event == "University of Parakou founded":
-                text_x = 0.45  # Added: same close position as others
+                text_x = 0.45  # Same close position as others
             else:
                 # Check if this event has a manual position
                 text_x = manual_positions.get(event, default_x)
