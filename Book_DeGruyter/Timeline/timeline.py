@@ -179,13 +179,13 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "University of Benin founded":
                 text_x = 0.60  # Changed to be closer to center
             elif event == "École Nouvelle reform" and country == "Benin":
-                text_x = 0.45  # Close to center
+                text_x = 0.47  # Close to center
             elif event == "Dahomean May":
                 text_x = 0.45  # Close to center
             elif event == "Mathieu Kérékou seizes power":
                 text_x = 0.45  # Close to center
             elif event == "University of Parakou founded":
-                text_x = 0.45  # Same close position as others
+                text_x = 0.47  # Same close position as others
             elif event == "University of Dahomey founded":
                 text_x = 0.35  # Further from center than default
             elif event == "UDahomey renamed National University of Benin":
