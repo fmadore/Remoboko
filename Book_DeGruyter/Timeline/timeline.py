@@ -88,15 +88,15 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     df = df.sort_values('date', ascending=True)
 
     # Compact figure size suitable for book
-    width_inches = 8.0  # Changed from 9.0 to 8.0 for a middle ground
+    width_inches = 8.0  # Back to a reasonable width
     height_inches = 8   # keep same height
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
     
     # Set specific subplot parameters from the beginning
     plt.subplots_adjust(
-        left=0.22,     # Slightly adjusted from 0.20
+        left=0.22,     # Back to original values
         bottom=0.05,   
-        right=0.78,    # Slightly adjusted from 0.80
+        right=0.78,    
         top=0.95,      
         wspace=0.2,    
         hspace=0.2     
@@ -141,6 +141,11 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "Official inauguration of UB",
             "University of Benin founded"
         ]
+        
+        # Special case for UDahomey renamed event - force it to three lines
+        if text == "UDahomey renamed National University of Benin":
+            return "UDahomey\nrenamed National\nUniversity of Benin"
+            
         if text in no_wrap_events:
             return text  # Don't wrap these texts
         return '\n'.join(textwrap.wrap(text, width=max_width))
@@ -170,9 +175,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "Youth associations banned":
                 text_x = 0.53  # Even closer to center
             elif event == "Official inauguration of UB":
-                text_x = 0.75  # Closer to center
+                text_x = 0.60  # Changed to be closer to center
             elif event == "University of Benin founded":
-                text_x = 0.75  # Same position as Official inauguration of UB
+                text_x = 0.60  # Changed to be closer to center
             elif event == "École Nouvelle reform" and country == "Benin":
                 text_x = 0.45  # Close to center
             elif event == "Dahomean May":
@@ -182,7 +187,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             elif event == "University of Parakou founded":
                 text_x = 0.45  # Same close position as others
             elif event == "University of Dahomey founded":
-                text_x = 0.30  # Added: further from center than default 0.35
+                text_x = 0.30  # Further from center than default
+            elif event == "UDahomey renamed National University of Benin":
+                text_x = 0.15  # Far from center
             else:
                 # Check if this event has a manual position
                 text_x = manual_positions.get(event, default_x)
@@ -228,16 +235,16 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     ax.text(togo_x, 1.02, 'Togo', ha='left', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
 
+    # Save figures with tight bbox restored
+    plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
+    print(f"Timeline saved to {filename_base}.png and {filename_base}.svg")
+
     def on_key(event):
         if event.key == 's':
             plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
             plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
             print(f"Timeline saved to {filename_base}.png and {filename_base}.svg")
-
-    # Save figures immediately with tight bbox
-    plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
-    plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
-    print(f"Timeline saved to {filename_base}.png and {filename_base}.svg")
 
     # Optional: keep the interactive save functionality
     fig.canvas.mpl_connect('key_press_event', on_key)
@@ -265,7 +272,7 @@ religion_positions = {
 }
 
 education_politics_positions = {
-    "Dahomean May": 0.42,          # Closer to center from Benin side
+    # Removed "Dahomean May" from here since we're handling it in the text box positioning
 }
 
 # Create Religion timeline with its specific positions
