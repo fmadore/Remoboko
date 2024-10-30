@@ -262,8 +262,9 @@ education_politics_positions = {
     "University of\nParakou founded": 0.46,  # Position for Parakou
     "École Nouvelle\nreform": 0.46,   # Benin version
     "Youth associations banned": 0.53,
-    "Official inauguration of UB": 0.65,  # Changed from 0.60 to 0.65 - further from center
-    "University of Benin founded": 0.60
+    "Official inauguration of UB": 0.65,  # Further from center
+    "University of Benin founded": 0.60,
+    "Dahomean May": 0.46  # Added: same position as École Nouvelle reform
 }
 
 # Create Religion timeline with its specific positions
