@@ -17,43 +17,52 @@ def create_timeline(data, categories, filename_base):
     width_inches = 16.51 / 2.54
     height_inches = 24.13 / 2.54
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
-    plt.subplots_adjust(left=0.15, right=0.95, bottom=0.05, top=0.95)
-
-    ax.axvline(x=0.5, color='black', linestyle='-', linewidth=1.0)
-
+    
+    # Set up the timeline range
     min_date = min(df['date'])
     max_date = max(df['date'])
-    ax.set_ylim([max_date + pd.DateOffset(years=1), min_date - pd.DateOffset(years=1)])
+    
+    # Round to nearest 5 years for clean boundaries
+    start_year = (min_date.year // 5) * 5
+    end_year = ((max_date.year + 4) // 5) * 5
+    
+    ax.set_ylim([pd.Timestamp(f"{end_year}-01-01"), pd.Timestamp(f"{start_year}-01-01")])
+    
+    # Create vertical lines for timeline
+    ax.axvline(x=0.5, color='black', linestyle='-', linewidth=0.5)
+
+    # Set up year labels on the central axis
+    years = range(start_year, end_year + 1, 5)
+    for year in years:
+        y_pos = pd.Timestamp(f"{year}-01-01")
+        ax.axhline(y=y_pos, color='lightgray', linestyle='--', linewidth=0.5, xmin=0.48, xmax=0.52)
+        ax.text(0.5, y_pos, str(year), ha='center', va='center', fontsize=9)
 
     def wrap_text(text, max_width=25):
-        wrapped = textwrap.wrap(text, width=max_width)
-        return '\n'.join(wrapped)
+        return '\n'.join(textwrap.wrap(text, width=max_width))
 
+    # Create events_by_country dictionary
     events_by_country = {'Benin': [], 'Togo': []}
     for _, row in df.iterrows():
         events_by_country[row['country']].append((row['date'], wrap_text(row['event'])))
 
+    # Process events for both countries
     for country, events in events_by_country.items():
-        # Determine x positions based on country
         if country == 'Benin':
-            base_x = 0.25
-            text_x = 0.1  # Keep text boxes in left half
+            text_x = 0.15
             align = 'right'
+            line_start = 0.45
         else:  # Togo
-            base_x = 0.75
-            text_x = 0.9  # Keep text boxes in right half
+            text_x = 0.85
             align = 'left'
+            line_start = 0.55
         
-        y_offset = 0
         for date, event in events:
-            date_num = mdates.date2num(date)
-            y_position = date_num + y_offset
-            
-            # Draw connecting line from timeline to text box
-            ax.plot([base_x, text_x], [y_position, y_position],
+            # Draw connecting line
+            ax.plot([line_start, text_x], [date, date],
                    color='gray', linestyle='-', linewidth=0.5)
             
-            # Add text box
+            # Add event text box
             bbox_props = dict(
                 boxstyle="round,pad=0.5",
                 fc="white",
@@ -62,39 +71,32 @@ def create_timeline(data, categories, filename_base):
                 linewidth=1.0
             )
             
-            text = ax.text(text_x, y_position, event,
-                         verticalalignment='center',
-                         horizontalalignment=align,
-                         fontsize=9,
-                         bbox=bbox_props)
-            
-            # Adjust spacing between events
-            bbox = text.get_bbox_patch()
-            y_offset += bbox.get_height() / (max_date - min_date).days * 2.2
+            ax.text(text_x, date, event,
+                   verticalalignment='center',
+                   horizontalalignment=align,
+                   fontsize=9,
+                   bbox=bbox_props)
 
-    ax.yaxis_date()
-    date_format = mdates.DateFormatter('%Y')
-    ax.yaxis.set_major_formatter(date_format)
-    ax.yaxis.set_major_locator(mdates.YearLocator(5))
-
-    ax.xaxis.set_visible(False)
+    # Remove all spines and the x-axis
+    ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
+    ax.xaxis.set_visible(False)
+    ax.yaxis.set_visible(False)
 
-    ax.text(0.25, 1.02, 'Benin', ha='center', va='bottom',
+    # Add country labels
+    ax.text(0.15, 1.02, 'Benin', ha='center', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
-    ax.text(0.75, 1.02, 'Togo', ha='center', va='bottom',
+    ax.text(0.85, 1.02, 'Togo', ha='center', va='bottom',
             transform=ax.transAxes, fontsize=14, fontweight='bold')
 
+    # Adjust margins
     plt.subplots_adjust(left=0.2, right=0.9, bottom=0.05, top=0.95)
 
-    # Save as PNG
+    # Save files
     plt.savefig(f"{filename_base}.png", dpi=300, bbox_inches='tight')
-    
-    # Save as SVG
     plt.savefig(f"{filename_base}.svg", format='svg', bbox_inches='tight')
-    
     plt.close()
 
 # Get the current directory
