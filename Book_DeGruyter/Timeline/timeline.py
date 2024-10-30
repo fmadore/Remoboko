@@ -176,7 +176,7 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
         for date, event in events:
             # Special handling for École Nouvelle reform in Togo
             if event == "École Nouvelle\nreform" and country == "Togo":
-                text_x = 0.58  # Specific position for Togo version
+                text_x = 0.54  # Changed from 0.55 to 0.54 - slightly closer to center
             else:
                 # Check if this event has a manual position
                 text_x = manual_positions.get(event, default_x)
@@ -260,7 +260,7 @@ religion_positions = {
 
 education_politics_positions = {
     "University of\nParakou founded": 0.46,  # Position for Parakou
-    "École Nouvelle\nreform": 0.46,   # Benin version
+    "École Nouvelle\nreform": 0.46,   # Changed back to 0.46 - Benin version
     "Youth associations banned": 0.53,
     "Official inauguration of UB": 0.60,
     "University of Benin founded": 0.60
