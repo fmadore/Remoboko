@@ -136,7 +136,8 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             "UB renamed University of Lomé",
             "University of Parakou founded",
             "University of Dahomey founded",
-            "Youth associations banned"
+            "Youth associations banned",
+            "Mathieu Kérékou seizes power"
         ]
         if text in no_wrap_events:
             return text  # Don't wrap these texts
@@ -162,15 +163,20 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             line_start = 0.505
         
         for date, event in events:
-            # Special handling for École Nouvelle reform, Youth associations banned, and Official inauguration of UB
             if event == "École Nouvelle reform" and country == "Togo":
                 text_x = 0.55  # Togo side, closer to center
-            elif event == "Youth associations banned":  # Fixed exact event name
+            elif event == "Youth associations banned":
                 text_x = 0.55  # Same position as École Nouvelle reform Togo
-            elif event == "Official inauguration of UB":  # Fixed exact event name
-                text_x = 0.90  # Changed from 0.95 to 0.90 - slightly less far from center
+            elif event == "Official inauguration of UB":
+                text_x = 0.90  # Far from center
             elif event == "École Nouvelle reform" and country == "Benin":
-                text_x = 0.42  # Benin side, closer to center
+                text_x = 0.45  # Close to center
+            elif event == "Dahomean May":
+                text_x = 0.45  # Close to center
+            elif event == "Mathieu Kérékou seizes power":
+                text_x = 0.45  # Close to center
+            elif event == "University of Parakou founded":
+                text_x = 0.45  # Added: same close position as others
             else:
                 # Check if this event has a manual position
                 text_x = manual_positions.get(event, default_x)
