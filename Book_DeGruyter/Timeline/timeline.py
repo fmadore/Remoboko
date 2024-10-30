@@ -88,15 +88,15 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
     df = df.sort_values('date', ascending=True)
 
     # Compact figure size suitable for book
-    width_inches = 6.0  # Increased from 4.5 to give more room
+    width_inches = 7.5  # Increased from 6.0 to give more room
     height_inches = 8   # keep same height
     fig, ax = plt.subplots(figsize=(width_inches, height_inches))
     
     # Set specific subplot parameters from the beginning
     plt.subplots_adjust(
-        left=0.3,      # Adjusted for wider figure
+        left=0.25,     # Moved left margin in slightly
         bottom=0.05,   
-        right=0.7,     # Adjusted for wider figure
+        right=0.75,    # Moved right margin out slightly
         top=0.95,      
         wspace=0.2,    
         hspace=0.2     
@@ -213,7 +213,8 @@ for item in data:
 manual_positions = {
     "GBEEB founded": 0.15,         # Far left
     "ILACI foundation\nstone laid": 0.15,  # Same position as GBEEB
-    "8th GBUAF\nTriennial Congress": 0.85  # Far right
+    "8th GBUAF\nTriennial Congress": 0.85,  # Far right
+    "CIUB officially\nrecognised": 0.40  # Slightly closer to center than default 0.35
 }
 
 # Create Religion timeline with manual positions
