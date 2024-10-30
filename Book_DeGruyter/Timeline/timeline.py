@@ -174,24 +174,9 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             line_start = 0.505
         
         for date, event in events:
-            if event == "École Nouvelle reform" and country == "Togo":
-                text_x = 0.58  # Changed from 0.55 to 0.58 - moved further from center
-            elif event == "Youth associations banned":
-                text_x = 0.53  # Even closer to center
-            elif event == "Official inauguration of UB":
-                text_x = 0.60  # Changed to be closer to center
-            elif event == "University of Benin founded":
-                text_x = 0.60  # Changed to be closer to center
-            elif event == "École Nouvelle reform" and country == "Benin":
-                text_x = 0.46  # Close to center
-            elif event == "Dahomean May":
-                text_x = 0.45  # Close to center
-            elif event == "Mathieu Kérékou seizes power":
-                text_x = 0.45  # Close to center
-            elif event == "University of Dahomey founded":
-                text_x = 0.35  # Further from center than default
-            elif event == "UDahomey renamed National University of Benin":
-                text_x = 0.15  # Far from center
+            # Special handling for École Nouvelle reform in Togo
+            if event == "École Nouvelle\nreform" and country == "Togo":
+                text_x = 0.58  # Specific position for Togo version
             else:
                 # Check if this event has a manual position
                 text_x = manual_positions.get(event, default_x)
@@ -275,7 +260,10 @@ religion_positions = {
 
 education_politics_positions = {
     "University of\nParakou founded": 0.46,  # Position for Parakou
-    "École Nouvelle\nreform": 0.46   # Keep same as Parakou
+    "École Nouvelle\nreform": 0.46,   # Benin version
+    "Youth associations banned": 0.53,
+    "Official inauguration of UB": 0.60,
+    "University of Benin founded": 0.60
 }
 
 # Create Religion timeline with its specific positions
