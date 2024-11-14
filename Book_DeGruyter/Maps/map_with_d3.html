@@ -74,9 +74,62 @@
             font-family: 'Open Sans', sans-serif;
             font-size: 13px;
         }
+        #search-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 300px;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        #autocomplete-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        #autocomplete-list li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        #autocomplete-list li:hover {
+            background-color: #f5f5f5;
+        }
+
+        #autocomplete-list li:last-child {
+            border-bottom: none;
+        }
+
+        .location-category {
+            font-size: 12px;
+            color: #666;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search locations...">
+        <ul id="autocomplete-list"></ul>
+    </div>
     <div id="map"></div>
     <div id="legend">
         <div class="legend-title">Points of interest</div>
@@ -95,8 +148,10 @@
     </div>
     <script>
         // Initialize the map
-        const map = L.map('map').setView([7, 2], 6);  // Centered on Benin/Togo region
+        const map = L.map('map').setView([7, 2], 6);
         const markers = { Benin: [], Togo: [], 'West Africa': [] };
+        let allLocations = [];
+        let activeMarker = null;
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -106,6 +161,14 @@
 
         // Load and add markers from GeoJSON
         d3.json('locations.json').then(function(geojson) {
+            // Store all locations for search
+            allLocations = geojson.features.map(feature => ({
+                name: feature.properties.name,
+                country: feature.properties.country,
+                coordinates: feature.geometry.coordinates,
+                color: feature.properties.color
+            }));
+
             geojson.features.forEach(feature => {
                 const coords = feature.geometry.coordinates;
                 const marker = L.circleMarker([coords[1], coords[0]], {
@@ -119,7 +182,8 @@
                 .bindPopup(feature.properties.name)
                 .addTo(map);
 
-                // Store marker reference
+                // Store marker reference with its name
+                marker.locationName = feature.properties.name;
                 markers[feature.properties.country].push(marker);
 
                 // Add label
@@ -135,6 +199,79 @@
             });
         });
 
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const autocompleteList = document.getElementById('autocomplete-list');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            if (searchText.length < 2) {
+                autocompleteList.style.display = 'none';
+                return;
+            }
+
+            const matches = allLocations.filter(location => 
+                location.name.toLowerCase().includes(searchText)
+            );
+
+            displayAutocompleteResults(matches);
+        });
+
+        function displayAutocompleteResults(matches) {
+            if (matches.length === 0) {
+                autocompleteList.style.display = 'none';
+                return;
+            }
+
+            autocompleteList.innerHTML = matches
+                .map(location => `
+                    <li onclick="selectLocation('${location.name}', [${location.coordinates[1]}, ${location.coordinates[0]}])">
+                        ${location.name}
+                        <span class="location-category">${location.country}</span>
+                    </li>
+                `)
+                .join('');
+
+            autocompleteList.style.display = 'block';
+        }
+
+        function selectLocation(name, coordinates) {
+            // Clear previous active marker
+            if (activeMarker) {
+                activeMarker.setStyle({
+                    radius: 5,
+                    fillOpacity: 0.8
+                });
+            }
+
+            // Find and highlight the selected marker
+            Object.values(markers).flat().forEach(marker => {
+                if (marker.locationName === name) {
+                    marker.setStyle({
+                        radius: 8,
+                        fillOpacity: 1
+                    });
+                    activeMarker = marker;
+                    marker.openPopup();
+                }
+            });
+
+            // Center map on selected location
+            map.setView(coordinates, 13);
+            
+            // Clear search
+            searchInput.value = '';
+            autocompleteList.style.display = 'none';
+        }
+
+        // Close autocomplete when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+                autocompleteList.style.display = 'none';
+            }
+        });
+
+        // Existing toggle category function
         function toggleCategory(category) {
             const categoryMarkers = markers[category];
             const isVisible = map.hasLayer(categoryMarkers[0]);
