@@ -1,0 +1,500 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Catholic Chaplaincy of the Universite d'Abomey-Calavi",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.33785,
+          6.42431
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oumar Ibn Khattab Mosque (ACEEMUB)",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.33682,
+          6.41478
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Saint-Dominique Cotonou convent",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.421426082297773,
+          6.3558124810442935
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bon Pasteur parish",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.398772893785117,
+          6.3570692871919885
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Batiment C",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3424,
+          6.41449
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "GBEEB Headquarters",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.4974942706506096,
+          6.372156046604895
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pere Aupiais College",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3474732769556033,
+          6.388846482524025
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Jardin U",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.34348,
+          6.41389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lycee Behanzin",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.6149709960150442,
+          6.479698137720823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "University of Parakou",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.644594132986409,
+          9.337619664615962
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Zogbo parish",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3915586634006054,
+          6.39321349885147
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "CEG Gbegamey",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.4172856048142135,
+          6.359403662261627
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cours secondaire Notre-Dame des Apotres",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.4175906695021823,
+          6.360689579780806
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Universite d'Agriculture de Ketou",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.604034046121942,
+          7.36033789536867
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Universite Nationale des Sciences",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.0208896494132866,
+          7.160651258439677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Institut National Superieur de Technologie",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.725566066731119,
+          6.652598412860042
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sainte-Therese de l'Enfant Jesus parish",
+        "color": "blue",
+        "country": "Benin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3469247082733733,
+          6.388992725155074
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Centre Catholique Universitaire (CCU)",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21188,
+          6.17428
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mosquee de l'AEEMT",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21159,
+          6.1717
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Amphi 600",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21336,
+          6.17349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cite A",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21665,
+          6.16872
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cite B",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21573,
+          6.16807
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Grand Amphi",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21385,
+          6.17522
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Amphi 20 ans",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21318,
+          6.17387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Benches near the Library",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.21462,
+          6.17423
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Quartier de Doumassesse",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.2175,
+          6.1607
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Centre Saint Jean Lome",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.2346652112254952,
+          6.148969553402552
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Village du Benin",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.2173,
+          6.16674
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lycee de Tokoin",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.2280969671765716,
+          6.151229331563282
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "University of Kara",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.2075454248806252,
+          9.53171555198078
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "College Saint-Joseph",
+        "color": "green",
+        "country": "Togo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1.2330026950072206,
+          6.150308464664608
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Universite Felix Houphouet-Boigny",
+        "color": "red",
+        "country": "West Africa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.9862531136424355,
+          5.345626890265415
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cheikh Anta Diop University",
+        "color": "red",
+        "country": "West Africa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -17.461838944294787,
+          14.692546490588276
+        ]
+      }
+    }
+  ]
+}
