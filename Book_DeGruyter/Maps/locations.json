@@ -4,7 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Catholic Chaplaincy of the Universite d'Abomey-Calavi",
+        "name": "Catholic Chaplaincy of the Université d'Abomey-Calavi",
         "color": "blue",
         "country": "Benin"
       },
@@ -64,7 +64,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Batiment C",
+        "name": "Bâtiment C",
         "color": "blue",
         "country": "Benin"
       },
@@ -94,7 +94,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Pere Aupiais College",
+        "name": "Père Aupiais College",
         "color": "blue",
         "country": "Benin"
       },
@@ -184,7 +184,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Cours secondaire Notre-Dame des Apotres",
+        "name": "Cours secondaire Notre-Dame des Apôtres",
         "color": "blue",
         "country": "Benin"
       },
@@ -199,7 +199,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Universite d'Agriculture de Ketou",
+        "name": "Université d'Agriculture de Kétou",
         "color": "blue",
         "country": "Benin"
       },
@@ -214,7 +214,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Universite Nationale des Sciences",
+        "name": "Université Nationale des Sciences",
         "color": "blue",
         "country": "Benin"
       },
@@ -229,7 +229,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Institut National Superieur de Technologie",
+        "name": "Institut National Supérieur de Technologie",
         "color": "blue",
         "country": "Benin"
       },
@@ -244,7 +244,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Sainte-Therese de l'Enfant Jesus parish",
+        "name": "Sainte-Thérèse de l'Enfant Jésus parish",
         "color": "blue",
         "country": "Benin"
       },
@@ -274,7 +274,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Mosquee de l'AEEMT",
+        "name": "AEEMT Mosque",
         "color": "green",
         "country": "Togo"
       },
@@ -304,7 +304,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Cite A",
+        "name": "Cité A",
         "color": "green",
         "country": "Togo"
       },
@@ -319,7 +319,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Cite B",
+        "name": "Cité B",
         "color": "green",
         "country": "Togo"
       },
@@ -379,7 +379,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Quartier de Doumassesse",
+        "name": "Quartier de Doumasséssé",
         "color": "green",
         "country": "Togo"
       },
@@ -394,7 +394,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Centre Saint Jean Lome",
+        "name": "Centre Saint-Jean Lomé",
         "color": "green",
         "country": "Togo"
       },
@@ -409,7 +409,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Village du Benin",
+        "name": "Village du Bénin",
         "color": "green",
         "country": "Togo"
       },
@@ -424,7 +424,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Lycee de Tokoin",
+        "name": "Lycée de Tokoin",
         "color": "green",
         "country": "Togo"
       },
@@ -454,7 +454,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "College Saint-Joseph",
+        "name": "Collège Saint-Joseph",
         "color": "green",
         "country": "Togo"
       },
@@ -469,7 +469,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Universite Felix Houphouet-Boigny",
+        "name": "Université Félix Houphouët-Boigny",
         "color": "red",
         "country": "West Africa"
       },
