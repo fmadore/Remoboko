@@ -15,7 +15,7 @@ with open(data_path, 'r', encoding='utf-8') as f:
 # Process the data
 type_by_quarter = {}
 all_quarters = set()
-min_year, max_year = float('inf'), 2024  # Set max_year to 2024
+min_year, max_year = float('inf'), 2025  # Set max_year to 2025
 total_activities = 0  # Initialize total activities counter
 
 for item in data['rows']:
@@ -31,7 +31,7 @@ for item in data['rows']:
         type_by_quarter[quarter_key][item['Type']] += 1
         total_activities += 1  # Increment total activities counter
 
-# Generate all quarters between min_year and max_year (2024)
+# Generate all quarters between min_year and max_year (2025)
 all_quarters = [f"{year}-Q{quarter}" for year in range(min_year, max_year + 1) for quarter in range(1, 5)]
 all_quarters.sort()
 
@@ -62,7 +62,7 @@ layout = go.Layout(
         tickmode='array',
         tickvals=all_quarters[::4],  # Show every 4th tick to avoid overcrowding
         ticktext=[q.split('-')[0] for q in all_quarters[::4]],  # Show only year for these ticks
-        range=[all_quarters[0], '2024-Q4']  # Set the x-axis range to end at 2024-Q4
+        range=[all_quarters[0], '2025-Q1']  # Set the x-axis range to end at 2025-Q1
     ),
     yaxis=dict(title='Count'),
     barmode='stack',
