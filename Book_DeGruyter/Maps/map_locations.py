@@ -1,6 +1,5 @@
 import folium
-from folium.plugins import MarkerCluster
-from branca.element import Element, Figure
+from folium.plugins import Fullscreen, MiniMap, MousePosition
 import numpy as np
 import os
 
@@ -19,11 +18,11 @@ benin_locations = {
     'Zogbo parish': (6.39321349885147, 2.3915586634006054),
     'CEG Gbégamey': (6.359403662261627, 2.4172856048142135),
     'Cours secondaire Notre-Dame des Apôtres': (6.360689579780806, 2.4175906695021823),
-    'Université d’Agriculture de Kétou ': (7.36033789536867, 2.604034046121942),
+    "Université d'Agriculture de Kétou": (7.36033789536867, 2.604034046121942),
     'Université Nationale des Sciences, Technologies, Ingénierie et Mathématiques': (7.160651258439677, 2.0208896494132866),
     'Institut National Supérieur de Technologie Industrielle de Lokossa': (6.652598412860042, 1.725566066731119),
     'Bon Pasteur parish': (6.357065573930122, 2.398786735584982),
-    'Sainte-Thérèse de l’Enfant Jésus parish': (6.388992725155074, 2.3469247082733733),
+    "Sainte-Thérèse de l'Enfant Jésus parish": (6.388992725155074, 2.3469247082733733),
 }
 
 # Define the locations for Togo
@@ -57,69 +56,33 @@ def calculate_map_center(locations):
     latitudes, longitudes = zip(*locations.values())
     return [np.mean(latitudes), np.mean(longitudes)]
 
-def add_markers_with_labels(map_obj, locations, icon_color, category):
+def create_popup_html(name, coords):
     """
-    Add markers to the map for the given locations with toggleable labels.
+    Create styled HTML popup for a location.
     """
-    feature_group = folium.FeatureGroup(name=category)
-    for name, coords in locations.items():
-        folium.Marker(
-            location=coords,
-            icon=folium.Icon(color=icon_color),
-            popup=name
-        ).add_to(feature_group)
-        folium.map.Marker(
-            coords,
-            icon=folium.DivIcon(
-                icon_size=(150, 36),
-                icon_anchor=(0, 0),
-                html=f'<div class="label-container {category}-label" style="display: none; background-color: white; padding: 2px; border: 1px solid {icon_color}; border-radius: 3px; font-size: 12px; color: {icon_color};">{name}</div>',
-            )
-        ).add_to(feature_group)
-    feature_group.add_to(map_obj)
-
-def create_legend_html():
-    """
-    Create the HTML for the map legend with only the toggle button for labels.
-    """
-    return '''
-    <div style="position: fixed; 
-    bottom: 50px; left: 50px; width: 170px; 
-    border:2px solid grey; z-index:9999; font-size:14px;
-    background-color:white; padding: 10px;
-    ">
-    <div style="font-weight: bold; margin-bottom: 5px;">Points of interest</div>
-    <div style="background-color: white; margin: 2px; padding: 2px;">
-        <i class="fa fa-map-marker" style="color:blue"></i>&nbsp; Benin
-    </div>
-    <div style="background-color: white; margin: 2px; padding: 2px;">
-        <i class="fa fa-map-marker" style="color:green"></i>&nbsp; Togo
-    </div>
-    <div style="background-color: white; margin: 2px; padding: 2px;">
-        <i class="fa fa-map-marker" style="color:red"></i>&nbsp; West Africa
-    </div>
-    <div style="margin-top: 10px;">
-        <button onclick="toggleAllLabels()">Toggle All Labels</button>
-    </div>
+    return f'''
+    <div style="font-family: Arial, sans-serif; width: 220px;">
+        <h4 style="margin: 0 0 8px 0; color: #333; font-size: 14px; line-height: 1.3;">{name}</h4>
+        <p style="margin: 0; font-size: 12px; color: #666;">
+            📍 {coords[0]:.4f}, {coords[1]:.4f}
+        </p>
     </div>
     '''
 
-def add_toggle_script(map_obj):
+def add_markers_with_labels(map_obj, locations, icon_color, icon_name, category):
     """
-    Add JavaScript to handle label toggling.
+    Add markers to the map for the given locations with styled popups.
     """
-    toggle_script = """
-    <script>
-    function toggleAllLabels() {
-        var labels = document.getElementsByClassName('label-container');
-        var displayStyle = labels[0].style.display === 'none' ? 'block' : 'none';
-        for (var i = 0; i < labels.length; i++) {
-            labels[i].style.display = displayStyle;
-        }
-    }
-    </script>
-    """
-    map_obj.get_root().html.add_child(Element(toggle_script))
+    feature_group = folium.FeatureGroup(name=category)
+    for name, coords in locations.items():
+        popup_html = create_popup_html(name, coords)
+        folium.Marker(
+            location=coords,
+            icon=folium.Icon(color=icon_color, icon=icon_name, prefix='fa'),
+            popup=folium.Popup(popup_html, max_width=250),
+            tooltip=name
+        ).add_to(feature_group)
+    feature_group.add_to(map_obj)
 
 # Combine all locations
 all_locations = {**benin_locations, **togo_locations, **west_africa_locations}
@@ -127,23 +90,26 @@ all_locations = {**benin_locations, **togo_locations, **west_africa_locations}
 # Calculate the center of the map
 map_center = calculate_map_center(all_locations)
 
-# Create a base map
-m = folium.Map(location=map_center, zoom_start=8)
+# Create a base map with CartoDB Voyager as default
+m = folium.Map(location=map_center, zoom_start=8, tiles=None)
+
+# Add multiple tile layer options
+folium.TileLayer("CartoDB Voyager", name="Detailed", show=True).add_to(m)
+folium.TileLayer("CartoDB Positron", name="Light").add_to(m)
+folium.TileLayer("CartoDB DarkMatter", name="Dark").add_to(m)
+
+# Add interactive plugins
+Fullscreen(position='topleft').add_to(m)
+MiniMap(position='bottomright', width=120, height=120, toggle_display=True).add_to(m)
+MousePosition(position='bottomleft', prefix='Coordinates:').add_to(m)
 
 # Add markers with labels for Benin, Togo, and West Africa locations
-add_markers_with_labels(m, benin_locations, 'blue', 'benin')
-add_markers_with_labels(m, togo_locations, 'green', 'togo')
-add_markers_with_labels(m, west_africa_locations, 'red', 'west-africa')
+add_markers_with_labels(m, benin_locations, 'darkblue', 'university', 'Benin')
+add_markers_with_labels(m, togo_locations, 'green', 'university', 'Togo')
+add_markers_with_labels(m, west_africa_locations, 'orange', 'university', 'West Africa')
 
-# Add layer control (it will be hidden, but we need it for the toggleLayer function)
-folium.LayerControl().add_to(m)
-
-# Add the legend to the map
-legend_html = create_legend_html()
-m.get_root().html.add_child(Element(legend_html))
-
-# Add the toggle script to the map
-add_toggle_script(m)
+# Add layer control for toggling layers and switching base maps
+folium.LayerControl(collapsed=False).add_to(m)
 
 # Save the map to an HTML file in the same folder as the script
 script_dir = os.path.dirname(os.path.abspath(__file__))
