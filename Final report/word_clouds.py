@@ -1,6 +1,7 @@
 import json
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -9,6 +10,7 @@ import spacy
 from tqdm import tqdm
 import logging
 import os
+import numpy as np
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,7 +30,7 @@ logging.info("Downloading NLTK data...")
 nltk.download('punkt', quiet=True)
 nltk.download('stopwords', quiet=True)
 nltk.download('wordnet', quiet=True)
-nltk.download('punkt_tab', quiet=True)  # Add this line
+nltk.download('punkt_tab', quiet=True)
 
 # Load spaCy French model
 nlp_fr = spacy.load('fr_core_news_lg')
@@ -48,8 +50,19 @@ except UnicodeDecodeError:
 lemmatizer = WordNetLemmatizer()
 
 # Exception lists
-english_exceptions = {'vincent'}  # Add English exceptions here
-french_exceptions = {'vincent', 'source', 'auteur', 'texte'}  # Add French exceptions here
+english_exceptions = {'vincent'}
+french_exceptions = {'vincent', 'source', 'auteur', 'texte'}
+
+# Define custom color functions for each language
+def english_color_func(word, font_size, position, orientation, random_state=None, **kwargs):
+    """Blue-teal color scheme for English"""
+    colors = ['#1abc9c', '#16a085', '#2ecc71', '#27ae60', '#3498db', '#2980b9']
+    return colors[hash(word) % len(colors)]
+
+def french_color_func(word, font_size, position, orientation, random_state=None, **kwargs):
+    """Orange-red color scheme for French"""
+    colors = ['#e74c3c', '#c0392b', '#e67e22', '#d35400', '#f39c12', '#f1c40f']
+    return colors[hash(word) % len(colors)]
 
 # Function to preprocess text
 def preprocess_text(text, language):
@@ -57,7 +70,7 @@ def preprocess_text(text, language):
         return ""
     # Tokenize the text
     tokens = word_tokenize(text.lower())
-    
+
     if language == 'English':
         stop_words = set(stopwords.words('english')).union(english_exceptions)
         processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
@@ -67,31 +80,74 @@ def preprocess_text(text, language):
         all_stop_words = nltk_stop_words.union(spacy_stop_words).union(french_exceptions)
         doc = nlp_fr(text.lower())
         processed_tokens = [token.lemma_ for token in doc if token.text.isalnum() and token.text not in all_stop_words]
-    
+
     return ' '.join(processed_tokens)
 
 # Function to generate and save word cloud
 def generate_wordcloud(text, language):
     logging.info(f"Generating {language} word cloud...")
-    wordcloud = WordCloud(width=1600, height=800, background_color=None, mode="RGBA", max_words=200).generate(text)
-    
-    plt.figure(figsize=(20, 10), dpi=300)
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis('off')
-    
+
+    # Select color function based on language
+    color_func = english_color_func if language == 'English' else french_color_func
+
+    # Create word cloud with improved settings
+    wordcloud = WordCloud(
+        width=1600,
+        height=800,
+        background_color=None,
+        mode="RGBA",
+        max_words=200,
+        min_font_size=10,
+        max_font_size=150,
+        relative_scaling=0.5,
+        prefer_horizontal=0.7,
+        color_func=color_func,
+        margin=10,
+        contour_width=0,
+        collocations=False  # Avoid repeated word pairs
+    ).generate(text)
+
+    # Create figure with modern styling
+    fig, ax = plt.subplots(figsize=(20, 10), dpi=300, facecolor='none')
+    ax.set_facecolor('none')
+
+    # Display word cloud
+    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.axis('off')
+
+    # Add subtle title
+    lang_label = 'English Abstracts' if language == 'English' else 'French Abstracts'
+    ax.set_title(
+        lang_label,
+        fontsize=24,
+        fontweight='bold',
+        color='#333',
+        pad=20,
+        loc='center'
+    )
+
+    # Save with tight layout
     output_path = os.path.join(wordclouds_dir, f'{language.lower()}_wordcloud.png')
-    plt.savefig(output_path, bbox_inches='tight', pad_inches=0, transparent=True)
+    plt.savefig(output_path, bbox_inches='tight', pad_inches=0.5, transparent=True, facecolor='none')
     plt.close()
     logging.info(f"{language} word cloud saved as {output_path}")
 
 # Preprocess and generate word cloud for English entries
 logging.info("Processing English entries...")
-english_text = ' '.join([preprocess_text(item['Abstract'], 'English') for item in tqdm(data['rows']) if item['Language'] == 'English' and item['Abstract'] is not None])
-generate_wordcloud(english_text, 'English')
+english_entries = [item for item in data['rows'] if item['Language'] == 'English' and item['Abstract'] is not None]
+english_text = ' '.join([preprocess_text(item['Abstract'], 'English') for item in tqdm(english_entries)])
+if english_text.strip():
+    generate_wordcloud(english_text, 'English')
+else:
+    logging.warning("No English text found for word cloud generation")
 
 # Preprocess and generate word cloud for French entries
 logging.info("Processing French entries...")
-french_text = ' '.join([preprocess_text(item['Abstract'], 'French') for item in tqdm(data['rows']) if item['Language'] == 'French' and item['Abstract'] is not None])
-generate_wordcloud(french_text, 'French')
+french_entries = [item for item in data['rows'] if item['Language'] == 'French' and item['Abstract'] is not None]
+french_text = ' '.join([preprocess_text(item['Abstract'], 'French') for item in tqdm(french_entries)])
+if french_text.strip():
+    generate_wordcloud(french_text, 'French')
+else:
+    logging.warning("No French text found for word cloud generation")
 
 logging.info("Word clouds generated successfully!")
