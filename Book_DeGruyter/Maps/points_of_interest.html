@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Map with D3.js</title>
+    <title>Points of Interest</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <!-- Leaflet Fullscreen Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/3.0.2/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/3.0.2/Control.FullScreen.min.css"/>
+    <!-- Leaflet MiniMap Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -38,9 +44,9 @@
             z-index: 1000;
             background: white;
             padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            min-width: 150px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            min-width: 160px;
         }
         .legend-title {
             font-weight: 600;
@@ -51,28 +57,50 @@
         .legend-item {
             margin: 8px 0;
             cursor: pointer;
-            padding: 4px 0;
+            padding: 6px 8px;
             font-size: 13px;
             color: #444;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
         }
         .legend-item:hover {
-            color: #000;
+            background-color: #f5f5f5;
+        }
+        .legend-item.disabled {
+            opacity: 0.4;
         }
         .legend-marker {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            margin-right: 8px;
-            vertical-align: middle;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border: 2px solid rgba(0,0,0,0.3);
         }
         .legend-text {
-            vertical-align: middle;
+            flex-grow: 1;
         }
         .leaflet-popup-content {
             font-family: 'Open Sans', sans-serif;
             font-size: 13px;
+            margin: 12px 16px;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+        .popup-content h4 {
+            margin: 0 0 8px 0;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.3;
+        }
+        .popup-content p {
+            margin: 0;
+            font-size: 12px;
+            color: #666;
         }
         #search-container {
             position: fixed;
@@ -81,51 +109,117 @@
             z-index: 1000;
             width: 300px;
         }
-
         #search-input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 14px;
+            border: none;
+            border-radius: 8px;
             font-family: 'Open Sans', sans-serif;
             font-size: 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            outline: none;
+            transition: box-shadow 0.2s;
         }
-
+        #search-input:focus {
+            box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+        }
         #autocomplete-list {
             list-style-type: none;
             padding: 0;
-            margin: 0;
+            margin: 4px 0 0 0;
             background: white;
-            border-radius: 4px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            max-height: 250px;
             overflow-y: auto;
             display: none;
         }
-
         #autocomplete-list li {
-            padding: 10px;
+            padding: 12px 14px;
             cursor: pointer;
             border-bottom: 1px solid #eee;
+            transition: background-color 0.15s;
         }
-
         #autocomplete-list li:hover {
-            background-color: #f5f5f5;
+            background-color: #f8f8f8;
         }
-
         #autocomplete-list li:last-child {
             border-bottom: none;
         }
-
         .location-category {
+            font-size: 11px;
+            color: #888;
+            margin-left: 8px;
+            padding: 2px 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+        /* Tile switcher */
+        #tile-switcher {
+            position: fixed;
+            top: 20px;
+            left: 60px;
+            z-index: 1000;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            display: flex;
+            gap: 4px;
+        }
+        .tile-btn {
+            padding: 6px 12px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .tile-btn:hover {
+            background: #e8e8e8;
+        }
+        .tile-btn.active {
+            background: #333;
+            color: white;
+        }
+        /* Custom tooltip */
+        .custom-tooltip {
+            background-color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .custom-tooltip::before {
+            border-top-color: white;
+        }
+        /* Mouse position */
+        #mouse-position {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             font-size: 12px;
             color: #666;
-            margin-left: 5px;
         }
     </style>
 </head>
 <body>
+    <div id="tile-switcher">
+        <button class="tile-btn active" onclick="switchTiles('voyager')">Detailed</button>
+        <button class="tile-btn" onclick="switchTiles('positron')">Light</button>
+        <button class="tile-btn" onclick="switchTiles('dark')">Dark</button>
+    </div>
     <div id="search-container">
         <input type="text" id="search-input" placeholder="Search locations...">
         <ul id="autocomplete-list"></ul>
@@ -134,30 +228,101 @@
     <div id="legend">
         <div class="legend-title">Points of interest</div>
         <div class="legend-item" onclick="toggleCategory('Benin')">
-            <span class="legend-marker" style="background-color: blue;"></span>
+            <span class="legend-marker" style="background-color: #3388ff;"></span>
             <span class="legend-text">Benin</span>
         </div>
         <div class="legend-item" onclick="toggleCategory('Togo')">
-            <span class="legend-marker" style="background-color: green;"></span>
+            <span class="legend-marker" style="background-color: #2ecc71;"></span>
             <span class="legend-text">Togo</span>
         </div>
         <div class="legend-item" onclick="toggleCategory('West Africa')">
-            <span class="legend-marker" style="background-color: red;"></span>
+            <span class="legend-marker" style="background-color: #e67e22;"></span>
             <span class="legend-text">West Africa</span>
         </div>
     </div>
+    <div id="mouse-position">Coordinates: -</div>
     <script>
+        // Tile layer configurations
+        const tileLayers = {
+            voyager: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            }),
+            positron: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            }),
+            dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            })
+        };
+
+        let currentTileLayer = 'voyager';
+
         // Initialize the map
-        const map = L.map('map').setView([7, 2], 6);
+        const map = L.map('map', {
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft'
+            }
+        }).setView([7, 2], 6);
+
+        // Add default tile layer
+        tileLayers.voyager.addTo(map);
+
+        // Color mapping for categories
+        const categoryColors = {
+            'Benin': '#3388ff',
+            'Togo': '#2ecc71',
+            'West Africa': '#e67e22'
+        };
+
         const markers = { Benin: [], Togo: [], 'West Africa': [] };
+        const categoryVisible = { Benin: true, Togo: true, 'West Africa': true };
         let allLocations = [];
         let activeMarker = null;
 
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+        // Add MiniMap
+        const miniMapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        });
+        const miniMap = new L.Control.MiniMap(miniMapLayer, {
+            position: 'bottomright',
+            width: 120,
+            height: 120,
+            toggleDisplay: true,
+            minimized: false
         }).addTo(map);
+
+        // Mouse position tracking
+        const mousePositionDiv = document.getElementById('mouse-position');
+        map.on('mousemove', function(e) {
+            mousePositionDiv.textContent = `Coordinates: ${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`;
+        });
+
+        // Tile switcher function
+        function switchTiles(tileName) {
+            // Remove current layer
+            map.removeLayer(tileLayers[currentTileLayer]);
+            // Add new layer
+            tileLayers[tileName].addTo(map);
+            currentTileLayer = tileName;
+
+            // Update button states
+            document.querySelectorAll('.tile-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Create popup HTML
+        function createPopupContent(name, coords, country) {
+            return `
+                <div class="popup-content">
+                    <h4>${name}</h4>
+                    <p>${coords[1].toFixed(4)}, ${coords[0].toFixed(4)}</p>
+                </div>
+            `;
+        }
 
         // Load and add markers from GeoJSON
         d3.json('locations.json').then(function(geojson) {
@@ -166,25 +331,34 @@
                 name: feature.properties.name,
                 country: feature.properties.country,
                 coordinates: feature.geometry.coordinates,
-                color: feature.properties.color
+                color: categoryColors[feature.properties.country] || feature.properties.color
             }));
 
             geojson.features.forEach(feature => {
                 const coords = feature.geometry.coordinates;
+                const country = feature.properties.country;
+                const color = categoryColors[country] || feature.properties.color;
+
                 const marker = L.circleMarker([coords[1], coords[0]], {
-                    radius: 5,
-                    fillColor: feature.properties.color,
-                    color: '#000',
-                    weight: 1,
+                    radius: 7,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
                     opacity: 1,
-                    fillOpacity: 0.8
+                    fillOpacity: 0.9
                 })
-                .bindPopup(feature.properties.name)
+                .bindPopup(createPopupContent(feature.properties.name, coords, country))
+                .bindTooltip(feature.properties.name, {
+                    permanent: false,
+                    direction: 'top',
+                    offset: [0, -8],
+                    className: 'custom-tooltip'
+                })
                 .addTo(map);
 
                 // Store marker reference with its name
                 marker.locationName = feature.properties.name;
-                markers[feature.properties.country].push(marker);
+                markers[country].push(marker);
 
                 // Add label
                 const label = L.divIcon({
@@ -195,7 +369,7 @@
                     icon: label,
                     interactive: false
                 }).addTo(map);
-                markers[feature.properties.country].push(labelMarker);
+                markers[country].push(labelMarker);
             });
         });
 
@@ -210,7 +384,7 @@
                 return;
             }
 
-            const matches = allLocations.filter(location => 
+            const matches = allLocations.filter(location =>
                 location.name.toLowerCase().includes(searchText)
             );
 
@@ -225,7 +399,7 @@
 
             autocompleteList.innerHTML = matches
                 .map(location => `
-                    <li onclick="selectLocation('${location.name}', [${location.coordinates[1]}, ${location.coordinates[0]}])">
+                    <li onclick="selectLocation('${location.name.replace(/'/g, "\\'")}', [${location.coordinates[1]}, ${location.coordinates[0]}])">
                         ${location.name}
                         <span class="location-category">${location.country}</span>
                     </li>
@@ -239,8 +413,8 @@
             // Clear previous active marker
             if (activeMarker) {
                 activeMarker.setStyle({
-                    radius: 5,
-                    fillOpacity: 0.8
+                    radius: 7,
+                    fillOpacity: 0.9
                 });
             }
 
@@ -248,7 +422,7 @@
             Object.values(markers).flat().forEach(marker => {
                 if (marker.locationName === name) {
                     marker.setStyle({
-                        radius: 8,
+                        radius: 10,
                         fillOpacity: 1
                     });
                     activeMarker = marker;
@@ -258,7 +432,7 @@
 
             // Center map on selected location
             map.setView(coordinates, 13);
-            
+
             // Clear search
             searchInput.value = '';
             autocompleteList.style.display = 'none';
@@ -271,18 +445,26 @@
             }
         });
 
-        // Existing toggle category function
+        // Toggle category visibility
         function toggleCategory(category) {
             const categoryMarkers = markers[category];
-            const isVisible = map.hasLayer(categoryMarkers[0]);
-            
+            categoryVisible[category] = !categoryVisible[category];
+            const legendItem = document.querySelector(`.legend-item:nth-child(${Object.keys(markers).indexOf(category) + 2})`);
+
             categoryMarkers.forEach(marker => {
-                if (isVisible) {
-                    map.removeLayer(marker);
-                } else {
+                if (categoryVisible[category]) {
                     map.addLayer(marker);
+                } else {
+                    map.removeLayer(marker);
                 }
             });
+
+            // Update legend item visual state
+            if (categoryVisible[category]) {
+                legendItem.classList.remove('disabled');
+            } else {
+                legendItem.classList.add('disabled');
+            }
         }
     </script>
 </body>
