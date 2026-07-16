@@ -41,11 +41,14 @@ all_quarters = all_quarters[:all_quarters.index(last_quarter) + 1]
 # Prepare data for plotting
 types = sorted(set(type for counts in type_by_quarter.values() for type in counts))
 
+# Extend the shared palette so all 12 types get a distinct color
+palette = QUALITATIVE_PALETTE + ['#1f78b4', '#b15928', '#7570b3', '#737373']
+
 # Create traces for each publication type
 traces = []
 for i, type_name in enumerate(types):
     counts = [type_by_quarter.get(quarter, Counter())[type_name] for quarter in all_quarters]
-    color = QUALITATIVE_PALETTE[i % len(QUALITATIVE_PALETTE)]
+    color = palette[i % len(palette)]
     # Replace zeros with None to hide them in hover
     counts_with_none = [c if c > 0 else None for c in counts]
     trace = go.Bar(
@@ -75,6 +78,7 @@ layout = go.Layout(
         tickvals=all_quarters[::4],  # Show every 4th tick to avoid overcrowding
         ticktext=[q.split('-')[0] for q in all_quarters[::4]],  # Show only year for these ticks
         range=[-0.5, len(all_quarters) - 0.5],  # End the x-axis at the last quarter with data
+        rangeslider=dict(visible=True, thickness=0.08),  # Zoom into any period
     ),
     yaxis=dict(
         title=dict(text='Count'),

@@ -1,3 +1,4 @@
+import math
 import sys
 from pathlib import Path
 
@@ -8,6 +9,13 @@ from folium import IFrame
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root
 from viz_common import create_base_map, load_json
+
+MARKER_COLOR = '#2596be'
+
+
+def marker_radius(count):
+    """Circle radius in px, scaled by the square root of the collaborator count."""
+    return 7 + 4 * math.sqrt(count - 1)
 
 script_dir = Path(__file__).resolve().parent
 
@@ -113,16 +121,21 @@ for affiliation, group in grouped:
     iframe = IFrame(html=popup_html, width=280, height=min(150 + collab_count * 25, 300))
     popup = folium.Popup(iframe, parse_html=True)
 
-    # Add a marker for the affiliation
-    folium.Marker(
+    # Add a circle marker for the affiliation, sized by collaborator count
+    folium.CircleMarker(
         location=location,
+        radius=marker_radius(collab_count),
+        color='white',
+        weight=2,
+        fill=True,
+        fill_color=MARKER_COLOR,
+        fill_opacity=0.85,
         popup=popup,
         tooltip=folium.Tooltip(
             f"<b>{affiliation}</b><br>{collab_count} collaborator(s)",
             permanent=False,
             className='custom-tooltip'
         ),
-        icon=folium.Icon(color='blue', icon='user', prefix='fa')
     ).add_to(collaborators_group)
 
 collaborators_group.add_to(m)
@@ -139,6 +152,26 @@ title_html = f'''
 </div>
 '''
 m.get_root().html.add_child(Element(title_html))
+
+# Add a size legend
+legend_rows = ''.join(
+    f'''<div style="display:flex; align-items:center; margin: 4px 0;">
+        <span style="display:inline-block; width:{2 * marker_radius(n):.0f}px; height:{2 * marker_radius(n):.0f}px;
+                     border-radius:50%; background:{MARKER_COLOR}; opacity:0.85; border:2px solid white;
+                     box-shadow: 0 0 2px rgba(0,0,0,0.4); margin-right:10px; flex-shrink:0;"></span>
+        <span>{label}</span>
+    </div>'''
+    for n, label in [(1, '1 collaborator'), (4, '4 collaborators'), (8, '8 collaborators')]
+)
+legend_html = f'''
+<div style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; background: white;
+            padding: 12px 14px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            font-family: 'Open Sans', Arial, sans-serif; font-size: 12px; color: #333;">
+    <div style="font-weight: 600; margin-bottom: 6px;">Collaborators per affiliation</div>
+    {legend_rows}
+</div>
+'''
+m.get_root().html.add_child(Element(legend_html))
 
 # Save the map to an HTML file in the same folder
 output_path = script_dir / 'collaborators_map.html'

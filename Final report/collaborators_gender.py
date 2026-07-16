@@ -1,19 +1,16 @@
-import pandas as pd
+import sys
+from pathlib import Path
+
 import matplotlib.pyplot as plt
-import json
-import os
+import pandas as pd
 
-# Get the directory of the current script
-current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root
+from viz_common import QUALITATIVE_PALETTE, load_json
 
-# Construct the full path to the JSON file
-data_file_path = os.path.join(current_dir, 'Data', 'Collaborators_data.json')
+script_dir = Path(__file__).resolve().parent
 
 # Load data from the JSON file
-with open(data_file_path, 'r', encoding='utf-8') as file:
-    data = json.load(file)
-
-# Create a DataFrame from the collaborators data
+data = load_json(script_dir / 'Data' / 'Collaborators_data.json')
 df = pd.DataFrame(data)
 
 # Count the number of collaborators by gender
@@ -22,16 +19,16 @@ gender_counts = df['Gender'].value_counts()
 # Calculate the total number of collaborators
 total_collaborators = df.shape[0]
 
-# Define modern color palette (lowercase to match data)
+# Neutral palette from the shared qualitative colors (keys lowercase to match data)
 colors = {
-    'male': '#3498db',
-    'female': '#e74c3c',
-    'other': '#2ecc71',
-    'unknown': '#95a5a6'
+    'male': QUALITATIVE_PALETTE[0],    # teal
+    'female': QUALITATIVE_PALETTE[1],  # orange
+    'other': QUALITATIVE_PALETTE[2],
+    'unknown': '#b3b3b3',
 }
 
 # Get colors in order of gender_counts index
-pie_colors = [colors.get(gender, '#95a5a6') for gender in gender_counts.index]
+pie_colors = [colors.get(gender, '#b3b3b3') for gender in gender_counts.index]
 
 # Create figure with modern styling
 fig, ax = plt.subplots(figsize=(10, 8), facecolor='none')
@@ -56,9 +53,8 @@ for autotext in autotexts:
     autotext.set_fontsize(14)
     autotext.set_fontweight('bold')
 
-# Add center circle for donut effect (already done with wedgeprops width)
 # Add center text
-center_text = ax.text(
+ax.text(
     0, 0,
     f'{total_collaborators}\nTotal',
     ha='center',
@@ -99,13 +95,15 @@ ax.axis('equal')
 # Adjust layout
 plt.tight_layout()
 
-# Construct full path for output file
-png_output_path = os.path.join(current_dir, 'collaborators_gender.png')
+# Transparent version for slides/report layouts on light backgrounds,
+# plus a white-background version that works anywhere.
+transparent_path = script_dir / 'collaborators_gender.png'
+plt.savefig(transparent_path, transparent=True, dpi=150, bbox_inches='tight')
+print(f"Chart saved as {transparent_path}")
 
-# Save the pie chart with a transparent background
-plt.savefig(png_output_path, transparent=True, dpi=150, bbox_inches='tight')
-
-print(f"Chart saved as {png_output_path}")
+white_path = script_dir / 'collaborators_gender_white.png'
+plt.savefig(white_path, transparent=False, facecolor='white', dpi=150, bbox_inches='tight')
+print(f"Chart saved as {white_path}")
 
 # Display the plot
 plt.show()
