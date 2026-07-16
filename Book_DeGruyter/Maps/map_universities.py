@@ -1,7 +1,12 @@
-import folium
-from folium.plugins import Fullscreen, MiniMap, MousePosition
-from branca.element import Element
 import os
+import sys
+from pathlib import Path
+
+import folium
+from branca.element import Element
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from viz_common import create_base_map
 
 # Define the coordinates and paths for the university logos
 universities = {
@@ -44,18 +49,8 @@ avg_lat = sum(uni['coords'][0] for uni in universities.values()) / len(universit
 avg_lng = sum(uni['coords'][1] for uni in universities.values()) / len(universities)
 map_center = [avg_lat, avg_lng]
 
-# Create a base map with CartoDB Voyager as default
-m = folium.Map(location=map_center, zoom_start=7, tiles=None)
-
-# Add multiple tile layer options
-folium.TileLayer("CartoDB Voyager", name="Detailed", show=True).add_to(m)
-folium.TileLayer("CartoDB Positron", name="Light").add_to(m)
-folium.TileLayer("CartoDB DarkMatter", name="Dark").add_to(m)
-
-# Add interactive plugins
-Fullscreen(position='topleft').add_to(m)
-MiniMap(position='bottomright', width=120, height=120, toggle_display=True).add_to(m)
-MousePosition(position='bottomleft', prefix='Coordinates:').add_to(m)
+# Create the standard base map
+m = create_base_map(location=map_center, zoom_start=7)
 
 # Add CSS for custom tooltip styling
 tooltip_css = '''

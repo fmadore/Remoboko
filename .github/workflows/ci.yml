@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt ruff
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Run visualization scripts
+        run: |
+          python Book_DeGruyter/Maps/map_locations.py
+          python Book_DeGruyter/Maps/map_universities.py
+          python Book_DeGruyter/Timeline/timeline.py
+          python "Final report/collaborators_country.py"
+          python "Final report/collaborators_map.py"
+          python "Final report/collaborators_gender.py"
+          python "Final report/treemap.py"
+          python "Final report/activities_type_time.py"
+
+      # word_clouds.py needs the ~570 MB spaCy French model, so CI only
+      # checks that it compiles.
+      - name: Compile-check word cloud script
+        run: python -m py_compile "Final report/word_clouds.py"

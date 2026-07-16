@@ -1,0 +1,6 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# E402: scripts insert the repo root into sys.path before importing viz_common
+ignore = ["E402"]

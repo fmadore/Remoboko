@@ -1,20 +1,17 @@
 import json
 import os
+import sys
+from pathlib import Path
 
 import folium
 import numpy as np
-from folium.plugins import Fullscreen, MiniMap, MousePosition
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from viz_common import COUNTRY_ICON_COLORS, create_base_map
 
 # Locations are single-sourced from locations.json (GeoJSON), which is also
 # consumed by points_of_interest.html.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Folium icon color per country group
-COUNTRY_COLORS = {
-    'Benin': 'darkblue',
-    'Togo': 'green',
-    'West Africa': 'orange',
-}
 
 
 def load_locations():
@@ -80,22 +77,12 @@ all_locations = {name: coords
                  for name, coords in locations.items()}
 map_center = calculate_map_center(all_locations)
 
-# Create a base map with CartoDB Voyager as default
-m = folium.Map(location=map_center, zoom_start=8, tiles=None)
-
-# Add multiple tile layer options
-folium.TileLayer("CartoDB Voyager", name="Detailed", show=True).add_to(m)
-folium.TileLayer("CartoDB Positron", name="Light").add_to(m)
-folium.TileLayer("CartoDB DarkMatter", name="Dark").add_to(m)
-
-# Add interactive plugins
-Fullscreen(position='topleft').add_to(m)
-MiniMap(position='bottomright', width=120, height=120, toggle_display=True).add_to(m)
-MousePosition(position='bottomleft', prefix='Coordinates:').add_to(m)
+# Create the standard base map
+m = create_base_map(location=map_center, zoom_start=8)
 
 # Add markers grouped by country
 for country, locations in locations_by_country.items():
-    add_markers_with_labels(m, locations, COUNTRY_COLORS.get(country, 'gray'), 'university', country)
+    add_markers_with_labels(m, locations, COUNTRY_ICON_COLORS.get(country, 'gray'), 'university', country)
 
 # Add layer control for toggling layers and switching base maps
 folium.LayerControl(collapsed=False).add_to(m)
