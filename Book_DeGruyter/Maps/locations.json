@@ -4,9 +4,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Catholic Chaplaincy of the Université d'Abomey-Calavi",
-        "color": "blue",
-        "country": "Benin"
+        "name": "Catholic Chaplaincy of the Université d'Abomey-Calavi et des grandes écoles du Bénin",
+        "country": "Benin",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -20,8 +20,8 @@
       "type": "Feature",
       "properties": {
         "name": "Oumar Ibn Khattab Mosque (ACEEMUB)",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "mosque"
       },
       "geometry": {
         "type": "Point",
@@ -35,8 +35,8 @@
       "type": "Feature",
       "properties": {
         "name": "Saint-Dominique Cotonou convent",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -50,14 +50,14 @@
       "type": "Feature",
       "properties": {
         "name": "Bon Pasteur parish",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          2.398772893785117,
-          6.3570692871919885
+          2.398786735584982,
+          6.357065573930122
         ]
       }
     },
@@ -65,8 +65,8 @@
       "type": "Feature",
       "properties": {
         "name": "Bâtiment C",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -80,8 +80,8 @@
       "type": "Feature",
       "properties": {
         "name": "GBEEB Headquarters",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -95,8 +95,8 @@
       "type": "Feature",
       "properties": {
         "name": "Père Aupiais College",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "school"
       },
       "geometry": {
         "type": "Point",
@@ -110,8 +110,8 @@
       "type": "Feature",
       "properties": {
         "name": "Jardin U",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -124,9 +124,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Lycée Behanzin",
-        "color": "blue",
-        "country": "Benin"
+        "name": "Lycée Béhanzin",
+        "country": "Benin",
+        "type": "school"
       },
       "geometry": {
         "type": "Point",
@@ -140,8 +140,8 @@
       "type": "Feature",
       "properties": {
         "name": "University of Parakou",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
@@ -155,8 +155,8 @@
       "type": "Feature",
       "properties": {
         "name": "Zogbo parish",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -169,9 +169,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "CEG Gbegamey",
-        "color": "blue",
-        "country": "Benin"
+        "name": "CEG Gbégamey",
+        "country": "Benin",
+        "type": "school"
       },
       "geometry": {
         "type": "Point",
@@ -185,8 +185,8 @@
       "type": "Feature",
       "properties": {
         "name": "Cours secondaire Notre-Dame des Apôtres",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "school"
       },
       "geometry": {
         "type": "Point",
@@ -200,8 +200,8 @@
       "type": "Feature",
       "properties": {
         "name": "Université d'Agriculture de Kétou",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
@@ -214,9 +214,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Université Nationale des Sciences",
-        "color": "blue",
-        "country": "Benin"
+        "name": "Université Nationale des Sciences, Technologies, Ingénierie et Mathématiques",
+        "country": "Benin",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
@@ -229,9 +229,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Institut National Supérieur de Technologie",
-        "color": "blue",
-        "country": "Benin"
+        "name": "Institut National Supérieur de Technologie Industrielle de Lokossa",
+        "country": "Benin",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
@@ -245,8 +245,8 @@
       "type": "Feature",
       "properties": {
         "name": "Sainte-Thérèse de l'Enfant Jésus parish",
-        "color": "blue",
-        "country": "Benin"
+        "country": "Benin",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -260,8 +260,8 @@
       "type": "Feature",
       "properties": {
         "name": "Centre Catholique Universitaire (CCU)",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -274,9 +274,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "AEEMT Mosque",
-        "color": "green",
-        "country": "Togo"
+        "name": "Mosquée de l'AEEMT",
+        "country": "Togo",
+        "type": "mosque"
       },
       "geometry": {
         "type": "Point",
@@ -290,8 +290,8 @@
       "type": "Feature",
       "properties": {
         "name": "Amphi 600",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -305,8 +305,8 @@
       "type": "Feature",
       "properties": {
         "name": "Cité A",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -320,8 +320,8 @@
       "type": "Feature",
       "properties": {
         "name": "Cité B",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -335,8 +335,8 @@
       "type": "Feature",
       "properties": {
         "name": "Grand Amphi",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -350,8 +350,8 @@
       "type": "Feature",
       "properties": {
         "name": "Amphi 20 ans",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -365,8 +365,8 @@
       "type": "Feature",
       "properties": {
         "name": "Benches near the Library",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -380,8 +380,8 @@
       "type": "Feature",
       "properties": {
         "name": "Quartier de Doumasséssé",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -394,9 +394,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Centre Saint-Jean Lomé",
-        "color": "green",
-        "country": "Togo"
+        "name": "Centre Saint Jean Lomé (University Parish)",
+        "country": "Togo",
+        "type": "church"
       },
       "geometry": {
         "type": "Point",
@@ -410,8 +410,8 @@
       "type": "Feature",
       "properties": {
         "name": "Village du Bénin",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "landmark"
       },
       "geometry": {
         "type": "Point",
@@ -425,8 +425,8 @@
       "type": "Feature",
       "properties": {
         "name": "Lycée de Tokoin",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "school"
       },
       "geometry": {
         "type": "Point",
@@ -440,8 +440,8 @@
       "type": "Feature",
       "properties": {
         "name": "University of Kara",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
@@ -455,8 +455,8 @@
       "type": "Feature",
       "properties": {
         "name": "Collège Saint-Joseph",
-        "color": "green",
-        "country": "Togo"
+        "country": "Togo",
+        "type": "school"
       },
       "geometry": {
         "type": "Point",
@@ -470,8 +470,8 @@
       "type": "Feature",
       "properties": {
         "name": "Université Félix Houphouët-Boigny",
-        "color": "red",
-        "country": "West Africa"
+        "country": "West Africa",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
@@ -485,8 +485,8 @@
       "type": "Feature",
       "properties": {
         "name": "Cheikh Anta Diop University",
-        "color": "red",
-        "country": "West Africa"
+        "country": "West Africa",
+        "type": "university"
       },
       "geometry": {
         "type": "Point",
