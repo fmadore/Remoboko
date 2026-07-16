@@ -1,28 +1,38 @@
-import folium
-from folium.plugins import Fullscreen, MiniMap, MousePosition
-from branca.element import Element
 import os
+import sys
+from pathlib import Path
 
-# Define the coordinates and paths for the university logos
+import folium
+from branca.element import Element
+from folium.utilities import image_to_url
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from viz_common import create_base_map
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Define the coordinates and paths for the university logos.
+# Logos live next to this script and get base64-embedded into the HTML,
+# so the map is self-contained and does not depend on the GitHub branch name.
 universities = {
     'University of Lomé': {
         'coords': (6.175690527334621, 1.2137727591902188),
-        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Lome.jpg',
+        'logo': 'University_Lome.jpg',
         'country': 'Togo'
     },
     'University of Abomey-Calavi': {
         'coords': (6.415312316251478, 2.341522503861767),
-        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Abomey-Calavi.jpg',
+        'logo': 'University_Abomey-Calavi.jpg',
         'country': 'Benin'
     },
     'University of Kara': {
         'coords': (9.53190563529209, 1.2075618607303693),
-        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Kara.jpg',
+        'logo': 'University_Kara.jpg',
         'country': 'Togo'
     },
     'University of Parakou': {
         'coords': (9.335184240782041, 2.6466607924077525),
-        'logo': 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Book_DeGruyter/Maps/University_Parakou.jpg',
+        'logo': 'University_Parakou.jpg',
         'country': 'Benin'
     }
 }
@@ -44,18 +54,8 @@ avg_lat = sum(uni['coords'][0] for uni in universities.values()) / len(universit
 avg_lng = sum(uni['coords'][1] for uni in universities.values()) / len(universities)
 map_center = [avg_lat, avg_lng]
 
-# Create a base map with CartoDB Voyager as default
-m = folium.Map(location=map_center, zoom_start=7, tiles=None)
-
-# Add multiple tile layer options
-folium.TileLayer("CartoDB Voyager", name="Detailed", show=True).add_to(m)
-folium.TileLayer("CartoDB Positron", name="Light").add_to(m)
-folium.TileLayer("CartoDB DarkMatter", name="Dark").add_to(m)
-
-# Add interactive plugins
-Fullscreen(position='topleft').add_to(m)
-MiniMap(position='bottomright', width=120, height=120, toggle_display=True).add_to(m)
-MousePosition(position='bottomleft', prefix='Coordinates:').add_to(m)
+# Create the standard base map
+m = create_base_map(location=map_center, zoom_start=7)
 
 # Add CSS for custom tooltip styling
 tooltip_css = '''
@@ -80,8 +80,10 @@ universities_group = folium.FeatureGroup(name='Universities')
 
 # Add custom icon markers for the universities
 for uni, details in universities.items():
-    icon = folium.CustomIcon(details['logo'], icon_size=(50, 50))
-    popup_html = create_popup_html(uni, details['logo'], details['country'])
+    # Embed the logo as a data URI, used for both the marker icon and the popup image
+    logo_data_uri = image_to_url(os.path.join(SCRIPT_DIR, details['logo']))
+    icon = folium.CustomIcon(logo_data_uri, icon_size=(50, 50))
+    popup_html = create_popup_html(uni, logo_data_uri, details['country'])
 
     folium.Marker(
         location=details['coords'],

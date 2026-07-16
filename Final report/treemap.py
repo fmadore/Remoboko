@@ -1,47 +1,38 @@
-import json
-import plotly.express as px
-from collections import defaultdict
+import sys
+from collections import Counter
 from datetime import datetime
-import os
+from pathlib import Path
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
+import plotly.express as px
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root
+from viz_common import load_json, plotly_config, register_plotly_template
+
+script_dir = Path(__file__).resolve().parent
 
 # Load the JSON data
-data_path = os.path.join(script_dir, 'Data', 'Publications_and_activities_data.json')
-with open(data_path, 'r', encoding='utf-8') as f:
-    data = json.load(f)
-
-# Process the data
+data = load_json(script_dir / 'Data' / 'Publications_and_activities_data.json')
 publications = data['rows']
 
-# Build flat data for treemap
-treemap_data = []
+# Aggregate publication counts by (Type, Language, Year)
+aggregated = Counter(
+    (pub['Type'], pub['Language'], str(datetime.strptime(pub['Date'], '%Y-%m-%d').year))
+    for pub in publications
+    if pub['Type'] and pub['Language'] and pub['Date']
+)
 
-for pub in publications:
-    if pub['Type'] and pub['Language'] and pub['Date']:
-        pub_type = pub['Type']
-        language = pub['Language']
-        year = datetime.strptime(pub['Date'], '%Y-%m-%d').year
-        treemap_data.append({
-            'Type': pub_type,
-            'Language': language,
-            'Year': str(year),
-            'count': 1
-        })
-
-# Count total
-total_publications = len(treemap_data)
-
-# Aggregate by Type, Language, Year
-from collections import Counter
-aggregated = Counter((d['Type'], d['Language'], d['Year']) for d in treemap_data)
+total_publications = sum(aggregated.values())
+skipped = len(publications) - total_publications
+if skipped:
+    print(f"Warning: {skipped} row(s) skipped (missing Type, Language or Date)")
 
 # Convert to list for plotly
 plot_data = [
     {'Type': k[0], 'Language': k[1], 'Year': k[2], 'Count': v}
     for k, v in aggregated.items()
 ]
+
+register_plotly_template()
 
 # Create treemap
 fig = px.treemap(
@@ -53,26 +44,7 @@ fig = px.treemap(
     title=f'Publications & Activities Treemap (Total: {total_publications})'
 )
 
-# Update layout with modern styling
 fig.update_layout(
-    font=dict(
-        family='Open Sans, sans-serif',
-        size=13,
-        color='#333'
-    ),
-    title=dict(
-        font=dict(size=20, color='#333'),
-        x=0.5,
-        xanchor='center'
-    ),
-    paper_bgcolor='rgba(0,0,0,0)',
-    hoverlabel=dict(
-        bgcolor='white',
-        font_size=13,
-        font_family='Open Sans, sans-serif',
-        font_color='#333',
-        bordercolor='#ddd'
-    ),
     margin=dict(l=20, r=20, t=80, b=20),
     width=1000,
     height=700
@@ -88,23 +60,8 @@ fig.update_traces(
     )
 )
 
-# Configure interactive options
-config = {
-    'displayModeBar': True,
-    'modeBarButtonsToAdd': ['downloadSVG'],
-    'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
-    'displaylogo': False,
-    'toImageButtonOptions': {
-        'format': 'png',
-        'filename': 'treemap_chart',
-        'height': 700,
-        'width': 1000,
-        'scale': 2
-    }
-}
-
 # Save the chart as an interactive HTML file
-output_path = os.path.join(script_dir, 'treemap_chart.html')
-fig.write_html(output_path, config=config)
+output_path = script_dir / 'treemap_chart.html'
+fig.write_html(output_path, config=plotly_config('treemap_chart', width=1000, height=700))
 
 print(f"Treemap chart has been saved as '{output_path}'")

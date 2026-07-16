@@ -33,8 +33,8 @@ python Book_DeGruyter/Timeline/timeline.py       # Outputs Religion_Timeline.png
 # Final report visualizations
 python "Final report/collaborators_country.py"   # Outputs collaborators_by_country.html
 python "Final report/collaborators_map.py"       # Outputs collaborators_map.html
-python "Final report/collaborators_gender.py"    # Outputs collaborators_gender.png
-python "Final report/sunburst.py"                # Outputs sunburst_chart.html
+python "Final report/collaborators_gender.py"    # Outputs collaborators_gender.png (+ _white.png variant)
+python "Final report/treemap.py"                 # Outputs treemap_chart.html
 python "Final report/activities_type_time.py"    # Outputs activities_type_over_time.html
 python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
 ```
@@ -42,10 +42,13 @@ python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
 ## Architecture
 
 ### Data Sources
-- `Book_DeGruyter/Timeline/data.json` - Timeline events (date, country, category)
-- `Book_DeGruyter/Maps/locations.json` - Geographic coordinates for points of interest
+- `Book_DeGruyter/Timeline/data.json` - Timeline events (date, country, category, plus optional `label`/`wrap`/`x` fields controlling matplotlib label layout)
+- `Book_DeGruyter/Maps/locations.json` - Canonical GeoJSON for points of interest (name, country, type); consumed by both `map_locations.py` and `points_of_interest.html`
 - `Final report/Data/Collaborators_data.json` - Collaborator info (name, country, gender, affiliation, coordinates)
 - `Final report/Data/Publications_and_activities_data.json` - Publications/activities with type, language, date, abstract
+
+### Shared Module
+- `viz_common.py` (repo root) - design tokens (fonts, country colors, qualitative palette), `load_json`, the standard folium base map (`create_base_map`), and the `remoboko` Plotly template (`register_plotly_template`) plus `plotly_config`. Scripts import it by inserting the repo root into `sys.path`.
 
 ### Visualization Libraries
 - **folium/branca**: Interactive maps with markers, popups, and custom legends
@@ -54,7 +57,8 @@ python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
 - **D3.js**: Browser-based timeline (`Book_DeGruyter/Timeline/index.html` + `script.js`)
 
 ### Key Patterns
-- Scripts determine their output path using `os.path.dirname(os.path.abspath(__file__))`
-- Map markers use color coding by country/category (blue=Benin, green=Togo, red=West Africa)
-- Timeline.py has manual positioning overrides for specific event labels to avoid overlaps
+- Scripts determine their output path from their own file location
+- Map markers use color coding by country (blue=Benin, green=Togo, orange=West Africa) and Font Awesome icons by location type (mosque/church/school/university/landmark)
+- Timeline label layout (manual x positions, wrapping) lives in `data.json` per event, not in code
 - Word cloud generation uses NLTK for English and spaCy for French text processing
+- CI (`.github/workflows/ci.yml`) lints with ruff and runs every script headless

@@ -1,7 +1,7 @@
+import hashlib
 import json
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -10,7 +10,6 @@ import spacy
 from tqdm import tqdm
 import logging
 import os
-import numpy as np
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -53,25 +52,29 @@ lemmatizer = WordNetLemmatizer()
 english_exceptions = {'vincent'}
 french_exceptions = {'vincent', 'source', 'auteur', 'texte'}
 
-# Define custom color functions for each language
+# Define custom color functions for each language.
+# Colors are picked with a stable hash so regenerated clouds are reproducible
+# (builtin hash() is randomized per process by PYTHONHASHSEED).
+def stable_hash(word):
+    return int(hashlib.md5(word.encode('utf-8')).hexdigest(), 16)
+
 def english_color_func(word, font_size, position, orientation, random_state=None, **kwargs):
     """Blue-teal color scheme for English"""
     colors = ['#1abc9c', '#16a085', '#2ecc71', '#27ae60', '#3498db', '#2980b9']
-    return colors[hash(word) % len(colors)]
+    return colors[stable_hash(word) % len(colors)]
 
 def french_color_func(word, font_size, position, orientation, random_state=None, **kwargs):
     """Orange-red color scheme for French"""
     colors = ['#e74c3c', '#c0392b', '#e67e22', '#d35400', '#f39c12', '#f1c40f']
-    return colors[hash(word) % len(colors)]
+    return colors[stable_hash(word) % len(colors)]
 
 # Function to preprocess text
 def preprocess_text(text, language):
     if text is None:
         return ""
-    # Tokenize the text
-    tokens = word_tokenize(text.lower())
 
     if language == 'English':
+        tokens = word_tokenize(text.lower())
         stop_words = set(stopwords.words('english')).union(english_exceptions)
         processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
     elif language == 'French':
@@ -79,7 +82,16 @@ def preprocess_text(text, language):
         spacy_stop_words = nlp_fr.Defaults.stop_words
         all_stop_words = nltk_stop_words.union(spacy_stop_words).union(french_exceptions)
         doc = nlp_fr(text.lower())
-        processed_tokens = [token.lemma_ for token in doc if token.text.isalnum() and token.text not in all_stop_words]
+        # Check both the surface form and the lemma against the stop word list:
+        # a kept lemma can itself be a stop word (e.g. "était" -> "être").
+        processed_tokens = [
+            token.lemma_ for token in doc
+            if token.text.isalnum()
+            and token.text not in all_stop_words
+            and token.lemma_ not in all_stop_words
+        ]
+    else:
+        raise ValueError(f"Unsupported language: {language!r} (expected 'English' or 'French')")
 
     return ' '.join(processed_tokens)
 
