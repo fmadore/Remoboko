@@ -34,7 +34,7 @@ python Book_DeGruyter/Timeline/timeline.py       # Outputs Religion_Timeline.png
 python "Final report/collaborators_country.py"   # Outputs collaborators_by_country.html
 python "Final report/collaborators_map.py"       # Outputs collaborators_map.html
 python "Final report/collaborators_gender.py"    # Outputs collaborators_gender.png
-python "Final report/sunburst.py"                # Outputs sunburst_chart.html
+python "Final report/treemap.py"                 # Outputs treemap_chart.html
 python "Final report/activities_type_time.py"    # Outputs activities_type_over_time.html
 python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
 ```
@@ -55,6 +55,6 @@ python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
 
 ### Key Patterns
 - Scripts determine their output path using `os.path.dirname(os.path.abspath(__file__))`
-- Map markers use color coding by country/category (blue=Benin, green=Togo, red=West Africa)
+- Map markers use color coding by country/category (blue=Benin, green=Togo, orange=West Africa)
 - Timeline.py has manual positioning overrides for specific event labels to avoid overlaps
 - Word cloud generation uses NLTK for English and spaCy for French text processing

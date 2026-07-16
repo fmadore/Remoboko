@@ -8,7 +8,6 @@ benin_locations = {
     "Catholic Chaplaincy of the Université d'Abomey-Calavi et des grandes écoles du Bénin": (6.42431, 2.33785),
     'Oumar Ibn Khattab Mosque (ACEEMUB)': (6.41478, 2.33682),
     'Saint-Dominique Cotonou convent': (6.3558124810442935, 2.421426082297773),
-    'Bon Pasteur parish': (6.3570692871919885, 2.398772893785117),
     'Bâtiment C': (6.41449, 2.34240),
     'GBEEB Headquarters': (6.372156046604895, 2.4974942706506096),
     'Père Aupiais College': (6.388846482524025, 2.3474732769556033),

@@ -1,61 +1,10 @@
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import os
 import textwrap
-from matplotlib.patches import Rectangle
 
 plt.rcParams['font.family'] = 'DejaVu Sans'
-
-class DraggableTextBox:
-    def __init__(self, text_obj):
-        self.text_obj = text_obj
-        self.press = None
-        self.background = None
-        
-        self.cidpress = text_obj.figure.canvas.mpl_connect('button_press_event', self.on_press)
-        self.cidrelease = text_obj.figure.canvas.mpl_connect('button_release_event', self.on_release)
-        self.cidmotion = text_obj.figure.canvas.mpl_connect('motion_notify_event', self.on_motion)
-
-    def on_press(self, event):
-        if event.inaxes != self.text_obj.axes:
-            return
-        
-        contains, attrd = self.text_obj.contains(event)
-        if not contains:
-            return
-        
-        self.press = self.text_obj.get_position()
-        self.mouse_start = (event.x, event.y)
-        
-    def on_motion(self, event):
-        if self.press is None or self.mouse_start is None:
-            return
-        if event.inaxes != self.text_obj.axes:
-            return
-        
-        dx = event.x - self.mouse_start[0]
-        dy = event.y - self.mouse_start[1]
-        
-        dx_data = dx / self.text_obj.axes.figure.dpi * self.text_obj.axes.get_window_extent().width
-        dy_data = dy / self.text_obj.axes.figure.dpi * self.text_obj.axes.get_window_extent().height
-        
-        new_x = self.press[0] + dx_data * 0.1
-        new_y = self.press[1]
-        
-        self.text_obj.set_position((new_x, new_y))
-        self.text_obj.figure.canvas.draw()
-
-    def on_release(self, event):
-        self.press = None
-        self.mouse_start = None
-        self.text_obj.figure.canvas.draw()
-
-    def disconnect(self):
-        self.text_obj.figure.canvas.mpl_disconnect(self.cidpress)
-        self.text_obj.figure.canvas.mpl_disconnect(self.cidrelease)
-        self.text_obj.figure.canvas.mpl_disconnect(self.cidmotion)
 
 def create_timeline(data, categories, filename_base, manual_positions=None):
     if manual_positions is None:
@@ -110,7 +59,6 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             return text
         return '\n'.join(textwrap.wrap(text, width=max_width))
 
-    draggable_texts = []
     events_by_country = {'Benin': [], 'Togo': []}
     
     for _, row in df.iterrows():
@@ -135,10 +83,8 @@ def create_timeline(data, categories, filename_base, manual_positions=None):
             ax.plot([line_start, text_x], [date, date], color='gray', linestyle='-', linewidth=0.5)
             
             bbox_props = dict(boxstyle="round,pad=0.3", fc="white", ec="black", alpha=1.0, linewidth=0.5)
-            text_obj = ax.text(text_x, date, event, verticalalignment='center',
-                             horizontalalignment=align, fontsize=11, bbox=bbox_props, zorder=10)
-            
-            draggable_texts.append(text_obj)
+            ax.text(text_x, date, event, verticalalignment='center',
+                    horizontalalignment=align, fontsize=11, bbox=bbox_props, zorder=10)
 
     ax.spines['left'].set_visible(False)
     ax.spines['right'].set_visible(False)

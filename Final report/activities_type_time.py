@@ -15,26 +15,28 @@ with open(data_path, 'r', encoding='utf-8') as f:
 
 # Process the data
 type_by_quarter = {}
-all_quarters = set()
-min_year, max_year = float('inf'), 2025  # Set max_year to 2025
+dates = []
 total_activities = 0  # Initialize total activities counter
 
 for item in data['rows']:
     if item['Date'] and item['Type']:
         date = datetime.strptime(item['Date'], '%Y-%m-%d')
-        year = date.year
-        min_year = min(min_year, year)
+        dates.append(date)
         quarter = (date.month - 1) // 3 + 1
-        quarter_key = f"{year}-Q{quarter}"
-        all_quarters.add(quarter_key)
+        quarter_key = f"{date.year}-Q{quarter}"
         if quarter_key not in type_by_quarter:
             type_by_quarter[quarter_key] = Counter()
         type_by_quarter[quarter_key][item['Type']] += 1
         total_activities += 1  # Increment total activities counter
 
-# Generate all quarters between min_year and max_year (2025)
+if not dates:
+    raise SystemExit("No rows with both Date and Type found - nothing to plot.")
+
+# Generate all quarters between the first and last quarter present in the data
+min_year, max_year = min(dates).year, max(dates).year
 all_quarters = [f"{year}-Q{quarter}" for year in range(min_year, max_year + 1) for quarter in range(1, 5)]
-all_quarters.sort()
+last_quarter = f"{max(dates).year}-Q{(max(dates).month - 1) // 3 + 1}"
+all_quarters = all_quarters[:all_quarters.index(last_quarter) + 1]
 
 # Prepare data for plotting
 types = sorted(set(type for counts in type_by_quarter.values() for type in counts))
@@ -86,7 +88,7 @@ layout = go.Layout(
         tickmode='array',
         tickvals=all_quarters[::4],  # Show every 4th tick to avoid overcrowding
         ticktext=[q.split('-')[0] for q in all_quarters[::4]],  # Show only year for these ticks
-        range=[-0.5, all_quarters.index('2025-Q1') + 0.5],  # Set the x-axis range to end at 2025-Q1
+        range=[-0.5, len(all_quarters) - 0.5],  # End the x-axis at the last quarter with data
         gridcolor='#eee',
         showline=True,
         linewidth=1,
