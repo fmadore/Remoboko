@@ -19,21 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-NOTE ON SCOPE
-
-This MIT License covers the *source code* in this repository: the Python
-scripts, `viz_common.py`, the JavaScript in `Book_DeGruyter/Timeline/script.js`
-and the HTML scaffolding.
-
-The *research data* (the JSON files under `Book_DeGruyter/` and
-`Final report/Data/`) and the *generated figures* (PNG, SVG and the rendered
-HTML visualisations) are licensed separately under the Creative Commons
-Attribution 4.0 International License. See `LICENSE-DATA`.
-
-The university logos `Book_DeGruyter/Maps/University_*.jpg` and the national
-flag icons `Book_DeGruyter/Timeline/*_icon*.png` are third-party material,
-reproduced here for identification purposes only, and are not covered by
-either licence.

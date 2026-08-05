@@ -85,6 +85,8 @@ For the research itself, cite the book: <https://doi.org/10.1515/9783111428895>.
 - **Research data and generated figures** (the JSON files, and the PNG / SVG / HTML outputs) — [CC BY 4.0](LICENSE-DATA).
 - The university logos in `Book_DeGruyter/Maps/` and the national flag icons in `Book_DeGruyter/Timeline/` are third-party material and are covered by neither licence.
 
+See [NOTICE.md](NOTICE.md) for the file-by-file breakdown.
+
 ## Acknowledgements
 
 Funded through the Leibniz Competition and hosted by Leibniz-Zentrum Moderner Orient (ZMO), Berlin. Country boundaries in `.github/assets/` come from [Natural Earth](https://www.naturalearthdata.com/) (public domain).
