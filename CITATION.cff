@@ -1,0 +1,66 @@
+cff-version: 1.2.0
+title: "Remoboko: Religion, Morality and Boko in West Africa — Research Data and Visualisations"
+message: >-
+  If you use this repository — its code, its data or the figures it
+  generates — please cite it using the metadata below.
+type: software
+authors:
+  - family-names: Madore
+    given-names: Frédérick
+    orcid: "https://orcid.org/0000-0003-0959-2092"
+    affiliation: University of Bayreuth
+version: 1.0.0
+date-released: "2026-08-05"
+repository-code: "https://github.com/fmadore/Remoboko"
+url: "https://remoboko.hypotheses.org/"
+license:
+  - MIT
+  - CC-BY-4.0
+abstract: >-
+  Python code, research data and interactive visualisations produced by
+  Remoboko: Religion, Morality and Boko in West Africa, a Leibniz Junior
+  Research Group (2018-2024) at Leibniz-Zentrum Moderner Orient (ZMO), Berlin,
+  funded through the Leibniz Competition. The project studied religiosity and
+  its effects on secular education (boko, in Hausa), examining the coexistence, competition and conflict between
+  secularism, Salafism and Pentecostalism on four West African campuses:
+  Université Abdou Moumouni (Niamey, Niger), University of Ibadan (Nigeria),
+  Université de Lomé (Togo) and Université d'Abomey-Calavi (Benin). The
+  repository contains the maps, timelines, charts and word clouds created for
+  the monograph "Religious Activism on Campuses in Togo and Benin" and for the
+  project's final report.
+keywords:
+  - West Africa
+  - Benin
+  - Togo
+  - Niger
+  - Nigeria
+  - Islam
+  - Christianity
+  - Salafism
+  - Pentecostalism
+  - secularism
+  - laïcité
+  - higher education
+  - student activism
+  - African studies
+  - digital humanities
+  - data visualisation
+  - research data
+references:
+  - type: book
+    title: >-
+      Religious Activism on Campuses in Togo and Benin: Christian and Muslim
+      Students Navigating Authoritarianism and Laïcité, 1970-2023
+    authors:
+      - family-names: Madore
+        given-names: Frédérick
+        orcid: "https://orcid.org/0000-0003-0959-2092"
+    publisher:
+      name: De Gruyter
+    year: 2025
+    collection-title: ZMO-Studien
+    volume: 48
+    isbn: "978-3-11-142790-4"
+    doi: "10.1515/9783111428895"
+    languages:
+      - en

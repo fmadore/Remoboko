@@ -37,6 +37,9 @@ python "Final report/collaborators_gender.py"    # Outputs collaborators_gender.
 python "Final report/treemap.py"                 # Outputs treemap_chart.html
 python "Final report/activities_type_time.py"    # Outputs activities_type_over_time.html
 python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
+
+# Repository metadata
+python .github/assets/social_preview.py          # Outputs .github/assets/social-preview.png (1280x640)
 ```
 
 ## Architecture
@@ -46,6 +49,7 @@ python "Final report/word_clouds.py"             # Outputs WordClouds/*.png
 - `Book_DeGruyter/Maps/locations.json` - Canonical GeoJSON for points of interest (name, country, type); consumed by both `map_locations.py` and `points_of_interest.html`
 - `Final report/Data/Collaborators_data.json` - Collaborator info (name, country, gender, affiliation, coordinates)
 - `Final report/Data/Publications_and_activities_data.json` - Publications/activities with type, language, date, abstract
+- `.github/assets/west-africa.geo.json` - Trimmed Natural Earth 1:50m country outlines, used only by the social preview generator
 
 ### Shared Module
 - `viz_common.py` (repo root) - design tokens (fonts, country colors, qualitative palette), `load_json`, the standard folium base map (`create_base_map`), and the `remoboko` Plotly template (`register_plotly_template`) plus `plotly_config`. Scripts import it by inserting the repo root into `sys.path`.
