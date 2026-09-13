@@ -1,72 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remoboko Timeline</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Open Sans', Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 0 0 16px 0;
-        }
-        .timeline {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .timeline svg {
-            width: 100%;
-            height: auto;
-        }
-        .event-line {
-            stroke-width: 1;
-            opacity: 0.5;
-        }
-        .event-circle {
-            stroke: white;
-            stroke-width: 1.5;
-            cursor: pointer;
-            transition: r 0.15s;
-        }
-        .event-text {
-            font-size: 11px;
-            fill: #333;
-        }
-        .legend-label {
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .axis text {
-            font-size: 12px;
-            font-family: 'Open Sans', Arial, sans-serif;
-        }
-        .timeline-tooltip {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0;
-            background: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-size: 13px;
-            line-height: 1.4;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: opacity 0.15s;
-            max-width: 260px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Religion, education and politics in Togo and Benin, 1960–2010 · Remoboko</title>
+  <meta name="description" content="Interactive timeline of 37 religious, educational and political events in Togo and Benin between 1960 and 2010.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/remoboko.css">
+  <style>
+    .event { cursor: default; }
+    .event-line { stroke-width: 1; }
+    .event-dot { stroke: var(--rb-surface); stroke-width: 2; }
+    .event-text { fill: var(--rb-ink); font-size: 11px; }
+    @media (max-width: 640px) { .event-text { font-size: var(--rb-fs-label); } }
+    .event-date { fill: var(--rb-ink-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .event.is-dim { opacity: 0.25; }
+    .axis-label { fill: var(--rb-ink-3); font-size: var(--rb-fs-small); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  </style>
 </head>
 <body>
-    <h1>Religious, educational and political events in Togo and Benin</h1>
-    <div id="timeline" class="timeline"></div>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="script.js" defer></script>
+<!--
+THESIS: The figure is the page. One question answered in seconds, no chrome, nothing decorative; refuses the dashboard-card arrangement and the Plotly toolbar.
+OWN-WORLD: White ground, Source Sans 3, hairline grid, near-black ink with two greys, one validated categorical palette plus the pinned country trio. Legends are text keys with small swatches; controls are text links and a segmented toggle.
+STORY: A blog reader lands inside an iframe, reads the title, scans the two countries' events above and below the axis, filters by theme, hovers for the date, returns to the post.
+FIRST VIEWPORT: Title top-left, description under it, country key and theme filter on one row, the timeline filling the remaining height with Benin above the axis and Togo below, source line and actions in a hairline-topped footer.
+FORM: Plain editorial charts (the canon, Datawrapper as the bar), chosen by the user over the assigned road-map sheet; seed 7067b968.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+-->
+<figure class="rb-figure">
+  <figcaption class="rb-head">
+    <h1 class="rb-title">Religion, education and politics in Togo and Benin, 1960–2010</h1>
+    <p class="rb-desc" id="desc">Key events from the book, with Benin above the axis and Togo below.</p>
+  </figcaption>
+  <div class="rb-controls">
+    <div id="legend"></div>
+    <div id="filter" style="margin-left:auto"></div>
+  </div>
+  <div class="rb-plot" id="plot"></div>
+  <footer class="rb-foot">
+    <p class="rb-notes">Source: Remoboko project data (CC BY 4.0). Hover or focus an event for its date and theme.</p>
+    <div class="rb-actions" id="actions"></div>
+  </footer>
+</figure>
+<script type="module" src="script.js"></script>
 </body>
 </html>

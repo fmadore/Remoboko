@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-13T12:00:00Z",
+  "title": "Design System: Remoboko figures",
+  "extensions": {
+    "colorMeta": {
+      "surface": { "role": "neutral", "displayName": "Paper", "canonical": "#ffffff", "tonalRamp": ["#262626", "#3d3d3d", "#555555", "#707070", "#8c8c8c", "#a9a9a9", "#c7c7c7", "#e6e6e6"] },
+      "surface-2": { "role": "neutral", "displayName": "Paper 2", "canonical": "#f4f4f2", "tonalRamp": ["#26261f", "#3d3d35", "#55554c", "#707066", "#8c8c82", "#a9a99f", "#c7c7bd", "#e6e6dc"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#1b1b1b", "tonalRamp": ["#1b1b1b", "#333333", "#4d4d4d", "#686868", "#848484", "#a1a1a1", "#bfbfbf", "#dedede"] },
+      "ink-2": { "role": "neutral", "displayName": "Ink 2", "canonical": "#4a4a4a", "tonalRamp": ["#1b1b1b", "#333333", "#4a4a4a", "#686868", "#848484", "#a1a1a1", "#bfbfbf", "#dedede"] },
+      "ink-3": { "role": "neutral", "displayName": "Ink 3", "canonical": "#6f6f6f", "tonalRamp": ["#1b1b1b", "#333333", "#4d4d4d", "#6f6f6f", "#848484", "#a1a1a1", "#bfbfbf", "#dedede"] },
+      "grid": { "role": "neutral", "displayName": "Grid", "canonical": "#e6e6e3", "tonalRamp": ["#26261f", "#3d3d35", "#55554c", "#707066", "#8c8c82", "#a9a99f", "#c7c7bd", "#e6e6e3"] },
+      "axis": { "role": "neutral", "displayName": "Axis", "canonical": "#bdbdb8", "tonalRamp": ["#26261f", "#3d3d35", "#55554c", "#707066", "#8c8c82", "#a9a99f", "#bdbdb8", "#e6e6dc"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "rgba(27, 27, 27, 0.14)", "tonalRamp": ["rgba(27,27,27,0.85)", "rgba(27,27,27,0.7)", "rgba(27,27,27,0.55)", "rgba(27,27,27,0.4)", "rgba(27,27,27,0.28)", "rgba(27,27,27,0.14)", "rgba(27,27,27,0.06)", "rgba(27,27,27,0.03)"] },
+      "hover": { "role": "neutral", "displayName": "Hover Wash", "canonical": "rgba(27, 27, 27, 0.06)", "tonalRamp": ["rgba(27,27,27,0.85)", "rgba(27,27,27,0.7)", "rgba(27,27,27,0.55)", "rgba(27,27,27,0.4)", "rgba(27,27,27,0.28)", "rgba(27,27,27,0.14)", "rgba(27,27,27,0.06)", "rgba(27,27,27,0.03)"] },
+      "link": { "role": "primary", "displayName": "Reference Blue", "canonical": "#0b5fad", "tonalRamp": ["#041f3a", "#073558", "#094a7f", "#0b5fad", "#3a7fc2", "#6ea0d4", "#a3c3e6", "#d6e5f5"] },
+      "selection": { "role": "neutral", "displayName": "Selection", "canonical": "#cfe3fb", "tonalRamp": ["#0a2a4a", "#124272", "#1b5a9a", "#2a75c0", "#5b95d0", "#8db5e2", "#b3cdee", "#cfe3fb"] },
+      "benin": { "role": "secondary", "displayName": "Benin Blue", "canonical": "#3388ff", "tonalRamp": ["#0a2a5c", "#103f88", "#1a5bc0", "#2673e8", "#3388ff", "#6aa6ff", "#a3c6ff", "#d6e6ff"] },
+      "togo": { "role": "secondary", "displayName": "Togo Green", "canonical": "#2ecc71", "tonalRamp": ["#0b3a20", "#125a33", "#1a8149", "#24a65c", "#2ecc71", "#66d994", "#a0e7bb", "#d3f5e0"] },
+      "west-africa": { "role": "secondary", "displayName": "West Africa Orange", "canonical": "#e67e22", "tonalRamp": ["#4a2608", "#743c0e", "#a55517", "#cc6c1d", "#e67e22", "#ee9f5b", "#f5c194", "#fbe3cb"] },
+      "cat-1": { "role": "tertiary", "displayName": "Categorical 1 (blue)", "canonical": "#2a78d6", "tonalRamp": ["#0b2549", "#123a70", "#1c559c", "#2a78d6", "#5893df", "#86afe8", "#b4cbf1", "#dde8f9"] },
+      "cat-2": { "role": "tertiary", "displayName": "Categorical 2 (orange)", "canonical": "#eb6834", "tonalRamp": ["#4c1d0b", "#7a2e12", "#ad431c", "#d45726", "#eb6834", "#f08b63", "#f5b096", "#fbdacb"] },
+      "cat-3": { "role": "tertiary", "displayName": "Categorical 3 (teal green)", "canonical": "#1baf7a", "tonalRamp": ["#073322", "#0c5237", "#12784f", "#179866", "#1baf7a", "#56c49b", "#8fd8bc", "#c9ecdd"] },
+      "cat-4": { "role": "tertiary", "displayName": "Categorical 4 (amber)", "canonical": "#eda100", "tonalRamp": ["#4a3200", "#754f00", "#a67000", "#cc8b00", "#eda100", "#f2b840", "#f7d080", "#fbe8c0"] },
+      "cat-5": { "role": "tertiary", "displayName": "Categorical 5 (pink)", "canonical": "#e87ba4", "tonalRamp": ["#4d1a2e", "#7a2a49", "#ad3d68", "#d15a86", "#e87ba4", "#ee9cba", "#f4bdd1", "#f9dee8"] },
+      "cat-6": { "role": "tertiary", "displayName": "Categorical 6 (deep green)", "canonical": "#008300", "tonalRamp": ["#002a00", "#004400", "#006000", "#008300", "#3a9e3a", "#6fba6f", "#a3d5a3", "#d4ecd4"] },
+      "cat-7": { "role": "tertiary", "displayName": "Categorical 7 (indigo)", "canonical": "#4a3aa7", "tonalRamp": ["#181235", "#261d56", "#372a7c", "#4a3aa7", "#6f61ba", "#9489cd", "#b9b2df", "#dcd9ef"] },
+      "cat-8": { "role": "tertiary", "displayName": "Categorical 8 (red)", "canonical": "#e34948", "tonalRamp": ["#4a1515", "#752222", "#a63131", "#cc3f3e", "#e34948", "#ea7473", "#f19f9e", "#f8cfcf"] },
+      "other": { "role": "tertiary", "displayName": "Other Grey", "canonical": "#9c9c98", "tonalRamp": ["#26261f", "#3d3d35", "#55554c", "#707066", "#9c9c98", "#a9a99f", "#c7c7bd", "#e6e6dc"] },
+      "seq": { "role": "primary", "displayName": "Series Blue", "canonical": "#2a78d6", "tonalRamp": ["#0b2549", "#123a70", "#1c559c", "#2a78d6", "#5893df", "#86afe8", "#b4cbf1", "#dde8f9"] }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Title", "purpose": "The figure's H1, top-left of every chart page; 19px under 640px." },
+      "title-compact": { "displayName": "Title, compact", "purpose": "The H1 in the map header strip." },
+      "body": { "displayName": "Body", "purpose": "The one-sentence description under the title, ink-2, capped at 72ch." },
+      "label": { "displayName": "Label", "purpose": "Legend keys, segmented options, tooltip body, table cells, SVG category labels, map cards and popups." },
+      "small": { "displayName": "Small", "purpose": "Axis ticks, value labels (600), source line, footer actions, tooltip sub-lines." },
+      "column-head": { "displayName": "Column head", "purpose": "Uppercase table headers and legend-card section headings in ink-3." }
+    },
+    "shadows": [
+      { "name": "float", "value": "0 1px 2px rgba(27, 27, 27, 0.08), 0 6px 16px rgba(27, 27, 27, 0.10)", "purpose": "The only box shadow; surfaces floating over a map or a plot (tooltip, cards, popups, search list, logo markers)." },
+      { "name": "pin-lift", "value": "drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25))", "purpose": "Filter on map pins only." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The single easing for every state transition (120 to 150ms) and CSS transform." },
+      { "name": "first-draw", "value": "400-700ms d3.easeExpOut, staggered 18-25ms per item", "purpose": "Marks grow in on first render only; skipped under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "narrow", "value": "640px" },
+      { "name": "chart-stack", "value": "480px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Action link",
+      "kind": "button",
+      "refersTo": "action-link",
+      "description": "Footer actions (Show as table, Download PNG, Download SVG): underlined text, never a filled button.",
+      "html": "<div class=\"ds-actions\"><button class=\"ds-action\" type=\"button\" aria-pressed=\"false\">Show as table</button><button class=\"ds-action\" type=\"button\"><svg viewBox=\"0 0 512 512\" aria-hidden=\"true\"><path d=\"M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z\"/></svg>Download PNG</button></div>",
+      "css": ".ds-actions { display: flex; flex-wrap: wrap; gap: 4px 16px; font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); } .ds-action { display: inline-flex; align-items: center; gap: 6px; padding: 2px 0; border: 0; background: none; color: var(--rb-ink-3, #6f6f6f); font: inherit; font-size: 0.75rem; cursor: pointer; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: transparent; transition: color 0.15s cubic-bezier(0.16, 1, 0.3, 1), text-decoration-color 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-action:hover { color: var(--rb-ink, #1b1b1b); text-decoration-color: currentColor; } .ds-action:focus-visible { outline: 2px solid var(--rb-ink, #1b1b1b); outline-offset: 2px; border-radius: 2px; } .ds-action[aria-pressed=\"true\"] { color: var(--rb-ink, #1b1b1b); font-weight: 600; } .ds-action svg { width: 12px; height: 12px; fill: currentColor; }"
+    },
+    {
+      "name": "Legend key",
+      "kind": "chip",
+      "refersTo": "legend-key",
+      "description": "Text key with a 12px swatch and tabular count; as a button it toggles a series (struck through and faded when off).",
+      "html": "<ul class=\"ds-legend\" aria-label=\"Legend\"><li><button class=\"ds-key\" type=\"button\" aria-pressed=\"true\"><span class=\"ds-swatch\" style=\"--swatch:#2a78d6\"></span>Conference paper<span class=\"ds-count\"> 80</span></button></li><li><button class=\"ds-key\" type=\"button\" aria-pressed=\"true\"><span class=\"ds-swatch\" style=\"--swatch:#eb6834\"></span>Lecture/presentation<span class=\"ds-count\"> 34</span></button></li><li><button class=\"ds-key\" type=\"button\" aria-pressed=\"false\"><span class=\"ds-swatch\" style=\"--swatch:#9c9c98\"></span>Other (5 types)<span class=\"ds-count\"> 6</span></button></li></ul>",
+      "css": ".ds-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 0; list-style: none; font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); } .ds-key { display: inline-flex; align-items: center; gap: 7px; padding: 2px 4px 2px 0; border: 0; background: none; color: var(--rb-ink-2, #4a4a4a); font: inherit; font-size: 0.8125rem; line-height: 1.3; border-radius: 2px; cursor: pointer; transition: color 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-key:hover { color: var(--rb-ink, #1b1b1b); } .ds-key:focus-visible { outline: 2px solid var(--rb-ink, #1b1b1b); outline-offset: 2px; } .ds-swatch { flex: none; width: 12px; height: 12px; border-radius: 2px; background: var(--swatch); transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-key[aria-pressed=\"false\"] { color: var(--rb-ink-3, #6f6f6f); text-decoration: line-through; text-decoration-thickness: 1px; } .ds-key[aria-pressed=\"false\"] .ds-swatch { opacity: 0.25; } .ds-count { color: var(--rb-ink-3, #6f6f6f); font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Segmented control",
+      "kind": "nav",
+      "refersTo": "segmented",
+      "description": "The one non-text control: basemap switch and time granularity. Active option is paper on ink.",
+      "html": "<div class=\"ds-seg\" role=\"group\" aria-label=\"Time granularity\"><button type=\"button\" aria-pressed=\"true\">By quarter</button><button type=\"button\" aria-pressed=\"false\">By year</button></div>",
+      "css": ".ds-seg { display: inline-flex; padding: 2px; border: 1px solid var(--rb-hairline, rgba(27,27,27,0.14)); border-radius: 6px; background: var(--rb-surface, #fff); font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); } .ds-seg button { padding: 3px 10px; border: 0; border-radius: 4px; background: none; color: var(--rb-ink-2, #4a4a4a); font: inherit; font-size: 0.8125rem; line-height: 1.4; cursor: pointer; transition: background 0.15s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-seg button:hover { color: var(--rb-ink, #1b1b1b); background: var(--rb-hover, rgba(27,27,27,0.06)); } .ds-seg button:focus-visible { outline: 2px solid var(--rb-ink, #1b1b1b); outline-offset: 2px; } .ds-seg button[aria-pressed=\"true\"] { background: var(--rb-ink, #1b1b1b); color: var(--rb-surface, #fff); }"
+    },
+    {
+      "name": "Tooltip",
+      "kind": "card",
+      "refersTo": "tooltip",
+      "description": "Single per-page tooltip: paper, hairline border, Float shadow, title / sub / swatch-key-value grid.",
+      "html": "<div class=\"ds-tooltip\" role=\"tooltip\"><p class=\"ds-tooltip-title\">2023-Q4</p><p class=\"ds-tooltip-sub\">37 outputs</p><div class=\"ds-tooltip-rows\"><span class=\"ds-line\" style=\"--swatch:#2a78d6\"></span><span class=\"k\">Conference paper</span><span class=\"v\">23</span><span class=\"ds-line\" style=\"--swatch:#eda100\"></span><span class=\"k\">Book chapter</span><span class=\"v\">11</span><span class=\"ds-line\" style=\"--swatch:#9c9c98\"></span><span class=\"k muted\">Other</span><span class=\"v muted\">2</span></div></div>",
+      "css": ".ds-tooltip { display: inline-block; max-width: 300px; padding: 8px 10px; border: 1px solid var(--rb-hairline, rgba(27,27,27,0.14)); border-radius: 4px; background: var(--rb-surface, #fff); color: var(--rb-ink, #1b1b1b); box-shadow: 0 1px 2px rgba(27,27,27,0.08), 0 6px 16px rgba(27,27,27,0.10); font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); font-size: 0.8125rem; line-height: 1.35; } .ds-tooltip-title { font-weight: 600; margin: 0 0 2px; } .ds-tooltip-sub { color: var(--rb-ink-3, #6f6f6f); margin: 0 0 4px; font-size: 0.75rem; } .ds-tooltip-rows { display: grid; grid-template-columns: auto 1fr auto; column-gap: 8px; row-gap: 2px; align-items: center; } .ds-line { display: inline-block; width: 12px; height: 3px; border-radius: 2px; background: var(--swatch); } .ds-tooltip-rows .k { color: var(--rb-ink-2, #4a4a4a); } .ds-tooltip-rows .v { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; } .ds-tooltip-rows .muted { color: var(--rb-ink-3, #6f6f6f); }"
+    },
+    {
+      "name": "Map legend card",
+      "kind": "card",
+      "refersTo": "map-card",
+      "description": "Floating key over the map: uppercase section heads, vertical country keys with dots, icon type key.",
+      "html": "<section class=\"ds-card\" aria-label=\"Legend\"><h2>Country</h2><ul class=\"ds-card-legend\"><li><span class=\"ds-key\"><span class=\"ds-dot\" style=\"--swatch:#3388ff\"></span>Benin<span class=\"ds-count\"> 19</span></span></li><li><span class=\"ds-key\"><span class=\"ds-dot\" style=\"--swatch:#2ecc71\"></span>Togo<span class=\"ds-count\"> 12</span></span></li><li><span class=\"ds-key\"><span class=\"ds-dot\" style=\"--swatch:#e67e22\"></span>West Africa<span class=\"ds-count\"> 2</span></span></li></ul><h2>Type</h2><ul class=\"ds-type-key\"><li><svg viewBox=\"0 0 512 512\" aria-hidden=\"true\"><path d=\"M243.4 2.6l-224 96c-14 6-21.8 21-18.7 35.8S16.8 160 32 160l0 8c0 13.3 10.7 24 24 24l400 0c13.3 0 24-10.7 24-24l0-8c15.2 0 28.3-10.7 31.3-25.6s-4.8-29.9-18.7-35.8l-224-96c-8-3.4-17.2-3.4-25.2 0zM128 224l-64 0 0 196.3c-.6 .3-1.2 .7-1.8 1.1l-48 32c-11.7 7.8-17 22.4-12.9 35.9S17.9 512 32 512l448 0c14.1 0 26.5-9.2 30.6-22.7s-1.1-28.1-12.9-35.9l-48-32c-.6-.4-1.2-.7-1.8-1.1L448 224l-64 0 0 192-40 0 0-192-64 0 0 192-48 0 0-192-64 0 0 192-40 0 0-192zM256 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64z\"/></svg><span>University</span></li><li><svg viewBox=\"0 0 384 512\" aria-hidden=\"true\"><path d=\"M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z\"/></svg><span>Landmark</span></li></ul></section>",
+      "css": ".ds-card { display: inline-block; padding: 10px 12px; border-radius: 4px; background: var(--rb-surface, #fff); box-shadow: 0 1px 2px rgba(27,27,27,0.08), 0 6px 16px rgba(27,27,27,0.10); font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); font-size: 0.8125rem; max-width: min(92vw, 360px); } .ds-card h2 { margin: 0 0 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--rb-ink-3, #6f6f6f); } .ds-card ul + h2 { margin-top: 10px; } .ds-card-legend { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; } .ds-key { display: inline-flex; align-items: center; gap: 7px; padding: 2px 4px 2px 0; color: var(--rb-ink-2, #4a4a4a); line-height: 1.3; } .ds-dot { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--swatch); } .ds-count { color: var(--rb-ink-3, #6f6f6f); font-variant-numeric: tabular-nums; } .ds-type-key { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; color: var(--rb-ink-2, #4a4a4a); } .ds-type-key li { display: grid; grid-template-columns: 16px 1fr; column-gap: 8px; align-items: center; } .ds-type-key svg { width: 14px; height: 14px; fill: var(--rb-ink-2, #4a4a4a); justify-self: center; }"
+    },
+    {
+      "name": "Search",
+      "kind": "input",
+      "refersTo": "search-input",
+      "description": "Map location search: paper field with hairline border and Float shadow, magnifier at left, results list below.",
+      "html": "<div class=\"ds-search\"><svg viewBox=\"0 0 512 512\" aria-hidden=\"true\"><path d=\"M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z\"/></svg><input type=\"search\" placeholder=\"Search locations…\" aria-label=\"Search locations\"><ul role=\"listbox\"><li role=\"option\" aria-selected=\"true\">Université de Lomé<span class=\"muted\">Togo</span></li><li role=\"option\">Université d'Abomey-Calavi<span class=\"muted\">Benin</span></li></ul></div>",
+      "css": ".ds-search { position: relative; width: min(92vw, 300px); font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); } .ds-search input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--rb-hairline, rgba(27,27,27,0.14)); border-radius: 4px; background: var(--rb-surface, #fff); box-shadow: 0 1px 2px rgba(27,27,27,0.08), 0 6px 16px rgba(27,27,27,0.10); font: inherit; font-size: 0.8125rem; color: var(--rb-ink, #1b1b1b); } .ds-search input::placeholder { color: var(--rb-ink-3, #6f6f6f); } .ds-search input:focus-visible { outline: 2px solid var(--rb-ink, #1b1b1b); outline-offset: 2px; } .ds-search > svg { position: absolute; left: 11px; top: 17px; width: 14px; height: 14px; transform: translateY(-50%); fill: var(--rb-ink-3, #6f6f6f); pointer-events: none; } .ds-search ul { margin: 4px 0 0; padding: 4px 0; list-style: none; background: var(--rb-surface, #fff); border-radius: 4px; box-shadow: 0 1px 2px rgba(27,27,27,0.08), 0 6px 16px rgba(27,27,27,0.10); } .ds-search li { display: flex; justify-content: space-between; gap: 8px; padding: 6px 12px; cursor: pointer; font-size: 0.8125rem; } .ds-search li:hover, .ds-search li[aria-selected=\"true\"] { background: var(--rb-hover, rgba(27,27,27,0.06)); } .ds-search .muted { color: var(--rb-ink-3, #6f6f6f); font-size: 0.75rem; white-space: nowrap; }"
+    },
+    {
+      "name": "Data table",
+      "kind": "custom",
+      "refersTo": "table-head",
+      "description": "The Show-as-table view: uppercase ink-3 sticky header, hairline row rules, right-aligned tabular numbers.",
+      "html": "<table class=\"ds-table\"><caption>Collaborators by country. Source: Remoboko project data (CC BY 4.0)</caption><thead><tr><th scope=\"col\">Country</th><th scope=\"col\" class=\"num\">Collaborators</th></tr></thead><tbody><tr><td>Germany</td><td class=\"num\">31</td></tr><tr><td>Togo</td><td class=\"num\">12</td></tr><tr><td>Benin</td><td class=\"num\">9</td></tr></tbody></table>",
+      "css": ".ds-table { border-collapse: collapse; width: 100%; font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: var(--rb-ink, #1b1b1b); } .ds-table caption { text-align: left; caption-side: top; padding: 0 0 6px; color: var(--rb-ink-3, #6f6f6f); font-size: 0.75rem; } .ds-table th, .ds-table td { padding: 5px 10px 5px 0; border-bottom: 1px solid var(--rb-grid, #e6e6e3); text-align: left; vertical-align: top; } .ds-table th { color: var(--rb-ink-3, #6f6f6f); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; background: var(--rb-surface, #fff); } .ds-table .num { text-align: right; } .ds-table tbody tr:hover { background: var(--rb-hover, rgba(27,27,27,0.06)); }"
+    },
+    {
+      "name": "Figure page frame",
+      "kind": "custom",
+      "refersTo": "action-link",
+      "description": "The head / plot / hairline footer column that every chart page is; shown here at reduced height.",
+      "html": "<figure class=\"ds-figure\"><figcaption class=\"ds-head\"><h1 class=\"ds-title\">Collaborators by country</h1><p class=\"ds-desc\">The 93 people who collaborated with Remoboko, counted by the country of their institution.</p></figcaption><div class=\"ds-plot\"><svg viewBox=\"0 0 320 72\" width=\"320\" height=\"72\"><text class=\"cat\" x=\"60\" y=\"16\" text-anchor=\"end\">Germany</text><rect x=\"68\" y=\"6\" width=\"200\" height=\"14\" fill=\"#2a78d6\"/><text class=\"val\" x=\"274\" y=\"17\">31</text><text class=\"cat\" x=\"60\" y=\"42\" text-anchor=\"end\">Togo</text><rect x=\"68\" y=\"32\" width=\"77\" height=\"14\" fill=\"#2a78d6\"/><text class=\"val\" x=\"151\" y=\"43\">12</text><text class=\"cat\" x=\"60\" y=\"68\" text-anchor=\"end\">Benin</text><rect x=\"68\" y=\"58\" width=\"58\" height=\"14\" fill=\"#2a78d6\"/><text class=\"val\" x=\"132\" y=\"69\">9</text></svg></div><footer class=\"ds-foot\"><p>Source: Remoboko project data (CC BY 4.0)</p><div class=\"ds-actions\"><button type=\"button\">Show as table</button><button type=\"button\">Download PNG</button><button type=\"button\">Download SVG</button></div></footer></figure>",
+      "css": ".ds-figure { display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 24px 32px 16px; background: var(--rb-surface, #fff); color: var(--rb-ink, #1b1b1b); font-family: var(--rb-font, 'Source Sans 3', system-ui, sans-serif); font-size: 0.9375rem; line-height: 1.45; } .ds-head { display: flex; flex-direction: column; gap: 4px; max-width: 72ch; } .ds-title { margin: 0; font-size: 1.375rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; } .ds-desc { margin: 0; color: var(--rb-ink-2, #4a4a4a); } .ds-plot svg { display: block; overflow: visible; } .ds-plot .cat { fill: var(--rb-ink, #1b1b1b); font-size: 13px; } .ds-plot .val { fill: var(--rb-ink, #1b1b1b); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; } .ds-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding-top: 12px; border-top: 1px solid var(--rb-grid, #e6e6e3); color: var(--rb-ink-3, #6f6f6f); font-size: 0.75rem; } .ds-foot p { margin: 0; } .ds-actions { display: flex; gap: 4px 16px; } .ds-actions button { padding: 2px 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: transparent; transition: color 0.15s cubic-bezier(0.16, 1, 0.3, 1), text-decoration-color 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-actions button:hover { color: var(--rb-ink, #1b1b1b); text-decoration-color: currentColor; } .ds-actions button:focus-visible { outline: 2px solid var(--rb-ink, #1b1b1b); outline-offset: 2px; border-radius: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Datawrapper Page",
+    "overview": "Every Remoboko figure is a whole page that happens to be embedded in an iframe: a title, one sentence of description, the plot filling the remaining height, and a hairline-topped footer carrying the source line and three text-link actions. Nothing around the figure competes with it. There is no site header, no card frame, no toolbar, no decorative device; the chart reads the way a Datawrapper embed reads inside a newspaper article, and it is judged by that bar.\n\nThe material is white paper and near-black ink. Two greys carry everything subordinate (descriptions, axis labels, sources); colour is spent only on data, and only from two fixed sources: the pinned country trio and an eight-slot categorical palette that never generates hues. Density is editorial rather than dashboard: one figure per page, 22px title, 15px body, 12px axis type, 4px rhythm.\n\nMaps follow the same doctrine with a header strip and a full-bleed MapLibre body; the only floating surfaces are the legend card and the search/basemap tools, and on phones the legend collapses to a single \"Show key\" link so the data keeps the frame.",
+    "keyCharacteristics": [
+      "The figure is the page: 100dvh flex column, no chrome, embeds cleanly at any iframe height.",
+      "White ground, one workhorse sans (Source Sans 3), hairline grid, crisp-edged axes.",
+      "Near-black ink with exactly two greys; colour is reserved for data marks.",
+      "Legends are text keys with 12px swatches; controls are underlined text links and one segmented toggle.",
+      "Every value is reachable without hovering: labelled bars, tabular figures, and a \"Show as table\" view on every chart.",
+      "Depth is a single soft shadow used only for surfaces that float over a map or over the plot (tooltip, cards, popups)."
+    ],
+    "rules": [
+      { "name": "The Two Sources Rule", "body": "Data colour comes from exactly two places: the country trio when the encoding is country, the categorical palette in rank order otherwise. Hues are never generated, interpolated toward another hue, or picked per page. (The treemap's lighter descendant tints are a lightness ramp toward white of an assigned palette colour, not a new hue.)", "section": "colors" },
+      { "name": "The Seventh Fold Rule", "body": "A multi-series chart names at most seven series; everything past that folds into one \"Other\" series in Other Grey and is enumerated in the footer note.", "section": "colors" },
+      { "name": "The Grey Is Text Rule", "body": "The three inks are for text and rules only. No data mark is drawn in ink-2 or ink-3; the only grey data mark is Other Grey.", "section": "colors" },
+      { "name": "The Four Steps Rule", "body": "Interface type uses only the four size tokens (22 / 15 / 13 / 12). Weight and ink, not extra sizes, carry emphasis: 700 for the title, 600 for values, table heads and tooltip titles, 400 elsewhere.", "section": "typography" },
+      { "name": "The Tabular Numbers Rule", "body": "Any number that sits in a column, an axis, or a legend count is set with tabular numerals.", "section": "typography" },
+      { "name": "The Float Rule", "body": "A shadow is permitted only on a surface that overlaps a map or a plot. Anything in the page's flow (title, legend, controls, footer, table) is flat and hairline-ruled.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do build every new figure as the head / controls / plot / footer column with the source line in the footer and \"Show as table\", \"Download PNG\", \"Download SVG\" as text actions.",
+      "Do take colour from the country trio or the categorical palette in rank order, and fold the eighth-and-beyond series into Other Grey.",
+      "Do keep axis and source type at 12px / ink-3 and never lighter than ink-3 (5.3:1).",
+      "Do label values on the mark, keep the table view, and make every hit target row-wide or at least 42px tall on phones.",
+      "Do reserve the Float shadow for surfaces that overlap a map or a plot.",
+      "Do honour prefers-reduced-motion by skipping the first-draw animation, and embed Source Sans 3 into any exported SVG."
+    ],
+    "donts": [
+      "Don't add site chrome, card frames around the plot, or a toolbar; the figure is the page.",
+      "Don't generate, interpolate, or hand-pick a new hue for a series; the palette order is fixed and validated.",
+      "Don't render a filled button; actions are underlined text links and the one segmented toggle.",
+      "Don't put a shadow on anything in the page flow, or a border on a legend key.",
+      "Don't use CARTO raster tiles or any keyed basemap; basemaps are OpenFreeMap Liberty / Positron / Dark via MapLibre.",
+      "Don't introduce a second typeface, a fifth interface size, or non-tabular numerals in a column."
+    ]
+  }
+}

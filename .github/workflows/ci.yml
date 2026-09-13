@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  check:
+  print-figures:
+    name: Python print figures
     runs-on: ubuntu-latest
     env:
       MPLBACKEND: Agg
@@ -25,18 +26,36 @@ jobs:
       - name: Lint
         run: ruff check .
 
-      - name: Run visualization scripts
+      - name: Run print-figure scripts
         run: |
-          python Book_DeGruyter/Maps/map_locations.py
-          python Book_DeGruyter/Maps/map_universities.py
           python Book_DeGruyter/Timeline/timeline.py
-          python "Final report/collaborators_country.py"
-          python "Final report/collaborators_map.py"
           python "Final report/collaborators_gender.py"
-          python "Final report/treemap.py"
-          python "Final report/activities_type_time.py"
+          python .github/assets/social_preview.py
 
       # word_clouds.py needs the ~570 MB spaCy French model, so CI only
       # checks that it compiles.
       - name: Compile-check word cloud script
         run: python -m py_compile "Final report/word_clouds.py"
+
+  interactive-figures:
+    name: Interactive figures (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test tooling
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Smoke-test every figure page
+        run: npm test

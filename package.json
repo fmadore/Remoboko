@@ -1,0 +1,12 @@
+{
+  "name": "remoboko",
+  "private": true,
+  "description": "Smoke tests for the Remoboko interactive figures (static HTML pages served from GitHub Pages).",
+  "license": "MIT",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}

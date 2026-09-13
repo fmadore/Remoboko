@@ -3,3 +3,15 @@ __pycache__/
 *.pyc
 Book_DeGruyter/Timeline/De-Gruyter-Sans-Bold.otf
 Book_DeGruyter/Timeline/De-Gruyter-Sans-Regular.otf
+
+# Local Claude Code tooling
+/.claude/
+
+# Node test tooling
+node_modules/
+test-results/
+playwright-report/
+
+# Impeccable review captures
+/.impeccable/review/
+/.impeccable/hook.cache.json

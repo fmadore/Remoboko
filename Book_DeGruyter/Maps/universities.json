@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "University of Lomé", "country": "Togo", "city": "Lomé", "logo": "University_Lome.jpg" },
+      "geometry": { "type": "Point", "coordinates": [1.2137727591902188, 6.175690527334621] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "University of Abomey-Calavi", "country": "Benin", "city": "Abomey-Calavi", "logo": "University_Abomey-Calavi.jpg" },
+      "geometry": { "type": "Point", "coordinates": [2.341522503861767, 6.415312316251478] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "University of Kara", "country": "Togo", "city": "Kara", "logo": "University_Kara.jpg" },
+      "geometry": { "type": "Point", "coordinates": [1.2075618607303693, 9.53190563529209] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "University of Parakou", "country": "Benin", "city": "Parakou", "logo": "University_Parakou.jpg" },
+      "geometry": { "type": "Point", "coordinates": [2.6466607924077525, 9.335184240782041] }
+    }
+  ]
+}

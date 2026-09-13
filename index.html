@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remoboko interactive figures</title>
+  <meta name="description" content="Interactive maps, charts and a timeline from Remoboko, a study of religiosity and secular education on university campuses in Togo, Benin, Niger and Nigeria.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/remoboko.css">
+  <style>
+    .index { max-width: 72ch; margin: 0 auto; padding: var(--rb-space-6) var(--rb-space-5) var(--rb-space-6); }
+    .index header { margin-bottom: var(--rb-space-6); }
+    .index h1 { font-size: 1.75rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 var(--rb-space-3); text-wrap: balance; }
+    .index .lede { margin: 0; color: var(--rb-ink-2); font-size: 1.0625rem; text-wrap: pretty; }
+    .index h2 { font-size: var(--rb-fs-small); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--rb-ink-3); margin: var(--rb-space-6) 0 var(--rb-space-2); padding-bottom: var(--rb-space-2); border-bottom: 1px solid var(--rb-grid); }
+    .figures { margin: 0; padding: 0; list-style: none; }
+    .figures li { display: grid; grid-template-columns: 1fr; gap: 2px; padding: var(--rb-space-3) 0; border-bottom: 1px solid var(--rb-grid); }
+    .figures a { font-weight: 600; font-size: var(--rb-fs-body); }
+    .figures p { margin: 0; color: var(--rb-ink-2); font-size: var(--rb-fs-label); }
+    .index footer { margin-top: var(--rb-space-6); color: var(--rb-ink-3); font-size: var(--rb-fs-small); }
+    .index footer p { margin: 0 0 var(--rb-space-1); }
+  </style>
+</head>
+<body>
+<!--
+THESIS: The figure is the page. One question answered in seconds, no chrome, nothing decorative; refuses the dashboard-card arrangement and the Plotly toolbar.
+OWN-WORLD: White ground, Source Sans 3, hairline grid, near-black ink with two greys, one validated categorical palette plus the pinned country trio. Legends are text keys with small swatches; controls are text links and a segmented toggle.
+STORY: A visitor from the README or the book finds the figure they want in one column and opens it.
+FIRST VIEWPORT: Title, one paragraph, then the figures as a single hairline-ruled list under two small headings.
+FORM: Plain editorial charts (the canon, Datawrapper as the bar), chosen by the user over the assigned road-map sheet; seed 7067b968.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+-->
+<main class="index">
+  <header>
+    <h1>Remoboko interactive figures</h1>
+    <p class="lede">Maps, charts and a timeline from <em>Religion, Morality and Boko in West Africa</em>, a Leibniz Junior Research Group (2018–2024) at Leibniz-Zentrum Moderner Orient, Berlin, that studied religiosity and secular education on university campuses in Togo, Benin, Niger and Nigeria. Every figure reads its data from this repository and can be embedded in a page.</p>
+  </header>
+
+  <h2>From the book</h2>
+  <ul class="figures">
+    <li>
+      <a href="Book_DeGruyter/Maps/UAC_UL_locations_map.html">Points of interest around Abomey-Calavi and Lomé</a>
+      <p>33 churches, mosques, schools, universities and campus landmarks, searchable and filterable by country.</p>
+    </li>
+    <li>
+      <a href="Book_DeGruyter/Maps/universities_map.html">Universities of Benin and Togo</a>
+      <p>The four public universities studied in the book, with their logos.</p>
+    </li>
+    <li>
+      <a href="Book_DeGruyter/Timeline/index.html">Religion, education and politics in Togo and Benin, 1960–2010</a>
+      <p>37 dated events, filterable by theme.</p>
+    </li>
+  </ul>
+
+  <h2>From the final report</h2>
+  <ul class="figures">
+    <li>
+      <a href="Final%20report/collaborators_by_country.html">Collaborators by country</a>
+      <p>93 collaborators across 24 countries, with names on hover.</p>
+    </li>
+    <li>
+      <a href="Final%20report/collaborators_map.html">Collaborators by affiliation</a>
+      <p>The same people located at 56 institutions on a world map.</p>
+    </li>
+    <li>
+      <a href="Final%20report/treemap_chart.html">Publications and activities by type and language</a>
+      <p>181 outputs as a zoomable treemap: type, then language, then year.</p>
+    </li>
+    <li>
+      <a href="Final%20report/activities_type_over_time.html">Publications and activities over time</a>
+      <p>The same outputs stacked by type, per quarter or per year, 2018–2025.</p>
+    </li>
+  </ul>
+
+  <footer>
+    <p>Book: Frédérick Madore, <em>Religious Activism on Campuses in Togo and Benin</em> (De Gruyter, 2025), <a href="https://doi.org/10.1515/9783111428895">doi:10.1515/9783111428895</a>.</p>
+    <p>Code MIT, data and figures CC BY 4.0. <a href="https://github.com/fmadore/Remoboko">Repository</a> · <a href="https://remoboko.hypotheses.org/">Project blog</a></p>
+  </footer>
+</main>
+</body>
+</html>
