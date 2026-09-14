@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collaborators by gender · Remoboko</title>
+  <meta name="description" content="The 93 Remoboko collaborators by gender, as a proportion bar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/remoboko.css">
+  <style>
+    .rb-figure { min-height: 0; }
+    .rb-plot { flex: none; }
+    .seg-name { fill: var(--rb-ink); font-size: var(--rb-fs-label); font-weight: 600; }
+    .seg-value { fill: var(--rb-ink-3); font-size: var(--rb-fs-small); font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+<!--
+THESIS: The figure is the page. One question answered in seconds, no chrome, nothing decorative; refuses the dashboard-card arrangement and the Plotly toolbar.
+OWN-WORLD: White ground, Source Sans 3, hairline grid, near-black ink with two greys, one validated categorical palette plus the pinned country trio. Legends are text keys with small swatches; controls are text links and a segmented toggle.
+STORY: A report reader lands inside an iframe, reads the headline share in the description, sees it as one proportion bar, opens the table or downloads, returns to the report.
+FIRST VIEWPORT: Title top-left, the headline sentence under it, the legend keys, one full-width proportion bar with its two labels above the segments, source line and actions in a hairline-topped footer.
+FORM: Plain editorial charts (the canon, Datawrapper as the bar), chosen by the user over the assigned road-map sheet; seed 7067b968. A two-category part-to-whole is a proportion bar, not a pie.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+-->
+<figure class="rb-figure">
+  <figcaption class="rb-head">
+    <h1 class="rb-title">Collaborators by gender</h1>
+    <p class="rb-desc" id="desc">The people who collaborated with Remoboko, by gender.</p>
+  </figcaption>
+  <div class="rb-controls">
+    <div id="legend"></div>
+  </div>
+  <div class="rb-plot" id="plot"></div>
+  <footer class="rb-foot">
+    <p class="rb-notes">Source: Remoboko project data (CC BY 4.0). Gender as recorded in the project's collaborator list.</p>
+    <div class="rb-actions" id="actions"></div>
+  </footer>
+</figure>
+<script type="module" src="collaborators_gender.js"></script>
+</body>
+</html>

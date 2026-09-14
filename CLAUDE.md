@@ -39,7 +39,7 @@ python .github/assets/social_preview.py          # .github/assets/social-preview
 - `Book_DeGruyter/Maps/UAC_UL_locations_map.html` and `points_of_interest.html` — identical shells sharing `locations-map.js` (both URLs must keep working)
 - `Book_DeGruyter/Maps/universities_map.html` + `universities-map.js` (data in `universities.json`)
 - `Book_DeGruyter/Timeline/index.html` + `script.js`
-- `Final report/collaborators_by_country.html`, `collaborators_map.html`, `treemap_chart.html`, `activities_type_over_time.html`, each with a `.js` of the same name
+- `Final report/collaborators_by_country.html`, `collaborators_gender.html`, `collaborators_map.html`, `treemap_chart.html`, `activities_type_over_time.html`, each with a `.js` of the same name
 - `index.html` at the root lists them all
 
 Every page is `<figure>`-shaped (title, description, controls row, plot, footer with source line and actions) or a full-viewport map with floating cards. Pages load D3 and MapLibre GL from jsdelivr as ES modules and import `assets/remoboko.js` with a relative path. Never rename or move a page: the URLs are referenced from the blog and the book.

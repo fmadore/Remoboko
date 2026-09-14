@@ -9,6 +9,7 @@ const PAGES = {
   universities: 'Book_DeGruyter/Maps/universities_map.html',
   timeline: 'Book_DeGruyter/Timeline/index.html',
   byCountry: 'Final report/collaborators_by_country.html',
+  byGender: 'Final report/collaborators_gender.html',
   collaboratorsMap: 'Final report/collaborators_map.html',
   treemap: 'Final report/treemap_chart.html',
   overTime: 'Final report/activities_type_over_time.html',
@@ -26,7 +27,7 @@ test('index lists every figure', async ({ page }) => {
   await page.goto(PAGES.index);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Remoboko interactive figures');
   const links = page.locator('.figures a');
-  await expect(links).toHaveCount(7);
+  await expect(links).toHaveCount(8);
   for (const href of await links.evaluateAll((as) => as.map((a) => a.getAttribute('href')))) {
     const res = await page.request.get(href);
     expect(res.ok(), `${href} should resolve`).toBeTruthy();
@@ -42,6 +43,18 @@ test('collaborators by country draws 24 bars summing to 93', async ({ page }) =>
   expect(values.reduce((s, v) => s + Number(v), 0)).toBe(93);
   await page.getByRole('button', { name: 'Show as table' }).click();
   await expect(page.locator('.rb-table tbody tr')).toHaveCount(24);
+  expect(errors).toEqual([]);
+});
+
+test('collaborators by gender draws one proportion bar summing to 100%', async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto(PAGES.byGender);
+  await expect(page.locator('#plot svg rect.rb-mark')).toHaveCount(2);
+  await expect(page.locator('#desc')).toContainText('35 of the 93');
+  const shares = await page.locator('#plot svg text.seg-value').allTextContents();
+  expect(shares.map((s) => Number(s.split('· ')[1].replace('%', ''))).reduce((a, b) => a + b, 0)).toBe(100);
+  await page.getByRole('button', { name: 'Show as table' }).click();
+  await expect(page.locator('.rb-table tbody tr')).toHaveCount(2);
   expect(errors).toEqual([]);
 });
 

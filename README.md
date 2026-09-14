@@ -26,7 +26,7 @@ Every figure is a self-contained HTML page served from GitHub Pages, listed at <
 
 **Final report:**
 
-- [Collaborators by country](https://fmadore.github.io/Remoboko/Final%20report/collaborators_by_country.html) · [by affiliation, on a map](https://fmadore.github.io/Remoboko/Final%20report/collaborators_map.html)
+- [Collaborators by country](https://fmadore.github.io/Remoboko/Final%20report/collaborators_by_country.html) · [by affiliation, on a map](https://fmadore.github.io/Remoboko/Final%20report/collaborators_map.html) · [by gender](https://fmadore.github.io/Remoboko/Final%20report/collaborators_gender.html)
 - [Publications and activities by type and language](https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html) · [over time](https://fmadore.github.io/Remoboko/Final%20report/activities_type_over_time.html)
 
 Every chart offers a table view and PNG/SVG download. Maps use [OpenFreeMap](https://openfreemap.org/) vector tiles rendered with MapLibre GL, which need no API key.
@@ -59,9 +59,10 @@ Figures and data for the project's final report:
 | --- | --- | --- |
 | `collaborators_by_country.html` + `.js` | 93 collaborators across 24 countries, names on hover | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/collaborators_by_country.html) |
 | `collaborators_map.html` + `.js` | The same collaborators located at 56 institutions | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/collaborators_map.html) |
+| `collaborators_gender.html` + `.js` | The same collaborators by gender, as a proportion bar | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/collaborators_gender.html) |
 | `treemap_chart.html` + `.js` | 181 publications and activities by type, language and year | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html) |
 | `activities_type_over_time.html` + `.js` | The same outputs stacked by type, per quarter or per year | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/activities_type_over_time.html) |
-| `collaborators_gender.py` | `collaborators_gender.png` (+ `_white` variant), a print figure | — |
+| `collaborators_gender.py` | `collaborators_gender.png` (+ `_white` variant), the print version | — |
 | `word_clouds.py` | `WordClouds/english_wordcloud.png` and `french_wordcloud.png` | — |
 
 ### `viz_common.py`
