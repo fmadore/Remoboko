@@ -27,7 +27,8 @@ const map = new maplibregl.Map({
 });
 map.addControl(new maplibregl.AttributionControl({ compact: false }), 'bottom-right');
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
-map.addControl(new maplibregl.FullscreenControl(), 'top-left');
+// Fullscreen the whole page, not just the canvas, so the cards (search, key, basemap switch) stay available.
+map.addControl(new maplibregl.FullscreenControl({ container: document.body }), 'top-left');
 map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-right');
 
 
