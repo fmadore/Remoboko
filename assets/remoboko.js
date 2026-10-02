@@ -1,32 +1,9 @@
 // Remoboko figures: shared helpers (ES module, no build step).
 // Imported by every chart and map page with a relative path.
 
-export const COUNTRY_COLORS = {
-  Benin: '#3388ff',
-  Togo: '#2ecc71',
-  'West Africa': '#e67e22',
-};
-
-// Fixed-order categorical palette (see assets/remoboko.css). Series past
-// the eighth fold into "Other"; hues are never generated.
-export const CATEGORICAL = [
-  '#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948',
-];
-export const OTHER_COLOR = '#9c9c98';
-export const SEQ_COLOR = '#2a78d6';
-
-export const FONT_FAMILY = '"Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-
-// OpenFreeMap vector styles: no API key, no usage limits.
-export const BASEMAPS = {
-  detailed: { label: 'Detailed', style: 'https://tiles.openfreemap.org/styles/liberty' },
-  light: { label: 'Light', style: 'https://tiles.openfreemap.org/styles/positron' },
-  dark: { label: 'Dark', style: 'https://tiles.openfreemap.org/styles/dark' },
-};
-export const BASEMAP_ATTRIBUTION =
-  '<a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/">OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-
-export const SOURCE_LINE = 'Source: Remoboko project data (CC BY 4.0)';
+export { COUNTRY_COLORS, CATEGORICAL, OTHER_COLOR, SEQ_COLOR, FONT_FAMILY, BASEMAPS, BASEMAP_ATTRIBUTION, SOURCE_LINE } from './tokens.js';
+import { downloadPNG, downloadSVG, downloadCSV } from './export.js';
+export { exportableSvg, downloadPNG, downloadSVG, downloadCSV, tableToCSV } from './export.js';
 
 // Font Awesome Free 6.7.2 solid icons (CC BY 4.0, https://fontawesome.com/license/free)
 export const ICONS = {
@@ -156,7 +133,7 @@ export function renderLegend(container, items, { onToggle, shape = 'square' } = 
     const label = el('span', {}, item.label);
     const count = item.count != null ? el('span', { class: 'rb-count' }, ` ${formatCount(item.count)}`) : null;
     const key = onToggle
-      ? el('button', { type: 'button', class: 'rb-key', 'aria-pressed': 'true', title: 'Show or hide this series' }, swatch, label, count)
+      ? el('button', { type: 'button', class: 'rb-key', dataset: { id: item.id }, 'aria-pressed': 'true', title: 'Show or hide this series' }, swatch, label, count)
       : el('span', { class: 'rb-key' }, swatch, label, count);
     if (onToggle) {
       key.addEventListener('click', () => {
@@ -192,174 +169,99 @@ export function renderSegmented(container, options, { value, label, onChange }) 
   return set;
 }
 
-// --- Export ---------------------------------------------------------------
-
-async function fontFaceCss() {
-  // Embed Source Sans 3 into the exported SVG so PNG/SVG downloads keep the
-  // page's typeface. Falls back silently to the system stack when offline.
-  try {
-    const cssUrl = 'https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap';
-    const css = await (await fetch(cssUrl)).text();
-    const faces = [];
-    const blocks = css.match(/@font-face\s*{[^}]*}/g) || [];
-    for (const block of blocks) {
-      if (!/unicode-range:\s*U\+0000-00FF/.test(block) && /unicode-range/.test(block)) continue; // latin only
-      const url = block.match(/url\((https:[^)]+\.woff2)\)/)?.[1];
-      if (!url) continue;
-      const buf = await (await fetch(url)).arrayBuffer();
-      let bin = '';
-      const bytes = new Uint8Array(buf);
-      for (let i = 0; i < bytes.length; i += 1) bin += String.fromCharCode(bytes[i]);
-      const dataUrl = `data:font/woff2;base64,${btoa(bin)}`;
-      faces.push(block.replace(/src:[^;]+;/, `src: url(${dataUrl}) format('woff2');`).replace(/unicode-range:[^;]+;/, ''));
-    }
-    return faces.join('\n');
-  } catch {
-    return '';
-  }
-}
-
-function collectCssRules() {
-  // Copy every stylesheet rule that targets SVG marks so the serialized SVG
-  // carries its own styling (classes, tokens). Cross-origin sheets are skipped.
-  const rules = [];
-  for (const sheet of document.styleSheets) {
-    let list;
-    try { list = sheet.cssRules; } catch { continue; }
-    for (const rule of list) {
-      const text = rule.cssText;
-      if (/^:root/.test(text) || /\.rb-(axis|grid|cat-label|value|annotation|mark|hit)/.test(text) || /^svg text/.test(text)) {
-        rules.push(text);
-      }
-    }
-  }
-  return rules.join('\n');
-}
-
-/** Clone an SVG with inline styles, title and white background, ready to serialize. */
-export async function exportableSvg(svg, { title, source } = {}) {
-  const clone = svg.cloneNode(true);
-  const width = svg.clientWidth || svg.viewBox.baseVal.width;
-  const height = svg.clientHeight || svg.viewBox.baseVal.height;
-  const titleBand = title ? 44 : 0;
-  const footBand = source ? 28 : 0;
-  const pad = 16;
-  const totalW = width + pad * 2;
-  const totalH = height + titleBand + footBand + pad * 2;
-
-  const root = document.createElementNS(SVG_NS, 'svg');
-  root.setAttribute('xmlns', SVG_NS);
-  root.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-  root.setAttribute('width', totalW);
-  root.setAttribute('height', totalH);
-  root.setAttribute('viewBox', `0 0 ${totalW} ${totalH}`);
-
-  const style = document.createElementNS(SVG_NS, 'style');
-  style.textContent = `${await fontFaceCss()}\n${collectCssRules()}\ntext{font-family:${FONT_FAMILY};}`;
-  root.append(style);
-
-  const bg = document.createElementNS(SVG_NS, 'rect');
-  bg.setAttribute('width', totalW);
-  bg.setAttribute('height', totalH);
-  bg.setAttribute('fill', '#ffffff');
-  root.append(bg);
-
-  if (title) {
-    const t = document.createElementNS(SVG_NS, 'text');
-    t.setAttribute('x', pad);
-    t.setAttribute('y', pad + 22);
-    t.setAttribute('font-size', '18');
-    t.setAttribute('font-weight', '700');
-    t.setAttribute('fill', '#1b1b1b');
-    t.textContent = title;
-    root.append(t);
-  }
-
-  clone.removeAttribute('style');
-  clone.setAttribute('width', width);
-  clone.setAttribute('height', height);
-  clone.setAttribute('x', pad);
-  clone.setAttribute('y', pad + titleBand);
-  clone.querySelectorAll('.rb-hit').forEach((n) => n.remove());
-  root.append(clone);
-
-  if (source) {
-    const s = document.createElementNS(SVG_NS, 'text');
-    s.setAttribute('x', pad);
-    s.setAttribute('y', totalH - pad);
-    s.setAttribute('font-size', '11');
-    s.setAttribute('fill', '#6f6f6f');
-    s.textContent = source;
-    root.append(s);
-  }
-  return { root, width: totalW, height: totalH };
-}
-
-function triggerDownload(href, filename) {
-  const a = el('a', { href, download: filename });
-  document.body.append(a);
-  a.click();
-  a.remove();
-}
-
-export async function downloadSVG(svg, filename, meta) {
-  const { root } = await exportableSvg(svg, meta);
-  const text = new XMLSerializer().serializeToString(root);
-  const blob = new Blob([text], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  triggerDownload(url, `${filename}.svg`);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-export async function downloadPNG(svg, filename, meta, scale = 2) {
-  const { root, width, height } = await exportableSvg(svg, meta);
-  const text = new XMLSerializer().serializeToString(root);
-  const url = URL.createObjectURL(new Blob([text], { type: 'image/svg+xml;charset=utf-8' }));
-  const img = new Image();
-  await new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-    img.src = url;
-  });
-  const canvas = el('canvas', { width: Math.round(width * scale), height: Math.round(height * scale) });
-  const ctx = canvas.getContext('2d');
-  ctx.scale(scale, scale);
-  ctx.drawImage(img, 0, 0);
-  URL.revokeObjectURL(url);
-  triggerDownload(canvas.toDataURL('image/png'), `${filename}.png`);
-}
-
-/**
- * Footer actions: table toggle plus PNG/SVG download.
- * getSvg() returns the live chart SVG; buildTable() returns a <table>.
- */
+/** Footer table, figure and data downloads, kept in sync with the active view. */
 export function renderActions(container, { filename, title, source, getSvg, buildTable, plot }) {
   const tableBtn = el('button', { type: 'button', 'aria-pressed': 'false' }, 'Show as table');
   const pngBtn = el('button', { type: 'button' }, iconSvg('download'), 'Download PNG');
   const svgBtn = el('button', { type: 'button' }, iconSvg('download'), 'Download SVG');
+  const csvBtn = el('button', { type: 'button' }, iconSvg('download'), 'Download CSV');
+  const status = el('span', { class: 'rb-action-status', role: 'status', 'aria-live': 'polite' });
   let tableWrap = null;
+  let tableHTML = '';
+  const resolve = (value) => typeof value === 'function' ? value() : value;
+  const metadata = () => ({ title: resolve(title), source: resolve(source) });
+
+  function refresh() {
+    if (!tableWrap) return;
+    const table = buildTable();
+    if (table.outerHTML === tableHTML) return;
+    const scrollTop = tableWrap.scrollTop;
+    const scrollLeft = tableWrap.scrollLeft;
+    tableHTML = table.outerHTML;
+    tableWrap.replaceChildren(table);
+    tableWrap.scrollTop = scrollTop;
+    tableWrap.scrollLeft = scrollLeft;
+    status.textContent = 'Table updated for the current view.';
+  }
 
   tableBtn.addEventListener('click', () => {
     document.dispatchEvent(new Event('rb:hide-tooltips'));
-    const showing = tableBtn.getAttribute('aria-pressed') === 'true';
-    if (showing) {
-      tableWrap?.remove();
+    if (tableWrap) {
+      tableWrap.remove();
       tableWrap = null;
       plot.querySelectorAll(':scope > svg').forEach((n) => { n.style.visibility = ''; });
       tableBtn.setAttribute('aria-pressed', 'false');
       tableBtn.textContent = 'Show as table';
+      status.textContent = '';
     } else {
-      tableWrap = el('div', { class: 'rb-table-wrap', tabindex: '0' }, buildTable());
+      const table = buildTable();
+      tableHTML = table.outerHTML;
+      tableWrap = el('div', { class: 'rb-table-wrap', tabindex: '0', role: 'region', 'aria-label': 'Data table' }, table);
       plot.querySelectorAll(':scope > svg').forEach((n) => { n.style.visibility = 'hidden'; });
       plot.append(tableWrap);
       tableBtn.setAttribute('aria-pressed', 'true');
       tableBtn.textContent = 'Show as chart';
     }
   });
-  pngBtn.addEventListener('click', () => downloadPNG(getSvg(), filename, { title, source }));
-  svgBtn.addEventListener('click', () => downloadSVG(getSvg(), filename, { title, source }));
 
-  container.replaceChildren(tableBtn, pngBtn, svgBtn);
+  async function download(button, operation) {
+    button.disabled = true;
+    status.textContent = 'Preparing download…';
+    try {
+      await operation();
+      status.textContent = 'Download ready.';
+    } catch (error) {
+      status.textContent = 'The download could not be created. Please try again.';
+      console.warn('Figure download failed:', error);
+    } finally {
+      button.disabled = false;
+    }
+  }
+  pngBtn.addEventListener('click', () => download(pngBtn, () => downloadPNG(getSvg(), resolve(filename), metadata())));
+  svgBtn.addEventListener('click', () => download(svgBtn, () => downloadSVG(getSvg(), resolve(filename), metadata())));
+  csvBtn.addEventListener('click', () => download(csvBtn, () => downloadCSV(buildTable(), resolve(filename))));
+  container.replaceChildren(tableBtn, pngBtn, svgBtn, csvBtn, status);
+  return { refresh };
+}
+
+/** Preserve other page parameters when recording a shareable figure view. */
+export function updateQueryState(values) {
+  try {
+    const url = new URL(window.location.href);
+    for (const [key, value] of Object.entries(values)) {
+      if (value == null || value === '') url.searchParams.delete(key);
+      else url.searchParams.set(key, String(value));
+    }
+    window.history.replaceState(null, '', url);
+  } catch {
+    // Restricted embeds can disable history updates; chart controls still work.
+  }
+}
+
+/** Available frame height independent of the previous drawing's min-height. */
+export function availablePlotHeight(plot) {
+  const figure = plot.closest('.rb-figure');
+  if (!figure) return Math.max(0, window.innerHeight - plot.getBoundingClientRect().top);
+  const style = window.getComputedStyle(figure);
+  const children = [...figure.children].filter((child) => window.getComputedStyle(child).display !== 'none');
+  const nonPlotHeight = children.filter((child) => child !== plot)
+    .reduce((height, child) => {
+      const childStyle = window.getComputedStyle(child);
+      return height + child.getBoundingClientRect().height + (parseFloat(childStyle.marginTop) || 0) + (parseFloat(childStyle.marginBottom) || 0);
+    }, 0);
+  return Math.max(0, window.innerHeight - nonPlotHeight
+    - (parseFloat(style.paddingTop) || 0) - (parseFloat(style.paddingBottom) || 0)
+    - Math.max(0, children.length - 1) * (parseFloat(style.rowGap) || 0));
 }
 
 /** Build a plain <table> from column definitions and rows. */
@@ -371,15 +273,21 @@ export function buildTable(columns, rows, caption) {
   return table;
 }
 
-/** Re-run draw() whenever the container's size changes (debounced to a frame). */
+/** Re-run draw() on container or frame resize, including height-only embeds. */
 export function onResize(node, draw) {
   let raf = 0;
-  const ro = new ResizeObserver(() => {
+  const schedule = () => {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(draw);
-  });
+  };
+  const ro = new ResizeObserver(schedule);
   ro.observe(node);
-  return ro;
+  window.addEventListener('resize', schedule);
+  return { disconnect() {
+    ro.disconnect();
+    window.removeEventListener('resize', schedule);
+    cancelAnimationFrame(raf);
+  } };
 }
 
 export const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;

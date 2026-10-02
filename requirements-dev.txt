@@ -1,0 +1,4 @@
+-r requirements.txt
+ruff>=0.16,<0.17
+# Exercise seeded rendering from tiny count fixtures, without NLP corpora/models.
+wordcloud>=1.9,<2

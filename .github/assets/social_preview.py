@@ -10,17 +10,10 @@ Country boundaries come from west-africa.geo.json, a trimmed extract of
 Natural Earth 1:50m Admin 0 Countries (public domain).
 """
 
+import argparse
 import sys
 from math import cos, radians
 from pathlib import Path
-
-import matplotlib
-matplotlib.use('Agg')
-
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.colors import to_rgb
-from matplotlib.patches import Circle, Polygon, Rectangle
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
 from viz_common import COUNTRY_HEX, load_json
@@ -76,15 +69,14 @@ def pick_font():
     return 'DejaVu Sans'
 
 
-FONTS = pick_font()
-
-
 def spaced(text):
     """Fake letter-spacing, which matplotlib text has no property for."""
     return ' '.join(text)
 
 
-def draw_map(ax, geo):
+def draw_map(ax, geo, font_family):
+    from matplotlib.patches import Polygon
+
     ax.set_xlim(LON_MIN, LON_MAX)
     ax.set_ylim(LAT_MIN, LAT_MAX)
     ax.set_aspect(1 / cos(radians((LAT_MIN + LAT_MAX) / 2)))
@@ -122,18 +114,30 @@ def draw_map(ax, geo):
         ax.scatter([lon], [lat], s=26, color=WHITE, linewidths=0, zorder=7)
         ax.text(
             tx + (0.32 if ha == 'left' else -0.32), ty, city, zorder=8,
-            color=BRIGHT, fontsize=13, fontfamily=FONTS, ha=ha, va='center',
+            color=BRIGHT, fontsize=13, fontfamily=font_family, ha=ha, va='center',
         )
 
 
-def main():
+def main(argv=None):
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from matplotlib.colors import to_rgb
+    from matplotlib.patches import Circle, Rectangle
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-dir', type=Path, default=HERE)
+    args = parser.parse_args(argv)
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    font_family = pick_font()
     geo = load_json(HERE / 'west-africa.geo.json')
 
     fig = plt.figure(figsize=(W / 100, H / 100), dpi=100, facecolor=INK)
 
     # Map panel, bleeding off the right, top and bottom edges.
     ax = fig.add_axes([0.40, -0.14, 0.64, 1.28])
-    draw_map(ax, geo)
+    draw_map(ax, geo, font_family)
 
     # Overlay in pixel coordinates, origin top-left, so every offset below is
     # a real pixel measurement rather than a figure fraction.
@@ -158,7 +162,7 @@ def main():
 
     def txt(x, y, s, size, color, weight='normal', ha='left'):
         ov.text(x, y, s, fontsize=size, color=color, fontweight=weight,
-                fontfamily=FONTS, ha=ha, va='center', zorder=20)
+                fontfamily=font_family, ha=ha, va='center', zorder=20)
 
     x0 = 72
     txt(x0, 96, spaced('LEIBNIZ JUNIOR RESEARCH GROUP'), 11, DIM)
@@ -185,7 +189,7 @@ def main():
 
     txt(x0, 594, 'github.com/fmadore/Remoboko', 13, DIM)
 
-    out = HERE / 'social-preview.png'
+    out = args.output_dir / 'social-preview.png'
     fig.savefig(out, dpi=100, facecolor=INK)
     plt.close(fig)
     print(f'Wrote {out} ({out.stat().st_size / 1024:.0f} KB)')

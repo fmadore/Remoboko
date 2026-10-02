@@ -1,19 +1,6 @@
 // Every published URL must keep loading, render its marks from the JSON
 // data, and throw no errors, on desktop and on a phone.
-import { test, expect } from '@playwright/test';
-
-const PAGES = {
-  index: 'index.html',
-  locations: 'Book_DeGruyter/Maps/UAC_UL_locations_map.html',
-  pointsOfInterest: 'Book_DeGruyter/Maps/points_of_interest.html',
-  universities: 'Book_DeGruyter/Maps/universities_map.html',
-  timeline: 'Book_DeGruyter/Timeline/index.html',
-  byCountry: 'Final report/collaborators_by_country.html',
-  byGender: 'Final report/collaborators_gender.html',
-  collaboratorsMap: 'Final report/collaborators_map.html',
-  treemap: 'Final report/treemap_chart.html',
-  overTime: 'Final report/activities_type_over_time.html',
-};
+import { test, expect, PAGES } from './helpers/fixtures.js';
 
 function trackErrors(page) {
   const errors = [];
@@ -108,7 +95,7 @@ for (const [name, url] of [['locations map', PAGES.locations], ['points of inter
     if (await toggle.isVisible()) await toggle.click();
     await page.locator('#legend-card .rb-key', { hasText: 'Togo' }).click();
     await expect(page.locator('.rb-pin:visible')).toHaveCount(33 - 14);
-    expect(errors.filter((e) => !/tiles\.openfreemap|net::ERR|Failed to fetch/.test(e))).toEqual([]);
+    expect(errors).toEqual([]);
   });
 }
 
@@ -117,7 +104,7 @@ test('universities map places four logos', async ({ page }) => {
   await page.goto(PAGES.universities);
   await expect(page.locator('.rb-logo-marker')).toHaveCount(4);
   await expect(page.locator('.rb-uni-list button')).toHaveCount(4);
-  expect(errors.filter((e) => !/tiles\.openfreemap|net::ERR|Failed to fetch/.test(e))).toEqual([]);
+  expect(errors).toEqual([]);
 });
 
 test('collaborators map describes 93 people at 56 institutions', async ({ page }) => {
@@ -125,5 +112,27 @@ test('collaborators map describes 93 people at 56 institutions', async ({ page }
   await page.goto(PAGES.collaboratorsMap);
   await expect(page.locator('#title-card .rb-desc').first()).toContainText('93 collaborators at 56 institutions');
   await expect(page.locator('.rb-size-key li')).toHaveCount(3);
-  expect(errors.filter((e) => !/tiles\.openfreemap|net::ERR|Failed to fetch/.test(e))).toEqual([]);
+  await expect(page.locator('#map')).toHaveAttribute('data-map-state', 'ready');
+  await expect(page.locator('#map')).toHaveAttribute('data-feature-count', '56');
+  await expect(page.locator('#map')).toHaveAttribute('data-headcount', '93');
+  await expect.poll(() => page.locator('#map').evaluate((node) => {
+    const map = node.remobokoMap;
+    return Boolean(map.getLayer('collaborators-circles') && map.isSourceLoaded('collaborators'));
+  })).toBe(true);
+  const sourceCounts = await page.locator('#map').evaluate(async (node) => {
+    const data = await node.remobokoMap.getSource('collaborators').getData();
+    return { institutions: data.features.length, people: data.features.reduce((sum, feature) => sum + feature.properties.count, 0) };
+  });
+  expect(sourceCounts).toEqual({ institutions: 56, people: 93 });
+  await expect.poll(() => page.locator('#map').evaluate((node) =>
+    node.remobokoMap.queryRenderedFeatures({ layers: ['collaborators-circles'] }).length)).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Dark', exact: true }).click();
+  await expect.poll(() => page.locator('#map').evaluate((node) => node.remobokoMap.getStyle()?.name)).toBe('fixture:dark');
+  await expect(page.locator('#map')).toHaveAttribute('data-map-state', 'ready');
+  await expect.poll(() => page.locator('#map').evaluate((node) => Boolean(
+    node.remobokoMap.getLayer('collaborators-circles') && node.remobokoMap.isSourceLoaded('collaborators'),
+  ))).toBe(true);
+  await expect.poll(() => page.locator('#map').evaluate((node) =>
+    node.remobokoMap.queryRenderedFeatures({ layers: ['collaborators-circles'] }).length)).toBeGreaterThan(0);
+  expect(errors).toEqual([]);
 });

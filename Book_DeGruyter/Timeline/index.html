@@ -15,7 +15,7 @@
     .event-dot { stroke: var(--rb-surface); stroke-width: 2; }
     .event-text { fill: var(--rb-ink); font-size: 11px; }
     @media (max-width: 640px) { .event-text { font-size: var(--rb-fs-label); } }
-    .event-date { fill: var(--rb-ink-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .event-date { fill: var(--rb-ink-3); font-size: var(--rb-fs-small); font-variant-numeric: tabular-nums; }
     .event.is-dim { opacity: 0.25; }
     .axis-label { fill: var(--rb-ink-3); font-size: var(--rb-fs-small); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
   </style>
@@ -40,7 +40,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
   <div class="rb-plot" id="plot"></div>
   <footer class="rb-foot">
-    <p class="rb-notes">Source: Remoboko project data (CC BY 4.0). Hover or focus an event for its date and theme.</p>
+    <p class="rb-notes">Source: Remoboko project data (CC BY 4.0). Choose a theme or open the table to explore dates and countries.</p>
     <div class="rb-actions" id="actions"></div>
   </footer>
 </figure>

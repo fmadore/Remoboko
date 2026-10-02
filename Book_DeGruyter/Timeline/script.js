@@ -2,11 +2,13 @@
 // Desktop: a horizontal axis with Benin above and Togo below, labels
 // staggered in lanes. Phones: one vertical column, to scale where the
 // dates allow and pushed apart where they crowd.
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import * as d3 from '../../assets/d3.js';
 import {
   COUNTRY_COLORS, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderSegmented, renderActions,
-  buildTable, onResize, showEmpty, prefersReducedMotion,
+  buildTable, onResize, showEmpty, prefersReducedMotion, availablePlotHeight, updateQueryState,
 } from '../../assets/remoboko.js';
+
+import { normalizeTimeline } from '../../assets/data.js';
 
 const plot = document.getElementById('plot');
 const legendBox = document.getElementById('legend');
@@ -18,17 +20,17 @@ const TITLE = 'Religion, education and politics in Togo and Benin, 1960–2010';
 const CATEGORIES = ['Religion', 'Education', 'Politics'];
 
 let events = [];
-let category = 'All';
+const initialCategory = new URLSearchParams(window.location.search).get('theme');
+let category = CATEGORIES.includes(initialCategory) ? initialCategory : 'All';
 
 try {
-  const data = await loadJSON('data.json');
-  const parse = d3.timeParse('%Y-%m-%d');
-  events = data.map((d, i) => ({ ...d, id: i, date: parse(d.date) })).sort((a, b) => a.date - b.date);
+  events = normalizeTimeline(await loadJSON('data.json'));
+  if (!events.length) throw new Error('The timeline dataset is empty.');
   const [min, max] = d3.extent(events, (d) => d.date);
   const byCountry = d3.rollup(events, (v) => v.length, (d) => d.country);
-  desc.textContent = `${events.length} events from the book, ${min.getFullYear()}–${max.getFullYear()}: Benin (${byCountry.get('Benin')}) above the axis, Togo (${byCountry.get('Togo')}) below.`;
-  plot.setAttribute('role', 'img');
-  plot.setAttribute('aria-label', `Timeline of ${events.length} events in Togo and Benin between ${min.getFullYear()} and ${max.getFullYear()}.`);
+  desc.textContent = `${events.length} events from the book, ${min.getUTCFullYear()}–${max.getUTCFullYear()}: Benin (${byCountry.get('Benin')}) above the axis, Togo (${byCountry.get('Togo')}) below.`;
+  plot.setAttribute('role', 'group');
+  plot.setAttribute('aria-label', `Timeline of ${events.length} events in Togo and Benin between ${min.getUTCFullYear()} and ${max.getUTCFullYear()}.`);
 } catch (err) {
   showEmpty(plot, 'The timeline data could not be loaded.');
   throw err;
@@ -38,11 +40,12 @@ renderLegend(legendBox, ['Benin', 'Togo'].map((c) => ({ id: c, label: c, color: 
 renderSegmented(filterBox, [{ id: 'All', label: 'All themes' }].concat(CATEGORIES.map((c) => ({ id: c, label: c }))), {
   value: category,
   label: 'Theme',
-  onChange: (id) => { category = id; draw(); },
+  onChange: (id) => { category = id; updateQueryState({ theme: id === 'All' ? null : id }); draw(); },
 });
 
-const svg = d3.select(plot).append('svg').attr('aria-hidden', 'true');
-const formatDate = d3.timeFormat('%-d %B %Y');
+const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
+const formatDate = d3.utcFormat('%-d %B %Y');
+const shortDate = d3.utcFormat('%-d %b %Y');
 let firstDraw = true;
 
 function visibleEvents() {
@@ -77,10 +80,15 @@ function wrap(textSel, width) {
 function draw() {
   const width = plot.clientWidth;
   if (!width) return;
+  const focusedId = document.activeElement?.dataset.eventId;
   svg.selectAll('*').remove();
   const data = visibleEvents();
   if (width < 640) drawVertical(data, width); else drawHorizontal(data, width);
   firstDraw = false;
+  desc.textContent = `${data.length} ${category === 'All' ? '' : `${category.toLowerCase()} `}events from the book, 1960–2010. ${width < 640 ? 'Chronological list with country and date; spacing does not represent elapsed time.' : 'Benin above the axis, Togo below.'}`;
+  plot.setAttribute('aria-label', `${viewTitle()}. ${data.length} events.`);
+  if (focusedId != null) svg.selectAll('g.event').filter((d) => String(d.id) === focusedId).node()?.focus();
+  actionView.refresh();
 }
 
 function drawHorizontal(data, width) {
@@ -88,11 +96,11 @@ function drawHorizontal(data, width) {
   const laneStep = 38;   // room for a three-line label inside its own lane
   const laneBase = 22;
   const margin = { top: 14, right: 60, bottom: 14, left: 60 };
-  const height = Math.max(plot.clientHeight, margin.top + margin.bottom + 2 * (laneBase + laneCount * laneStep) + 8);
+  const height = Math.max(availablePlotHeight(plot), margin.top + margin.bottom + 2 * (laneBase + laneCount * laneStep) + 8);
   plot.style.minHeight = `${height}px`;
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
 
-  const x = d3.scaleTime().domain(d3.extent(events, (d) => d.date)).nice(d3.timeYear.every(5)).range([margin.left, width - margin.right]);
+  const x = d3.scaleUtc().domain(d3.extent(events, (d) => d.date)).nice(d3.utcYear.every(5)).range([margin.left, width - margin.right]);
   const axisY = height / 2;
   const labelWidth = Math.min(124, Math.max(96, (width - margin.left - margin.right) / 8.5));
   const minLabelGap = labelWidth + 6;
@@ -119,7 +127,7 @@ function drawHorizontal(data, width) {
   const groups = eventsLayer.selectAll('g.event').data(data, (d) => d.id).join('g')
     .attr('class', 'event')
     .attr('transform', (d) => `translate(${x(d.date)},${axisY})`)
-    .attr('tabindex', 0).attr('role', 'img')
+    .attr('tabindex', 0).attr('role', 'img').attr('data-event-id', (d) => d.id)
     .attr('aria-label', (d) => `${formatDate(d.date)}, ${d.country}, ${d.category}: ${d.event}`);
 
   groups.each(function drawEvent(d) {
@@ -146,7 +154,7 @@ function drawHorizontal(data, width) {
 
   // Axis drawn last: year labels sit just below the line on white plates, over any leader lines
   const axis = svg.append('g').attr('class', 'rb-axis').attr('transform', `translate(0,${axisY})`)
-    .call(d3.axisBottom(x).ticks(d3.timeYear.every(5)).tickSize(0).tickPadding(6).tickFormat(d3.timeFormat('%Y')));
+    .call(d3.axisBottom(x).ticks(d3.utcYear.every(5)).tickSize(0).tickPadding(6).tickFormat(d3.utcFormat('%Y')));
   axis.selectAll('.tick text').each(function plate() {
     const bbox = this.getBBox();
     d3.select(this.parentNode).insert('rect', 'text').attr('x', bbox.x - 4).attr('y', bbox.y - 1)
@@ -161,33 +169,35 @@ function drawHorizontal(data, width) {
 }
 
 function drawVertical(data, width) {
-  // A list, not a scale: one row per event keeps the column compact on a phone
-  const rowMin = 46;
-  const margin = { top: 16, right: 12, bottom: 16, left: 64 };
-  const positions = data.map((d, i) => margin.top + rowMin / 2 + i * rowMin);
-  const height = Math.max(plot.clientHeight, margin.top + margin.bottom + data.length * rowMin);
+  // A chronological list: measured rows keep long event names clear of their date/country.
+  const margin = { top: 12, right: 8, bottom: 12, left: 30 };
+  const lineX = 12;
+  const line = svg.append('line').attr('class', 'rb-grid')
+    .attr('x1', lineX).attr('x2', lineX).attr('y1', margin.top).attr('stroke', 'var(--rb-axis)');
+  const groups = svg.append('g').selectAll('g.event').data(data, (d) => d.id).join('g')
+    .attr('class', 'event').attr('tabindex', 0).attr('role', 'img').attr('data-event-id', (d) => d.id)
+    .attr('aria-label', (d) => `${formatDate(d.date)}, ${d.country}, ${d.category}: ${d.event}`);
+  groups.append('rect').attr('class', 'rb-hit').attr('x', 0).attr('y', 0).attr('width', width);
+  groups.append('circle').attr('class', 'event-dot').attr('cx', lineX).attr('cy', 13).attr('r', 5)
+    .attr('fill', (d) => COUNTRY_COLORS[d.country]);
+  groups.append('text').attr('class', 'event-text').attr('x', margin.left).attr('y', 17)
+    .text((d) => d.event).call(wrap, Math.max(40, width - margin.left - margin.right));
+  let nextY = margin.top;
+  groups.each(function place(d) {
+    const group = d3.select(this);
+    const textHeight = group.select('text.event-text').node().getBBox().height;
+    const metadataY = 20 + textHeight;
+    const rowHeight = Math.max(64, metadataY + 20);
+    group.attr('transform', `translate(0,${nextY})`);
+    group.select('.rb-hit').attr('height', rowHeight);
+    group.append('text').attr('class', 'event-date').attr('x', margin.left).attr('y', metadataY)
+      .text(`${shortDate(d.date)} · ${d.country} · ${d.category}`);
+    nextY += rowHeight;
+  });
+  const height = Math.max(availablePlotHeight(plot), nextY + margin.bottom);
   plot.style.minHeight = `${height}px`;
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
-  const lineX = margin.left - 18;
-
-  svg.append('line').attr('class', 'rb-grid').attr('x1', lineX).attr('x2', lineX).attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', 'var(--rb-axis)');
-
-  const groups = svg.append('g').selectAll('g.event').data(data, (d) => d.id).join('g')
-    .attr('class', 'event')
-    .attr('transform', (d, i) => `translate(0,${positions[i]})`)
-    .attr('tabindex', 0).attr('role', 'img')
-    .attr('aria-label', (d) => `${formatDate(d.date)}, ${d.country}, ${d.category}: ${d.event}`);
-
-  groups.append('rect').attr('class', 'rb-hit').attr('x', 0).attr('y', -rowMin / 2).attr('width', width).attr('height', rowMin);
-  groups.append('text').attr('class', 'event-date').attr('x', lineX - 10).attr('y', 0).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => d.date.getFullYear());
-  groups.append('circle').attr('class', 'event-dot').attr('cx', lineX).attr('r', 5).attr('fill', (d) => COUNTRY_COLORS[d.country] || '#888');
-  groups.append('text').attr('class', 'event-text').attr('x', margin.left).attr('y', 0).attr('dy', '0.35em').text((d) => d.event)
-    .call(wrap, width - margin.left - margin.right);
-  groups.select('text.event-text').each(function centre() {
-    const lines = d3.select(this).selectAll('tspan').size();
-    d3.select(this).attr('transform', `translate(0,${-(lines - 1) * 6.9})`);
-  });
-
+  line.attr('y2', Math.max(margin.top, nextY - 30));
   attachHover(groups);
 }
 
@@ -207,9 +217,13 @@ function attachHover(groups) {
     .on('pointerleave', hide).on('focus', show).on('blur', hide);
 }
 
-renderActions(actions, {
+function viewTitle() {
+  return `${TITLE}${category === 'All' ? '' : ` — ${category}`}`;
+}
+
+const actionView = renderActions(actions, {
   filename: 'togo_benin_timeline',
-  title: TITLE,
+  title: viewTitle,
   source: SOURCE_LINE,
   plot,
   getSvg: () => svg.node(),
@@ -218,7 +232,8 @@ renderActions(actions, {
     { key: 'event', label: 'Event' },
     { key: 'country', label: 'Country' },
     { key: 'category', label: 'Theme' },
-  ], visibleEvents(), `${TITLE}. ${SOURCE_LINE}`),
+  ], visibleEvents(), `${viewTitle()}. ${SOURCE_LINE}`),
 });
 
+document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
 onResize(plot, draw);

@@ -1,11 +1,13 @@
 // Publications and activities by type over time: stacked columns per quarter
 // or per year, seven named types plus "Other", legend toggles, one tooltip
 // listing every series at the hovered period.
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import * as d3 from '../assets/d3.js';
 import {
   CATEGORICAL, OTHER_COLOR, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderSegmented,
-  renderActions, buildTable, onResize, showEmpty, formatCount, prefersReducedMotion, measureText,
+  renderActions, buildTable, onResize, showEmpty, formatCount, prefersReducedMotion, measureText, availablePlotHeight, updateQueryState,
 } from '../assets/remoboko.js';
+
+import { normalizePublications, outputSeries, aggregatePeriods } from '../assets/data.js';
 
 const plot = document.getElementById('plot');
 const legendBox = document.getElementById('legend');
@@ -15,98 +17,76 @@ const desc = document.getElementById('desc');
 const notes = document.getElementById('notes');
 const tooltip = createTooltip();
 const TITLE = 'Publications and activities over time';
-const MAX_NAMED = 7;
+const query = new URLSearchParams(window.location.search);
 
-let records = [];
+let records;
 let series = [];        // [{id, label, color, types:[...]}] in fixed order
-let periodsByGran = {}; // {quarter: [...], year: [...]}
-let granularity = 'quarter';
+let dataByGran = {};
+let granularity = query.get('period') === 'year' ? 'year' : 'quarter';
 const hidden = new Set();
 
 try {
-  const data = await loadJSON('Data/Publications_and_activities_data.json');
-  const skipped = data.rows.filter((r) => !(r.Date && r.Type)).length;
-  records = data.rows.filter((r) => r.Date && r.Type).map((r) => {
-    const date = new Date(r.Date);
-    const q = Math.floor(date.getUTCMonth() / 3) + 1;
-    return { type: r.Type, year: String(date.getUTCFullYear()), quarter: `${date.getUTCFullYear()}-Q${q}`, date };
-  });
-
-  const byType = d3.rollups(records, (v) => v.length, (d) => d.type)
-    .sort((a, b) => d3.descending(a[1], b[1]) || d3.ascending(a[0], b[0]));
-  const named = byType.slice(0, MAX_NAMED);
-  const folded = byType.slice(MAX_NAMED);
-  series = named.map(([type, count], i) => ({ id: type, label: type, color: CATEGORICAL[i], types: [type], count }));
-  if (folded.length) {
-    series.push({
-      id: 'Other',
-      label: `Other (${folded.length} types)`,
-      color: OTHER_COLOR,
-      types: folded.map(([t]) => t),
-      count: d3.sum(folded, ([, c]) => c),
-      detail: folded.map(([t, c]) => `${t} ${c}`).join(', '),
-    });
-  }
-  const typeToSeries = new Map(series.flatMap((s) => s.types.map((t) => [t, s.id])));
-  records.forEach((r) => { r.series = typeToSeries.get(r.type); });
-
+  const normalized = normalizePublications(await loadJSON('Data/Publications_and_activities_data.json'));
+  records = normalized.records;
+  if (!records.length) throw new Error('No valid dated outputs are available.');
+  series = outputSeries(records, CATEGORICAL, OTHER_COLOR);
+  dataByGran = Object.fromEntries(['quarter', 'year'].map((gran) => [gran, aggregatePeriods(records, series, gran)]));
+  try {
+    const requested = JSON.parse(query.get('hidden') || '[]');
+    if (Array.isArray(requested)) requested.forEach((id) => { if (series.some((s) => s.id === id)) hidden.add(id); });
+  } catch { /* Ignore malformed optional view state. */ }
   const [minDate, maxDate] = d3.extent(records, (d) => d.date);
-  const quarters = [];
-  for (let y = minDate.getUTCFullYear(); y <= maxDate.getUTCFullYear(); y += 1) {
-    for (let q = 1; q <= 4; q += 1) quarters.push(`${y}-Q${q}`);
-  }
-  const lastQ = records.reduce((m, r) => (r.quarter > m ? r.quarter : m), quarters[0]);
-  periodsByGran = {
-    quarter: quarters.slice(quarters.indexOf(records.reduce((m, r) => (r.quarter < m ? r.quarter : m), lastQ)), quarters.indexOf(lastQ) + 1),
-    year: d3.range(minDate.getUTCFullYear(), maxDate.getUTCFullYear() + 1).map(String),
-  };
-
-  desc.textContent = `Remoboko's ${formatCount(records.length)} outputs by type, from the project's start in ${minDate.getUTCFullYear()} to its final activities in ${maxDate.getUTCFullYear()}. `
-    + `${named[0][0]}s dominate, with ${formatCount(named[0][1])}.`;
-  if (skipped) notes.textContent += ` ${skipped} undated ${skipped === 1 ? 'record is' : 'records are'} not shown.`;
-  const other = series.find((s) => s.id === 'Other');
+  desc.textContent = `Remoboko's ${formatCount(records.length)} outputs by type, ${minDate.getUTCFullYear()}–${maxDate.getUTCFullYear()}. `
+    + `${series[0].label}: ${formatCount(series[0].count)} outputs.`;
+  if (normalized.issues.length) notes.textContent += ` ${normalized.issues.length} records with a missing type or invalid date are excluded.`;
+  const other = series.find((s) => s.id === 'other');
   if (other) notes.textContent += ` "Other" groups ${other.detail}.`;
-  plot.setAttribute('role', 'img');
+  plot.setAttribute('role', 'group');
   plot.setAttribute('aria-label', `Stacked column chart of ${records.length} outputs by type and ${granularity}, ${minDate.getUTCFullYear()} to ${maxDate.getUTCFullYear()}.`);
 } catch (err) {
-  showEmpty(plot, 'The publications data could not be loaded.');
+  showEmpty(plot, records?.length === 0 ? 'No valid dated outputs are available.' : 'The publications data could not be loaded.');
   throw err;
 }
 
 renderLegend(legendBox, series.map((s) => ({ id: s.id, label: s.label, color: s.color, count: s.count })), {
   onToggle: (id, visible) => {
     if (visible) hidden.delete(id); else hidden.add(id);
+    syncQuery();
     draw();
   },
 });
 
+legendBox.querySelectorAll('button').forEach((button, i) => button.setAttribute('aria-pressed', String(!hidden.has(series[i].id))));
+
+function syncQuery() {
+  updateQueryState({ period: granularity === 'year' ? 'year' : null, hidden: hidden.size ? JSON.stringify([...hidden]) : null });
+}
+
 renderSegmented(granBox, [{ id: 'quarter', label: 'By quarter' }, { id: 'year', label: 'By year' }], {
   value: granularity,
   label: 'Time granularity',
-  onChange: (id) => { granularity = id; draw(); },
+  onChange: (id) => { granularity = id; syncQuery(); draw(); },
 });
 
-const svg = d3.select(plot).append('svg').attr('aria-hidden', 'true');
+const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
 let firstDraw = true;
 
 function stackedData() {
-  const periods = periodsByGran[granularity];
   const visible = series.filter((s) => !hidden.has(s.id));
-  const counts = d3.rollup(records, (v) => v.length, (d) => d[granularity], (d) => d.series);
-  const table = periods.map((p) => {
-    const row = { period: p, total: 0 };
-    for (const s of series) {
-      row[s.id] = counts.get(p)?.get(s.id) ?? 0;
-    }
-    row.total = d3.sum(visible, (s) => row[s.id]);
-    return row;
-  });
-  return { periods, visible, table };
+  const table = dataByGran[granularity].map(({ period, counts }) => ({
+    period, ...counts, total: d3.sum(visible, (s) => counts[s.id]),
+  }));
+  return { periods: table.map((row) => row.period), visible, table };
+}
+
+function viewTitle() {
+  const labels = series.filter((s) => !hidden.has(s.id)).map((s) => s.label);
+  return `${TITLE}, by ${granularity}${hidden.size ? ` — ${labels.length ? labels.join(', ') : 'no types selected'}` : ''}`;
 }
 
 function draw() {
   const width = plot.clientWidth;
-  const height = Math.max(260, plot.clientHeight);
+  const height = Math.max(260, availablePlotHeight(plot));
   if (!width) return;
   plot.style.minHeight = '260px';
 
@@ -115,7 +95,9 @@ function draw() {
   const maxY = d3.max(table, (d) => d.total) || 1;
 
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
+  const focusedPeriod = document.activeElement?.dataset.period;
   svg.selectAll('*').remove();
+  plot.setAttribute('aria-label', `${viewTitle()}. ${d3.sum(table, (row) => row.total)} outputs in the current selection.`);
 
   const yTicks = d3.ticks(0, maxY, 5);
   const yLabelW = measureText(svg, formatCount(yTicks[yTicks.length - 1]), 'rb-axis') + 12;
@@ -134,7 +116,7 @@ function draw() {
   g.append('g').attr('class', 'rb-grid').selectAll('line').data(y.ticks(5)).join('line')
     .attr('x1', 0).attr('x2', innerW).attr('y1', (d) => y(d)).attr('y2', (d) => y(d));
   g.append('g').attr('class', 'rb-axis').attr('transform', `translate(-8,0)`)
-    .call(d3.axisLeft(y).ticks(5).tickSize(0).tickFormat(formatCount))
+    .call(d3.axisLeft(y).tickValues(y.ticks(5).filter(Number.isInteger)).tickSize(0).tickFormat(formatCount))
     .call((ax) => ax.select('.domain').remove());
   const xAxis = g.append('g').attr('class', 'rb-axis').attr('transform', `translate(0,${innerH})`);
   xAxis.append('line').attr('x1', 0).attr('x2', innerW);
@@ -154,11 +136,11 @@ function draw() {
     .attr('class', 'rb-hit')
     .attr('x', (d) => x(d.period) - x.step() * 0.1).attr('width', x.step())
     .attr('y', 0).attr('height', innerH)
-    .attr('tabindex', 0).attr('role', 'img')
+    .attr('tabindex', 0).attr('role', 'img').attr('data-period', (d) => d.period)
     .attr('aria-label', (d) => `${d.period}: ${d.total} ${d.total === 1 ? 'output' : 'outputs'}`);
 
   const colorOf = new Map(series.map((s) => [s.id, s.color]));
-  const layers = g.append('g').selectAll('g').data(stack).join('g').attr('fill', (d) => colorOf.get(d.key));
+  const layers = g.append('g').attr('pointer-events', 'none').selectAll('g').data(stack).join('g').attr('fill', (d) => colorOf.get(d.key));
   const segs = layers.selectAll('rect').data((d) => d.filter((v) => v[1] > v[0]).map((v) => ({ ...v, key: d.key }))).join('rect')
     .attr('class', 'rb-mark')
     .attr('x', (d) => barX(d.data.period)).attr('width', barW)
@@ -167,7 +149,7 @@ function draw() {
 
   // Totals on the cap, only when the columns are wide enough to carry them
   if (barW >= 18) {
-    g.append('g').selectAll('text').data(table.filter((d) => d.total > 0)).join('text')
+    g.append('g').attr('pointer-events', 'none').selectAll('text').data(table.filter((d) => d.total > 0)).join('text')
       .attr('class', 'rb-value rb-value--muted')
       .attr('x', (d) => barX(d.period) + barW / 2).attr('y', (d) => y(d.total) - 6)
       .attr('text-anchor', 'middle')
@@ -197,6 +179,8 @@ function draw() {
   }
   bands.on('pointerenter', show).on('pointermove', (event) => tooltip.move(event.clientX, event.clientY))
     .on('pointerleave', hide).on('focus', show).on('blur', hide);
+  if (focusedPeriod) bands.filter((d) => d.period === focusedPeriod).node()?.focus();
+  actionView.refresh();
 }
 
 function centre(node) {
@@ -204,20 +188,20 @@ function centre(node) {
   return [r.left + r.width / 2, r.top + 40];
 }
 
-renderActions(actions, {
+const actionView = renderActions(actions, {
   filename: 'activities_type_over_time',
-  title: TITLE,
+  title: viewTitle,
   source: SOURCE_LINE,
   plot,
   getSvg: () => svg.node(),
   buildTable: () => {
-    const { table } = stackedData();
+    const { table, visible } = stackedData();
     const cols = [{ key: 'period', label: granularity === 'year' ? 'Year' : 'Quarter' }]
-      .concat(series.map((s) => ({ key: s.id, label: s.label, numeric: true, format: formatCount })))
-      .concat([{ key: 'all', label: 'Total', numeric: true, format: formatCount }]);
-    const rows = table.map((r) => ({ ...r, all: d3.sum(series, (s) => r[s.id]) }));
-    return buildTable(cols, rows, `${TITLE}, by ${granularity}. ${SOURCE_LINE}`);
+      .concat(visible.map((s) => ({ key: s.id, label: s.label, numeric: true, format: formatCount })))
+      .concat([{ key: 'total', label: 'Selected total', numeric: true, format: formatCount }]);
+    return buildTable(cols, table, `${viewTitle()}. ${SOURCE_LINE}`);
   },
 });
 
+document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
 onResize(plot, draw);

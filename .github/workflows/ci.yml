@@ -5,57 +5,82 @@ on:
     branches: [master, main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   print-figures:
-    name: Python print figures
+    name: Python data and print figures
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       MPLBACKEND: Agg
     steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
           cache: pip
-
-      - name: Install dependencies
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+            constraints-core.txt
+      - name: Install core figure and test dependencies
+        run: python -m pip install -r requirements.txt -r requirements-dev.txt -c constraints-core.txt
+      - name: Lint and validate research data
         run: |
-          pip install -r requirements.txt "ruff>=0.16,<0.17"
-
-      - name: Lint
-        run: ruff check .
-
-      - name: Run print-figure scripts
+          ruff check .
+          python scripts/validate_data.py
+      - name: Test data and preprocessing behavior
+        run: python -m unittest discover -s tests/python -v
+      - name: Generate print figures outside the checkout
         run: |
-          python Book_DeGruyter/Timeline/timeline.py
-          python "Final report/collaborators_gender.py"
-          python .github/assets/social_preview.py
-
-      # word_clouds.py needs the ~570 MB spaCy French model, so CI only
-      # checks that it compiles.
-      - name: Compile-check word cloud script
-        run: python -m py_compile "Final report/word_clouds.py"
+          python Book_DeGruyter/Timeline/timeline.py --output-dir "$RUNNER_TEMP/remoboko-figures"
+          python "Final report/collaborators_gender.py" --output-dir "$RUNNER_TEMP/remoboko-figures"
+          python .github/assets/social_preview.py --output-dir "$RUNNER_TEMP/remoboko-figures"
+      - name: Save generated figures
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: print-figures
+          path: ${{ runner.temp }}/remoboko-figures/
+          retention-days: 7
 
   interactive-figures:
-    name: Interactive figures (Playwright)
+    name: JavaScript and browser regressions
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "22"
           cache: npm
-
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-
       - name: Install test tooling
         run: |
           npm ci
-          npx playwright install --with-deps chromium
-
-      - name: Smoke-test every figure page
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Lint and unit tests
+        run: npm run check
+      - name: Test published URLs, interactions, exports, and iframes
         run: npm test
+      - name: Save browser report and failure traces
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: browser-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14

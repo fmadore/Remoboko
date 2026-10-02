@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "country": {
+        "enum": [
+          "Benin",
+          "Togo"
+        ]
+      },
+      "event": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "date": {
+        "type": "string",
+        "format": "date"
+      },
+      "category": {
+        "enum": [
+          "Religion",
+          "Education",
+          "Politics"
+        ]
+      },
+      "label": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "wrap": {
+        "type": "boolean"
+      },
+      "x": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "required": [
+      "country",
+      "event",
+      "date",
+      "category"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 1
+}

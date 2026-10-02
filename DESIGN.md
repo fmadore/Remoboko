@@ -148,7 +148,7 @@ components:
 
 **Creative North Star: "The Datawrapper Page"**
 
-Every Remoboko figure is a whole page that happens to be embedded in an iframe: a title, one sentence of description, the plot filling the remaining height, and a hairline-topped footer carrying the source line and three text-link actions. Nothing around the figure competes with it. There is no site header, no card frame, no toolbar, no decorative device; the chart reads the way a Datawrapper embed reads inside a newspaper article, and it is judged by that bar.
+Every Remoboko figure is a whole page that happens to be embedded in an iframe: a title, one sentence of description, the plot filling the remaining height, and a hairline-topped footer carrying the source line and four text-link actions. Nothing around the figure competes with it. There is no site header, no card frame, no toolbar, no decorative device; the chart reads the way a Datawrapper embed reads inside a newspaper article, and it is judged by that bar.
 
 The material is white paper and near-black ink. Two greys carry everything subordinate (descriptions, axis labels, sources); colour is spent only on data, and only from two fixed sources: the pinned country trio and an eight-slot categorical palette that never generates hues. Density is editorial rather than dashboard: one figure per page, 22px title, 15px body, 12px axis type, 4px rhythm.
 
@@ -176,7 +176,7 @@ A white page, an ink ramp of three steps, and colour spent only on data from two
 - **West Africa Orange** (`{colors.west-africa}`): the regional-context pins (Abidjan, Dakar).
 
 ### Tertiary: the categorical palette (fixed order)
-- **cat-1 to cat-8** (`{colors.cat-1}` through `{colors.cat-8}`): assigned to series in rank order (largest series gets cat-1). Validated for adjacent colour-vision separation; the order is the system, not the individual hues.
+- **cat-1 to cat-8** (`{colors.cat-1}` through `{colors.cat-8}`): assigned to series in rank order (largest series gets cat-1), except the stable gender mapping: women use cat-1, men cat-2, and additional or unknown categories Other Grey. Validated for adjacent colour-vision separation; the order is the system, not the individual hues.
 - **Other Grey** (`{colors.other}`): the fold bucket. Series past the seventh named one collapse into a single "Other (n types)" series drawn in this grey, listed in the footer note.
 
 ### Neutral
@@ -204,7 +204,7 @@ A white page, an ink ramp of three steps, and colour spent only on data from two
 **Body Font:** Source Sans 3 (same family)
 **Label/Mono Font:** none; numerals use `font-variant-numeric: tabular-nums` wherever they align.
 
-**Character:** One workhorse humanist sans at three weights (400, 600, 700), loaded from Google Fonts and embedded as woff2 into exported SVGs so downloads keep the typeface. Nothing is set in a second face; hierarchy comes from size, weight, and the three inks.
+**Character:** One workhorse humanist sans at three weights (400, 600, 700), loaded from Google Fonts and embedded as woff2 into exported SVGs when the font service is available. Font fetches are bounded and exports fall back to the declared system fonts offline. Exported marks snapshot computed styles, including page-specific and responsive rules, with hover dimming removed. Nothing is set in a second face; hierarchy comes from size, weight, and the three inks.
 
 ### Hierarchy
 - **Title** (700, 22px / 1.375rem, 1.2, -0.01em, `text-wrap: balance`): the figure's H1, top-left. Drops to 19px (1.1875rem) under 640px.
@@ -271,7 +271,7 @@ The system has no filled button. Actions are text.
 There is none inside a figure. The index (`index.html`) is a 72ch single column: 28px H1, ink-2 lede, uppercase Column-head section headings ruled beneath, and a hairline-ruled list of links at 600 with ink-2 descriptions.
 
 ### Data table
-- "Show as table" replaces the SVG with a full-width table in Label size, tabular numerals. Caption above in Small / ink-3. Sticky paper header row in Column-head style; cells `5px 10px 5px 0` with a 1px grid rule beneath; numeric columns right-aligned; rows take Hover Wash.
+- "Show as table" replaces the SVG with a full-width table in Label size, tabular numerals. Caption above in Small / ink-3. Open tables update with filters and drilldown; CSV uses the same displayed rows. Sticky paper header row in Column-head style; cells `5px 10px 5px 0` with a 1px grid rule beneath; numeric columns right-aligned; rows take Hover Wash.
 
 ### Chart marks (signature)
 Shared SVG classes carry the whole chart vocabulary: axis text in Small / ink-3 tabular; axis lines and gridlines 1px crisp in Axis and Grid; category labels in Label / ink; value labels in Small / ink at 600; annotations in Small / ink with 1px ink-3 leader lines; a transparent row-wide hit rectangle that takes Hover Wash; marks that dim to 35% opacity when a sibling is hovered. First draw animates 400 to 700ms with `easeExpOut` and per-item stagger, and is skipped entirely under `prefers-reduced-motion`.
@@ -279,14 +279,20 @@ Shared SVG classes carry the whole chart vocabulary: axis text in Small / ink-3 
 ### Map markers (signature)
 - **Pin**: 30 by 38px teardrop, body filled with the country colour via `--pin`, a white 16px Font Awesome type icon (mosque / church / school / university / landmark) centred in the head, Pin lift shadow, scales 1.12 on hover and focus from its tip.
 - **Logo marker**: 48px square, 8px radius, 2px white border, Float shadow, scales 1.08 on hover.
-- **Bubble**: MapLibre circle in Series Blue at 80% opacity (100% on hover), 2px white stroke, radius `7 + 4 * sqrt(n - 1)`; the legend's size key repeats the exact radii.
+- **Bubble**: MapLibre circle in Series Blue at 80% opacity (100% on hover), 2px white stroke, radius `7 * sqrt(n)` (area proportional to collaborator count); the legend's size key repeats the exact radii.
 
 Motion across all components is one easing, `cubic-bezier(0.16, 1, 0.3, 1)`, at 120 to 150ms for state changes.
+
+### Map data and failure states
+Every map exposes a scrollable Show data view before MapLibre starts. Institution rows include every collaborator and their safe profile link; point rows carry country and location metadata. Keyboard users can reach a map target from the list. A failed map dependency, WebGL initialization, or basemap load preserves this readable data and exposes a reload action. Reset view restores the intended extent; embedded maps use cooperative gestures to preserve page scrolling.
+
+### Export and filter state
+Chart downloads wrap their titles and source notes to fit the output width. Buttons expose progress and errors, and repeated downloads release their object URLs. The timeline theme, activity period and hidden series, and treemap path are encoded in URL parameters so a filtered view can be shared. SVG accessibility exposes focusable marks; container groups keep embedded tables navigable.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** build every new figure as the head / controls / plot / footer column with the source line in the footer and "Show as table", "Download PNG", "Download SVG" as text actions.
+- **Do** build every new figure as the head / controls / plot / footer column with the source line in the footer and "Show as table", "Download PNG", "Download SVG", and "Download CSV" as text actions.
 - **Do** take colour from the country trio or the categorical palette in rank order, and fold the eighth-and-beyond series into Other Grey.
 - **Do** keep axis and source type at 12px / ink-3 and never lighter than ink-3 (5.3:1).
 - **Do** label values on the mark, keep the table view, and make every hit target row-wide or at least 42px tall on phones.

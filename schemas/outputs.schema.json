@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Title": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "Type": {
+            "enum": [
+              "Blog post",
+              "Book chapter",
+              "PhD dissertation",
+              "Conference paper",
+              "Book",
+              "Lecture/presentation",
+              "Journal article",
+              "Report",
+              "Magazine article",
+              "Panel",
+              "Film screening",
+              "Conference/workshop"
+            ]
+          },
+          "Author(s)": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "Date": {
+            "type": "string",
+            "format": "date"
+          },
+          "Language": {
+            "enum": [
+              "English",
+              "French",
+              "German"
+            ]
+          },
+          "Abstract": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "Title",
+          "Type",
+          "Author(s)",
+          "Date",
+          "Language",
+          "Abstract"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "rows"
+  ],
+  "additionalProperties": false
+}
