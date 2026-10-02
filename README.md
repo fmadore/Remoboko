@@ -29,13 +29,25 @@ Every figure is a self-contained HTML page served from GitHub Pages, listed at <
 - [Collaborators by country](https://fmadore.github.io/Remoboko/Final%20report/collaborators_by_country.html) · [by affiliation, on a map](https://fmadore.github.io/Remoboko/Final%20report/collaborators_map.html) · [by gender](https://fmadore.github.io/Remoboko/Final%20report/collaborators_gender.html)
 - [Publications and activities by type and language](https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html) · [over time](https://fmadore.github.io/Remoboko/Final%20report/activities_type_over_time.html)
 
-Every chart offers a table view and PNG/SVG download. Maps use [OpenFreeMap](https://openfreemap.org/) vector tiles rendered with MapLibre GL, which need no API key.
+Every chart offers a table view, CSV download, and PNG/SVG export of the current selection. Timeline themes, activity periods/hidden series, and treemap drilldowns are reflected in the URL for sharing. Maps offer a keyboard-accessible data table, search/selection controls, and a readable fallback when WebGL, the map library or the basemap service is unavailable. Maps use [OpenFreeMap](https://openfreemap.org/) vector tiles rendered with MapLibre GL, which need no API key.
 
 ## Contents
 
 ### `assets/`
 
-The shared design system for the interactive figures: `remoboko.css` (tokens, layout, legend, tooltip, table and map styles) and `remoboko.js` (colours, data loading, tooltip, legend, segmented control, table view, PNG/SVG export). Charts use [D3](https://d3js.org/) and maps use [MapLibre GL](https://maplibre.org/), both loaded from a CDN as ES modules; there is no build step.
+The interactive figures share small ES modules:
+
+| Module | Responsibility |
+| --- | --- |
+| `remoboko.css` | Design tokens, figure layouts, keyboard focus, tables and map styles |
+| `tokens.js` | Country/categorical colours, basemaps and source attribution |
+| `data.js` | Strict calendar dates, normalization, counts and complete time periods |
+| `remoboko.js` | Data loading, controls, tooltips, tables and responsive figure helpers |
+| `export.js` | Self-contained chart SVG/PNG exports, current-view metadata and CSV |
+| `maps.js` | Map data identities, validation, accessible fallback and shared map lifecycle |
+| `d3.js` | One pinned D3 import used by every chart |
+
+Charts use [D3](https://d3js.org/) and maps use [MapLibre GL](https://maplibre.org/), loaded from a CDN as ES modules; there is no application build step. npm dependencies provide the same releases locally for tests, so regression tests do not need live map tiles or CDN responses.
 
 ### `Book_DeGruyter/`
 
@@ -67,7 +79,7 @@ Figures and data for the project's final report:
 
 ### `viz_common.py`
 
-Design tokens shared by the Python print scripts (the country colours match `assets/remoboko.css`) and `load_json`.
+Dependency-free Python helpers: strict JSON/calendar-date loading, missing-gender normalization, and print palettes matching browser country and gender identities. The book timelines retain their monochrome publication styling.
 
 ## Data
 
@@ -81,35 +93,89 @@ Design tokens shared by the Python print scripts (the country colours match `ass
 
 ## Getting started
 
-The interactive figures are plain files. Serve the repository root with any static server and open a page:
+Serve the repository root with any static server:
 
 ```bash
-python -m http.server 8765
+python -m http.server 8765 --bind 127.0.0.1
 ```
 
-Then visit <http://localhost:8765/>. Opening the HTML files directly from disk does not work, because the pages fetch their JSON data.
+Then visit <http://localhost:8765/>. Opening HTML directly from disk does not work because pages fetch their JSON data.
 
-To run the smoke tests (every page loads, draws its marks from the data and throws no errors, on desktop and phone):
+### Tests and validation
+
+Use Node.js 22.13 or later. The browser suite covers desktop/phone Chromium, plus a focused Firefox/WebKit compatibility suite. It checks interactions, filtered exports, keyboard access, failure fallbacks, and iframe layouts.
 
 ```bash
 npm ci
-npx playwright install chromium
+npm run check
+npx playwright install chromium firefox webkit
 npm test
 ```
 
-The print figures still need Python:
+Browser tests serve the pinned npm releases locally and replace external basemaps with an empty style. This checks our rendering and behavior independently of third-party availability; it does not certify that a remote tile service is online. Reports and failure traces are retained in CI.
+
+Research-data validation uses only Python's standard library:
+
+```bash
+python scripts/validate_data.py
+python -m unittest discover -s tests/python -v
+```
+
+The six schemas in `schemas/` cover research JSON and the social-preview boundaries. Validation checks required fields, controlled categories, real calendar dates, numeric coordinate bounds, duplicate identities, polygon closure and local logo references. The bundled evaluator supports the schema keywords used here and rejects unsupported keywords. A full JSON Schema implementation can also consume the individual schema files. Coordinate bounds and valid dates do not verify historical accuracy.
+
+### Print figures
+
+Use Python 3.11 or later and a virtual environment. The core constraints capture the tested Python 3.12 Linux rendering environment; CI also exercises Python 3.11. They constrain core figure dependencies only, not the optional NLP pipeline.
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate          # Windows
 source .venv/bin/activate       # macOS / Linux
+# Windows: .venv\Scripts\activate
+python -m pip install -r requirements.txt -c constraints-core.txt
 
-pip install -r requirements.txt
-python -m spacy download fr_core_news_lg   # only needed for word_clouds.py
-
-python Book_DeGruyter/Timeline/timeline.py
-python "Final report/collaborators_gender.py"
+python Book_DeGruyter/Timeline/timeline.py --output-dir build/figures
+python "Final report/collaborators_gender.py" --output-dir build/figures
+python .github/assets/social_preview.py --output-dir build/figures
 ```
+
+The generators default to headless output and never render on import. Without `--output-dir`, they save beside their original script (preserving existing paths). Timeline and gender scripts accept `--show` for an interactive window and `--data` for an alternate dataset. Book fonts are optional licensed local files; otherwise the timeline uses DejaVu Sans.
+
+For linting and the seeded word-cloud rendering test:
+
+```bash
+python -m pip install -r requirements-dev.txt -c constraints-core.txt
+ruff check .
+python -m unittest discover -s tests/python -v
+```
+
+The small WordCloud renderer is included in development dependencies so CI can test deterministic rendering from a count fixture without downloading language models. Core CI writes figures outside the checkout and retains them as artifacts.
+
+### Optional word clouds
+
+NLP dependencies are separate from core plotting. Resource installation is an explicit network operation; ordinary generation uses local resources only.
+
+```bash
+python -m pip install -r requirements-nlp.txt
+python "Final report/word_clouds.py" --download-resources
+python "Final report/word_clouds.py" --output-dir build/wordclouds
+python "Final report/word_clouds.py" --weighting document --output-dir build/wordclouds
+```
+
+Setup installs NLTK `punkt_tab`, `stopwords`, and `wordnet`, plus the exact `fr_core_news_lg` **3.8.0** model compatible with spaCy 3.8. The French pipeline retains its tokenizer, morphology and lemmatization components and excludes unused parsing/NER. Texts are batched. A normal run fails with setup instructions if resources are unavailable; it never downloads them implicitly.
+
+Each run writes term/count CSVs and `wordcloud_methods_token.json` or `wordcloud_methods_document.json`, alongside the PNGs. The manifest records source and resource hashes, coverage, Python/package/model versions, pipeline components, font hash, seed, and weighting. Document-frequency filenames include `_document` to coexist with token-frequency outputs. `--languages English` processes only English; `--frequencies-only` omits image rendering; `--seed` and `--font` make rendering choices explicit.
+
+The optional NLP stack has version ranges and a pinned French model, not a fully tested transitive lock. The manifest records the actual environment. Reproducing a published cloud requires preserving its source file, manifest, dependencies, resources and font; a random seed alone does not guarantee identical output across environments.
+
+## Research methods and provenance
+
+The JSON files remain the primary records. Country means the recorded affiliation's country in collaborator figures, not nationality. Missing gender remains visible as **Unknown** and contributes to the denominator; no gender is inferred. Counts describe the recorded project corpus, not all possible collaborators or activities.
+
+Currently 72 of 181 output records have no abstract. English word-cloud input covers 74 of 114 English records; French covers 34 of 65. German has one nonempty abstract across two records and is not processed by the English/French pipeline. The `Abstract` field includes both short abstracts and long blog text, so token frequency gives longer records more influence. Document frequency counts each term once per included record and offers a different, explicit weighting.
+
+The pipeline lowercases text, applies language-specific stopwords and lemmatization, and publishes exact counts. English retains the existing WordNet noun-lemma method; French uses the pinned spaCy model. WordCloud receives counts directly, without a second tokenizer, plural normalization or stopword pass. The clouds are exploratory illustrations; the CSVs expose the quantities behind them.
+
+Timeline dates are displayed as recorded. Some dates fall on 1 January, but the source data does not distinguish exact dates from year-only estimates. No precision or missing citations have been invented. The book provides the overarching scholarly source; item-level source identifiers, temporal precision and provenance can be added through documented future curation. Technical validation cannot replace that historical review.
 
 ## How to cite
 

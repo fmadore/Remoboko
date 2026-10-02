@@ -1,165 +1,270 @@
+"""Build auditable English/French word clouds from recorded abstracts.
+
+Install requirements-nlp.txt, then explicitly provision resources with
+``python "Final report/word_clouds.py" --download-resources``. Normal generation
+uses local resources only. No downloads, model loads or writes happen on import.
+"""
+
+import argparse
+from collections import Counter
+import csv
 import hashlib
+from importlib.metadata import PackageNotFoundError, version
 import json
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
-import spacy
-from tqdm import tqdm
 import logging
-import os
+from pathlib import Path
+import platform
+import sys
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from viz_common import load_json
 
-# Get the directory of the current script
-current_dir = os.path.dirname(os.path.abspath(__file__))
+HERE = Path(__file__).resolve().parent
+LANGUAGES = ('English', 'French')
+FRENCH_MODEL_VERSION = '3.8.0'
+ENGLISH_EXCEPTIONS = {'vincent'}
+FRENCH_EXCEPTIONS = {'vincent', 'source', 'auteur', 'texte'}
+LOG = logging.getLogger(__name__)
 
-# Create WordClouds folder if it doesn't exist
-wordclouds_dir = os.path.join(current_dir, 'WordClouds')
-os.makedirs(wordclouds_dir, exist_ok=True)
 
-# Define path to Data folder
-data_dir = os.path.join(current_dir, 'Data')
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with open(path, 'rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.hexdigest()
 
-# Download necessary NLTK data
-logging.info("Downloading NLTK data...")
-nltk.download('punkt', quiet=True)
-nltk.download('stopwords', quiet=True)
-nltk.download('wordnet', quiet=True)
-nltk.download('punkt_tab', quiet=True)
 
-# Load spaCy French model
-nlp_fr = spacy.load('fr_core_news_lg')
+def nltk_resource_hash(name):
+    """Fingerprint exact local resources, including zipped WordNet distributions."""
+    from nltk.data import find
 
-# Read the JSON file
-logging.info("Reading JSON file...")
-json_path = os.path.join(data_dir, 'Publications_and_activities_data.json')
-try:
-    with open(json_path, 'r', encoding='utf-8') as file:
-        data = json.load(file)
-except UnicodeDecodeError:
-    logging.warning("UTF-8 encoding failed, trying ISO-8859-1...")
-    with open(json_path, 'r', encoding='iso-8859-1') as file:
-        data = json.load(file)
+    try:
+        pointer = find(name)
+    except LookupError:
+        pointer = find(name + '.zip')
+    if hasattr(pointer, 'zipfile'):
+        return sha256_file(pointer.zipfile.filename)
+    path = Path(str(pointer))
+    if path.is_file():
+        return sha256_file(path)
+    digest = hashlib.sha256()
+    for item in sorted(candidate for candidate in path.rglob('*') if candidate.is_file()):
+        digest.update(str(item.relative_to(path)).encode('utf-8'))
+        digest.update(sha256_file(item).encode('ascii'))
+    return digest.hexdigest()
 
-# Initialize lemmatizer for English
-lemmatizer = WordNetLemmatizer()
 
-# Exception lists
-english_exceptions = {'vincent'}
-french_exceptions = {'vincent', 'source', 'auteur', 'texte'}
-
-# Define custom color functions for each language.
-# Colors are picked with a stable hash so regenerated clouds are reproducible
-# (builtin hash() is randomized per process by PYTHONHASHSEED).
 def stable_hash(word):
-    return int(hashlib.md5(word.encode('utf-8')).hexdigest(), 16)
+    return int(hashlib.sha256(word.encode('utf-8')).hexdigest(), 16)
 
-def english_color_func(word, font_size, position, orientation, random_state=None, **kwargs):
-    """Blue-teal color scheme for English"""
+
+def english_color_func(word, **kwargs):
     colors = ['#1abc9c', '#16a085', '#2ecc71', '#27ae60', '#3498db', '#2980b9']
     return colors[stable_hash(word) % len(colors)]
 
-def french_color_func(word, font_size, position, orientation, random_state=None, **kwargs):
-    """Orange-red color scheme for French"""
+
+def french_color_func(word, **kwargs):
     colors = ['#e74c3c', '#c0392b', '#e67e22', '#d35400', '#f39c12', '#f1c40f']
     return colors[stable_hash(word) % len(colors)]
 
-# Function to preprocess text
-def preprocess_text(text, language):
-    if text is None:
-        return ""
 
-    if language == 'English':
-        tokens = word_tokenize(text.lower())
-        stop_words = set(stopwords.words('english')).union(english_exceptions)
-        processed_tokens = [lemmatizer.lemmatize(word) for word in tokens if word.isalnum() and word not in stop_words]
-    elif language == 'French':
-        nltk_stop_words = set(stopwords.words('french'))
-        spacy_stop_words = nlp_fr.Defaults.stop_words
-        all_stop_words = nltk_stop_words.union(spacy_stop_words).union(french_exceptions)
-        doc = nlp_fr(text.lower())
-        # Check both the surface form and the lemma against the stop word list:
-        # a kept lemma can itself be a stop word (e.g. "était" -> "être").
-        processed_tokens = [
-            token.lemma_ for token in doc
-            if token.text.isalnum()
-            and token.text not in all_stop_words
-            and token.lemma_ not in all_stop_words
-        ]
-    else:
-        raise ValueError(f"Unsupported language: {language!r} (expected 'English' or 'French')")
+def download_resources():
+    """The only network-enabled path; deliberately separate from generation."""
+    try:
+        import nltk
+        from spacy.cli import download
+    except ImportError as exc:
+        raise RuntimeError('Install requirements-nlp.txt before downloading resources') from exc
+    for resource in ('punkt_tab', 'stopwords', 'wordnet'):
+        if not nltk.download(resource, raise_on_error=True):
+            raise RuntimeError(f'Could not download NLTK resource: {resource}')
+    download(f'fr_core_news_lg-{FRENCH_MODEL_VERSION}', direct=True)
 
-    return ' '.join(processed_tokens)
 
-# Function to generate and save word cloud
-def generate_wordcloud(text, language):
-    logging.info(f"Generating {language} word cloud...")
+class TextProcessor:
+    """Lazy language pipelines; dependencies are injected into counting below."""
 
-    # Select color function based on language
-    color_func = english_color_func if language == 'English' else french_color_func
+    def __init__(self):
+        self._english = None
+        self._french = None
+        self.metadata = {}
 
-    # Create word cloud with improved settings
-    wordcloud = WordCloud(
-        width=1600,
-        height=800,
-        background_color=None,
-        mode="RGBA",
-        max_words=200,
-        min_font_size=10,
-        max_font_size=150,
-        relative_scaling=0.5,
-        prefer_horizontal=0.7,
-        color_func=color_func,
-        margin=10,
-        contour_width=0,
-        collocations=False  # Avoid repeated word pairs
-    ).generate(text)
+    def _load_english(self):
+        try:
+            from nltk.corpus import stopwords, wordnet
+            from nltk.stem import WordNetLemmatizer
+            from nltk.tokenize import word_tokenize
+            words = set(stopwords.words('english')) | ENGLISH_EXCEPTIONS
+            lemmatizer = WordNetLemmatizer()
+            lemmatizer.lemmatize('tests')  # Fail before processing on a missing WordNet corpus.
+            word_tokenize('Resource check.')
+        except (ImportError, LookupError) as exc:
+            raise RuntimeError('English NLP resources unavailable; install requirements-nlp.txt and run --download-resources') from exc
+        self._english = (word_tokenize, lemmatizer, words)
+        self.metadata['English'] = {
+            'lemmatization': 'NLTK WordNet, noun POS (existing method)',
+            'stopwords_sha256': hashlib.sha256('\n'.join(sorted(words)).encode()).hexdigest(),
+            'wordnet_version': wordnet.get_version(),
+            'resource_sha256': {name: nltk_resource_hash(name) for name in
+                                ('tokenizers/punkt_tab/english/', 'corpora/stopwords/english', 'corpora/wordnet')},
+        }
 
-    # Create figure with modern styling
+    def _load_french(self):
+        try:
+            import spacy
+            from nltk.corpus import stopwords
+            nlp = spacy.load('fr_core_news_lg', exclude=['parser', 'ner'])
+            if nlp.meta.get('version') != FRENCH_MODEL_VERSION:
+                raise RuntimeError(f'Expected fr_core_news_lg {FRENCH_MODEL_VERSION}; run --download-resources')
+            words = set(stopwords.words('french')) | nlp.Defaults.stop_words | FRENCH_EXCEPTIONS
+        except (ImportError, LookupError, OSError) as exc:
+            raise RuntimeError('French NLP resources unavailable; install requirements-nlp.txt and run --download-resources') from exc
+        self._french = (nlp, words)
+        self.metadata['French'] = {
+            'model': 'fr_core_news_lg', 'model_version': nlp.meta.get('version'),
+            'pipeline': nlp.pipe_names, 'excluded_components': ['parser', 'ner'],
+            'resource_sha256': {'corpora/stopwords/french': nltk_resource_hash('corpora/stopwords/french')},
+            'stopwords_sha256': hashlib.sha256('\n'.join(sorted(words)).encode()).hexdigest(),
+        }
+
+    def documents(self, texts, language):
+        if language == 'English':
+            if self._english is None:
+                self._load_english()
+            tokenize, lemmatizer, stop_words = self._english
+            for text in texts:
+                yield [lemmatizer.lemmatize(word) for word in tokenize(text.lower())
+                       if word.isalnum() and word not in stop_words]
+        elif language == 'French':
+            if self._french is None:
+                self._load_french()
+            nlp, stop_words = self._french
+            for doc in nlp.pipe((text.lower() for text in texts), batch_size=16):
+                yield [token.lemma_ for token in doc if token.text.isalnum()
+                       and token.text not in stop_words and token.lemma_ not in stop_words]
+        else:
+            raise ValueError(f'Unsupported language: {language!r}')
+
+
+def corpus_frequencies(rows, language, processor, weighting='token'):
+    """Return exact counts and coverage; document mode counts each term once per record."""
+    if weighting not in ('token', 'document'):
+        raise ValueError(f'Unsupported weighting: {weighting!r}')
+    records = [row for row in rows if row['Language'] == language]
+    texts = [row['Abstract'] for row in records if isinstance(row.get('Abstract'), str) and row['Abstract'].strip()]
+    counts = Counter()
+    token_count = 0
+    empty_documents = 0
+    for tokens in processor.documents(texts, language) if texts else ():
+        tokens = list(tokens)
+        token_count += len(tokens)
+        empty_documents += not bool(tokens)
+        counts.update(tokens if weighting == 'token' else set(tokens))
+    # Stable ordering breaks equal-frequency ties before WordCloud layout.
+    ordered = dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))
+    return ordered, {
+        'records': len(records), 'included_abstracts': len(texts),
+        'missing_abstracts': len(records) - len(texts),
+        'empty_after_processing': empty_documents, 'processed_tokens': token_count,
+        'unique_terms': len(counts), 'weighting': weighting,
+    }
+
+
+def save_frequencies(counts, path):
+    with open(path, 'w', encoding='utf-8', newline='') as stream:
+        writer = csv.writer(stream)
+        writer.writerow(['term', 'count'])
+        writer.writerows(counts.items())
+
+
+def generate_wordcloud(counts, language, output_path, seed=42, font_path=None):
+    """Render the exact published counts: no second tokenizer or plural merging."""
+    try:
+        from wordcloud import WordCloud
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+    except ImportError as exc:
+        raise RuntimeError('Install requirements-nlp.txt to render word clouds') from exc
+    if not counts:
+        raise ValueError(f'No {language} terms to render')
+    cloud = WordCloud(
+        width=1600, height=800, background_color=None, mode='RGBA', max_words=200,
+        min_font_size=10, max_font_size=150, relative_scaling=0.5, prefer_horizontal=0.7,
+        color_func=english_color_func if language == 'English' else french_color_func,
+        margin=10, contour_width=0, collocations=False, random_state=seed,
+        font_path=str(font_path) if font_path else None,
+    ).generate_from_frequencies(counts)
     fig, ax = plt.subplots(figsize=(20, 10), dpi=300, facecolor='none')
-    ax.set_facecolor('none')
+    try:
+        ax.set_facecolor('none')
+        ax.imshow(cloud, interpolation='bilinear')
+        ax.axis('off')
+        ax.set_title(f'{language} Abstracts', fontsize=24, fontweight='bold', color='#1b1b1b', pad=20)
+        fig.savefig(output_path, bbox_inches='tight', pad_inches=0.5, transparent=True, facecolor='none')
+    finally:
+        plt.close(fig)
+    return {'font_file': Path(cloud.font_path).name, 'font_sha256': sha256_file(cloud.font_path)}
 
-    # Display word cloud
-    ax.imshow(wordcloud, interpolation='bilinear')
-    ax.axis('off')
 
-    # Add subtle title
-    lang_label = 'English Abstracts' if language == 'English' else 'French Abstracts'
-    ax.set_title(
-        lang_label,
-        fontsize=24,
-        fontweight='bold',
-        color='#333',
-        pad=20,
-        loc='center'
-    )
+def package_versions():
+    result = {}
+    for package in ('wordcloud', 'matplotlib', 'numpy', 'nltk', 'spacy', 'pillow'):
+        try:
+            result[package] = version(package)
+        except PackageNotFoundError:
+            result[package] = None
+    return result
 
-    # Save with tight layout
-    output_path = os.path.join(wordclouds_dir, f'{language.lower()}_wordcloud.png')
-    plt.savefig(output_path, bbox_inches='tight', pad_inches=0.5, transparent=True, facecolor='none')
-    plt.close()
-    logging.info(f"{language} word cloud saved as {output_path}")
 
-# Preprocess and generate word cloud for English entries
-logging.info("Processing English entries...")
-english_entries = [item for item in data['rows'] if item['Language'] == 'English' and item['Abstract'] is not None]
-english_text = ' '.join([preprocess_text(item['Abstract'], 'English') for item in tqdm(english_entries)])
-if english_text.strip():
-    generate_wordcloud(english_text, 'English')
-else:
-    logging.warning("No English text found for word cloud generation")
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--data', type=Path, default=HERE / 'Data/Publications_and_activities_data.json')
+    parser.add_argument('--output-dir', type=Path, default=HERE / 'WordClouds')
+    parser.add_argument('--download-resources', action='store_true', help='Download NLP corpora/model, then exit')
+    parser.add_argument('--languages', nargs='+', choices=LANGUAGES, default=list(LANGUAGES))
+    parser.add_argument('--weighting', choices=('token', 'document'), default='token')
+    parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--font', type=Path, help='Explicit font for repeatable image layouts')
+    parser.add_argument('--frequencies-only', action='store_true', help='Write counts/methods without rendering PNGs')
+    args = parser.parse_args(argv)
+    logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+    if args.download_resources:
+        download_resources()
+        return
+    rows = load_json(args.data)['rows']
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    processor = TextProcessor()
+    manifest = {
+        'source_file': args.data.name, 'source_sha256': sha256_file(args.data),
+        'python': platform.python_version(), 'packages': package_versions(), 'seed': args.seed,
+        'weighting': args.weighting,
+        'method': 'Lowercase, language-specific stopwords and lemmatization; exact alphanumeric lemma counts; no WordCloud text postprocessing.',
+        'scope': 'Recorded nonempty abstracts; records can include full blog text. Token counts weight longer records more heavily.',
+        'unprocessed_languages': dict(Counter(row['Language'] for row in rows if row['Language'] not in args.languages)),
+        'languages': {},
+    }
+    for language in dict.fromkeys(args.languages):
+        counts, coverage = corpus_frequencies(rows, language, processor, args.weighting)
+        prefix = language.lower() if args.weighting == 'token' else f'{language.lower()}_document'
+        save_frequencies(counts, args.output_dir / f'{prefix}_frequencies.csv')
+        coverage['image_generated'] = False
+        if counts and not args.frequencies_only:
+            coverage['rendering'] = generate_wordcloud(counts, language, args.output_dir / f'{prefix}_wordcloud.png', args.seed, args.font)
+            coverage['image_generated'] = True
+        elif not counts:
+            LOG.warning('No %s terms; counts written, no PNG generated', language)
+        manifest['languages'][language] = coverage
+        LOG.info('%s: %s/%s records included, %s terms', language, coverage['included_abstracts'], coverage['records'], len(counts))
+    manifest['processing'] = processor.metadata
+    (args.output_dir / f'wordcloud_methods_{args.weighting}.json').write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
-# Preprocess and generate word cloud for French entries
-logging.info("Processing French entries...")
-french_entries = [item for item in data['rows'] if item['Language'] == 'French' and item['Abstract'] is not None]
-french_text = ' '.join([preprocess_text(item['Abstract'], 'French') for item in tqdm(french_entries)])
-if french_text.strip():
-    generate_wordcloud(french_text, 'French')
-else:
-    logging.warning("No French text found for word cloud generation")
 
-logging.info("Word clouds generated successfully!")
+if __name__ == '__main__':
+    try:
+        main()
+    except (RuntimeError, ValueError) as exc:
+        LOG.error('%s', exc)
+        sys.exit(1)

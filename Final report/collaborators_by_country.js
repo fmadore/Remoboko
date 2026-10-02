@@ -1,9 +1,11 @@
 // Collaborators by country: horizontal bars, one series, names on hover.
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import * as d3 from '../assets/d3.js';
 import {
   SEQ_COLOR, SOURCE_LINE, loadJSON, createTooltip, renderActions, buildTable,
-  onResize, showEmpty, formatCount, measureText, prefersReducedMotion,
+  onResize, showEmpty, formatCount, measureText, prefersReducedMotion, availablePlotHeight,
 } from '../assets/remoboko.js';
+
+import { normalizeCollaborators } from '../assets/data.js';
 
 const plot = document.getElementById('plot');
 const actions = document.getElementById('actions');
@@ -14,21 +16,22 @@ const TITLE = 'Collaborators by country';
 let rows = [];
 
 try {
-  const data = await loadJSON('Data/Collaborators_data.json');
+  const data = normalizeCollaborators(await loadJSON('Data/Collaborators_data.json'));
+  if (!data.length) throw new Error('The collaborator dataset is empty.');
   rows = d3.rollups(data, (v) => v.map((d) => d.Collaborator).sort(d3.ascending), (d) => d.Country)
     .map(([country, names]) => ({ country, count: names.length, names }))
     .sort((a, b) => d3.descending(a.count, b.count) || d3.ascending(a.country, b.country));
   const total = d3.sum(rows, (d) => d.count);
   desc.textContent = `The ${formatCount(total)} people who collaborated with Remoboko, counted by the country of their institution. `
     + `${rows.length} countries; ${rows[0].country} alone accounts for ${formatCount(rows[0].count)}.`;
-  plot.setAttribute('role', 'img');
+  plot.setAttribute('role', 'group');
   plot.setAttribute('aria-label', `Bar chart of ${total} collaborators across ${rows.length} countries, led by ${rows[0].country} with ${rows[0].count}.`);
 } catch (err) {
   showEmpty(plot, 'The collaborator data could not be loaded.');
   throw err;
 }
 
-const svg = d3.select(plot).append('svg').attr('aria-hidden', 'true');
+const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
 let firstDraw = true;
 
 function draw() {
@@ -38,7 +41,7 @@ function draw() {
   const n = rows.length;
 
   // Row height adapts to the space the iframe gives us, within legible bounds.
-  const available = plot.clientHeight;
+  const available = availablePlotHeight(plot);
   const minRow = narrow ? 42 : 20;
   const maxRow = narrow ? 48 : 30;
   const rowH = Math.max(minRow, Math.min(maxRow, Math.floor(available / n)));
@@ -46,6 +49,7 @@ function draw() {
   plot.style.minHeight = `${height}px`;
 
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
+  const focusedCountry = document.activeElement?.dataset.country;
   svg.selectAll('*').remove();
 
   const labelW = narrow ? 0 : Math.min(width * 0.42, d3.max(rows, (d) => measureText(svg, d.country, 'rb-cat-label')) + 14);
@@ -61,9 +65,10 @@ function draw() {
   const row = svg.append('g').attr('class', 'rows').selectAll('g').data(rows).join('g')
     .attr('transform', (d) => `translate(0,${y(d.country)})`);
   row.append('rect').attr('class', 'rb-hit').attr('width', width).attr('height', rowH).attr('tabindex', 0)
+    .attr('data-country', (d) => d.country)
     .attr('role', 'img').attr('aria-label', (d) => `${d.country}: ${d.count} ${d.count === 1 ? 'collaborator' : 'collaborators'}`);
 
-  row.append('text').attr('class', 'rb-cat-label')
+  row.append('text').attr('class', 'rb-cat-label').attr('pointer-events', 'none')
     .attr('x', narrow ? 0 : labelW - 12)
     .attr('y', narrow ? 13 : rowH / 2)
     .attr('dy', narrow ? 0 : '0.35em')
@@ -114,6 +119,8 @@ function draw() {
   }
   hit.on('pointerenter', show).on('pointermove', (event) => tooltip.move(event.clientX, event.clientY))
     .on('pointerleave', hide).on('focus', show).on('blur', hide);
+  if (focusedCountry) hit.filter((d) => d.country === focusedCountry).node()?.focus();
+  actionView.refresh();
 }
 
 function centre(node) {
@@ -121,7 +128,7 @@ function centre(node) {
   return [r.left + Math.min(r.width, 160), r.top + r.height / 2];
 }
 
-renderActions(actions, {
+const actionView = renderActions(actions, {
   filename: 'collaborators_by_country',
   title: TITLE,
   source: SOURCE_LINE,
@@ -134,4 +141,5 @@ renderActions(actions, {
   ], rows, `${TITLE}. ${SOURCE_LINE}`),
 });
 
+document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
 onResize(plot, draw);

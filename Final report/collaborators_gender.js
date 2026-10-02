@@ -1,10 +1,12 @@
 // Collaborators by gender: one proportion bar. Two categories are a share,
 // not a pie, so the headline carries the number and the bar shows it.
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import * as d3 from '../assets/d3.js';
 import {
-  CATEGORICAL, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderActions, buildTable,
+  CATEGORICAL, OTHER_COLOR, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderActions, buildTable,
   onResize, showEmpty, formatCount, formatPct, prefersReducedMotion, measureText,
 } from '../assets/remoboko.js';
+
+import { normalizeCollaborators } from '../assets/data.js';
 
 const plot = document.getElementById('plot');
 const legendBox = document.getElementById('legend');
@@ -18,23 +20,24 @@ let series = []; // [{id, label, count, share, color}] women first, then men, th
 let total = 0;
 
 try {
-  const data = await loadJSON('Data/Collaborators_data.json');
+  const data = normalizeCollaborators(await loadJSON('Data/Collaborators_data.json'));
+  if (!data.length) throw new Error('The collaborator dataset is empty.');
   total = data.length;
   const counts = d3.rollup(data, (v) => v.length, (d) => String(d.Gender || 'unknown').toLowerCase());
   const order = ['female', 'male'].filter((k) => counts.has(k))
-    .concat(Array.from(counts.keys()).filter((k) => k !== 'female' && k !== 'male').sort((a, b) => d3.descending(counts.get(a), counts.get(b))));
-  series = order.map((id, i) => ({
+    .concat(Array.from(counts.keys()).filter((k) => k !== 'female' && k !== 'male').sort((a, b) => d3.descending(counts.get(a), counts.get(b)) || d3.ascending(a, b)));
+  series = order.map((id) => ({
     id,
     label: LABELS[id] || id.charAt(0).toUpperCase() + id.slice(1),
     count: counts.get(id),
     share: counts.get(id) / total,
-    color: CATEGORICAL[i],
+    color: id === 'female' ? CATEGORICAL[0] : id === 'male' ? CATEGORICAL[1] : OTHER_COLOR,
   }));
   const women = series.find((s) => s.id === 'female');
   desc.textContent = women
     ? `${formatCount(women.count)} of the ${formatCount(total)} people who collaborated with Remoboko are women, ${formatPct(women.share)} of the total.`
     : `The ${formatCount(total)} people who collaborated with Remoboko, by gender.`;
-  plot.setAttribute('role', 'img');
+  plot.setAttribute('role', 'group');
   plot.setAttribute('aria-label', `Proportion bar: ${series.map((s) => `${s.label} ${s.count} (${formatPct(s.share)})`).join(', ')}.`);
 } catch (err) {
   showEmpty(plot, 'The collaborator data could not be loaded.');
@@ -43,7 +46,7 @@ try {
 
 renderLegend(legendBox, series.map((s) => ({ id: s.id, label: s.label, color: s.color, count: s.count })));
 
-const svg = d3.select(plot).append('svg').attr('aria-hidden', 'true');
+const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
 let firstDraw = true;
 
 function draw() {
@@ -54,6 +57,7 @@ function draw() {
   const height = labelBand + barH + 8;
   plot.style.height = `${height}px`;
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
+  const focusedGender = document.activeElement?.dataset.gender;
   svg.selectAll('*').remove();
 
   const x = d3.scaleLinear().domain([0, 1]).range([0, width]);
@@ -91,7 +95,7 @@ function draw() {
     .attr('class', 'rb-hit')
     .attr('x', (d) => x(d.x0)).attr('width', (d) => x(d.x1) - x(d.x0))
     .attr('y', 0).attr('height', height)
-    .attr('tabindex', 0).attr('role', 'img')
+    .attr('tabindex', 0).attr('role', 'img').attr('data-gender', (d) => d.id)
     .attr('aria-label', (d) => `${d.label}: ${d.count} collaborators, ${formatPct(d.share)}`);
   function show(event, d) {
     const [px, py] = event.type.startsWith('focus')
@@ -103,9 +107,11 @@ function draw() {
   function hide() { rects.classed('is-dim', false); tooltip.hide(); }
   hits.on('pointerenter', show).on('pointermove', (event) => tooltip.move(event.clientX, event.clientY))
     .on('pointerleave', hide).on('focus', show).on('blur', hide);
+  if (focusedGender) hits.filter((d) => d.id === focusedGender).node()?.focus();
+  actionView.refresh();
 }
 
-renderActions(actions, {
+const actionView = renderActions(actions, {
   filename: 'collaborators_gender',
   title: TITLE,
   source: SOURCE_LINE,
@@ -118,4 +124,5 @@ renderActions(actions, {
   ], series, `${TITLE}, ${formatCount(total)} collaborators. ${SOURCE_LINE}`),
 });
 
+document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
 onResize(plot, draw);

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "Collaborator": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "Gender": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "Affiliation": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "Country": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "Coordinate location": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "URL": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "required": [
+      "Collaborator",
+      "Gender",
+      "Affiliation",
+      "Country",
+      "Coordinate location",
+      "URL"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 1
+}

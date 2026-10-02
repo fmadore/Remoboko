@@ -26,19 +26,22 @@ The figures are built directly on the project's own published research data (33 
 
 - Each HTML page is embedded via `<iframe>` on remoboko.hypotheses.org and also opened standalone from README and book links. Pages therefore fill their viewport and carry no site chrome.
 - Existing URLs are permanent: `Book_DeGruyter/Maps/UAC_UL_locations_map.html`, `universities_map.html`, `points_of_interest.html`, `Book_DeGruyter/Timeline/index.html`, `Final report/collaborators_by_country.html`, `collaborators_map.html`, `treemap_chart.html`, `activities_type_over_time.html`.
-- Hosting is GitHub Pages from the master branch; CI runs ruff and the Python print scripts.
+- Hosting is GitHub Pages from the master branch; CI runs data validation, Python/JavaScript unit tests, browser regressions, linting and headless print generation. Generated artifacts and failure traces are retained.
 - Basemaps: OpenFreeMap vector styles rendered by MapLibre GL (no API key). CARTO raster tiles are watermarked without a key and must not return.
 
 ## Capabilities and Constraints
 
 Confirmed (must survive the rebuild):
-- Image export of every chart (PNG and SVG), replacing the Plotly toolbar.
+- Image export of every chart (PNG and SVG) plus CSV of the current view, including active filters and drilldowns.
 - Map search box with autocomplete and per-country marker toggles on the points-of-interest map.
 - Detailed / Light / Dark basemap switch on every map.
+- Accessible map data tables remain usable if WebGL, the library CDN or basemaps fail. Keyboard search, marker selection and retry/status controls support non-pointer access.
+- Shareable timeline theme, activity period/hidden-series and treemap path in URL query parameters; permanent page paths stay unchanged.
 - Same data files and same figures; interaction details may change.
 
 Decided:
-- The six Python generators (three folium maps, three Plotly charts) are deleted once their pages are hand-written; folium, branca and plotly leave requirements.txt.
+- Legacy Folium/Plotly generators have been removed. Core Python dependencies serve print figures only; optional NLP dependencies and explicit model/corpus setup are separate. There is no pandas dependency for simple counts or dates.
+- Core dependency constraints and seeded count-based word clouds support reproducibility; method manifests retain coverage, weighting, source/resource hashes and actual environment versions. No untested full NLP lock is claimed.
 - No build step, no framework, no bundler: pages must work when opened from GitHub Pages as plain files.
 
 ## Brand Commitments
@@ -51,7 +54,7 @@ Decided:
 ## Evidence on Hand
 
 - `Book_DeGruyter/Maps/locations.json`: 33 GeoJSON points (name, country, type: mosque/church/school/university/landmark).
-- `Book_DeGruyter/Maps/map_universities.py`: four universities (Lomé, Abomey-Calavi, Kara, Parakou) with coordinates and logo files; to be moved to JSON.
+- `Book_DeGruyter/Maps/universities.json`: four universities (Lomé, Abomey-Calavi, Kara, Parakou) with coordinates and logo files.
 - `Book_DeGruyter/Timeline/data.json`: 37 events 1960-2010, Togo and Benin, categories Religion / Education / Politics.
 - `Final report/Data/Collaborators_data.json`: 93 collaborators (name, gender, affiliation, country, coordinates, blog URL).
 - `Final report/Data/Publications_and_activities_data.json`: 181 outputs (title, type, authors, date, language, abstract), 2018-2025, 12 types, 3 languages.
@@ -61,7 +64,7 @@ Decided:
 ## Product Principles
 
 - The figure is the page: no chrome that competes with the data inside an iframe.
-- Every value reachable without hovering; tooltips enhance.
+- Every value reachable without hovering; tooltips enhance. Map data remains available during rendering failures.
 - Country identity is stable across every figure.
 - Data lives in JSON beside the page; the page reads it at load, nothing is pre-rendered.
 - Print and screen share one visual language but are produced by the right tool each.
@@ -69,3 +72,13 @@ Decided:
 ## Accessibility & Inclusion
 
 Figures are read on phones inside blog posts: legible at 360px wide, keyboard-reachable controls, colour never the only channel for identity.
+
+## Research Integrity and Validation
+
+- JSON records remain primary; code validates structure, date/calendar correctness, coordinate bounds, duplicate identities and referenced assets without altering historical claims.
+- Collaborator country denotes recorded institutional location, not nationality. Missing gender stays visible and counts in the denominator.
+- Output dates span 2018–2025, beyond the project's operating period. Do not truncate them to the project dates.
+- Word-cloud source coverage is explicit: 74/114 English and 34/65 French records have usable abstracts; 72/181 outputs lack abstracts overall. German is outside the two-language NLP workflow.
+- The abstract field mixes short abstracts and long blog text. Token frequency weights longer records more; optional document frequency gives each included record one vote per term. Both publish inspectable frequency CSVs.
+- Current timeline records do not encode date precision or item-level citations. Preserve recorded dates and disclose those provenance limits; future curation needs evidence.
+- Browser tests use pinned local libraries and controlled basemap responses. They verify the product's behavior, not the continued availability of external services.

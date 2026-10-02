@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@6.9.0/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@6.11.2/dist/maplibre-gl.css">
   <link rel="stylesheet" href="../../assets/remoboko.css">
   <style>
     .rb-uni-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; }
@@ -27,10 +27,20 @@ FIRST VIEWPORT: The map fills the frame with Togo and Benin at full height; titl
 FORM: Plain editorial charts (the canon, Datawrapper as the bar), chosen by the user over the assigned road-map sheet; seed 7067b968.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 -->
-<header class="rb-map-head" id="title-card"></header>
+<header class="rb-map-head" id="title-card">
+  <h1 class="rb-title">Universities of Benin and Togo</h1>
+  <p class="rb-desc" id="map-description">The four public universities studied in the book.</p>
+  <div class="rb-map-actions">
+    <button type="button" id="map-data-toggle" aria-pressed="false" aria-controls="map-data">Show data</button>
+    <button type="button" id="map-retry" hidden>Reload map</button>
+    <p id="map-status" role="status" aria-live="polite">Loading data…</p>
+  </div>
+  <noscript>JavaScript is required for the interactive figure. <a href="universities.json">Read the source data</a>.</noscript>
+</header>
 <div class="rb-map-body">
   <div id="map" role="application" aria-label="Interactive map of the four universities of Benin and Togo"></div>
   <div class="rb-card rb-card--tools" id="tools-card"></div>
+  <div id="map-data" class="rb-map-data" role="region" aria-label="Map data" tabindex="0" hidden></div>
   <section class="rb-card rb-card--legend" id="legend-card" aria-label="Universities"></section>
 </div>
 <script type="module" src="universities-map.js"></script>

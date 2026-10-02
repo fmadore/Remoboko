@@ -1,10 +1,12 @@
 // Publications and activities treemap: Type > Language > Year, zoomable by
 // click with a breadcrumb, colour by type (seven named types plus "Other").
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import * as d3 from '../assets/d3.js';
 import {
   CATEGORICAL, OTHER_COLOR, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderActions,
-  buildTable, onResize, showEmpty, formatCount, formatPct, el, prefersReducedMotion,
+  buildTable, onResize, showEmpty, formatCount, formatPct, el, prefersReducedMotion, availablePlotHeight, updateQueryState,
 } from '../assets/remoboko.js';
+
+import { normalizePublications, rankedCounts, readableInk } from '../assets/data.js';
 
 const plot = document.getElementById('plot');
 const legendBox = document.getElementById('legend');
@@ -20,20 +22,17 @@ const LEVELS = ['type', 'language', 'year'];
 let root;            // d3 hierarchy
 let current;         // node currently zoomed to
 let colorOfType = new Map();
-let labelOfType = new Map();
-let records = [];
+let records;
 
 try {
-  const data = await loadJSON('Data/Publications_and_activities_data.json');
-  const skipped = data.rows.filter((r) => !(r.Type && r.Language && r.Date)).length;
-  records = data.rows.filter((r) => r.Type && r.Language && r.Date)
-    .map((r) => ({ type: r.Type, language: r.Language, year: r.Date.slice(0, 4) }));
+  const normalized = normalizePublications(await loadJSON('Data/Publications_and_activities_data.json'));
+  records = normalized.records;
+  const skipped = normalized.issues.length;
+  if (!records.length) throw new Error('No valid dated outputs are available.');
 
-  const byType = d3.rollups(records, (v) => v.length, (d) => d.type)
-    .sort((a, b) => d3.descending(a[1], b[1]) || d3.ascending(a[0], b[0]));
+  const byType = rankedCounts(records, 'type');
   byType.forEach(([type], i) => {
     colorOfType.set(type, i < MAX_NAMED ? CATEGORICAL[i] : OTHER_COLOR);
-    labelOfType.set(type, type);
   });
   const folded = byType.slice(MAX_NAMED);
 
@@ -42,6 +41,16 @@ try {
     (d) => d.children,
   ).sum((d) => d.value || 0).sort((a, b) => b.value - a.value);
   current = root;
+  try {
+    const path = JSON.parse(new URLSearchParams(window.location.search).get('path') || '[]');
+    if (Array.isArray(path)) {
+      for (const name of path.slice(0, 2)) {
+        const child = current.children?.find((node) => node.data.name === name && node.children);
+        if (!child) break;
+        current = child;
+      }
+    }
+  } catch { /* Ignore malformed optional view state. */ }
 
   const langs = d3.rollups(records, (v) => v.length, (d) => d.language).sort((a, b) => d3.descending(a[1], b[1]));
   desc.textContent = `The project's ${formatCount(records.length)} outputs, sized by count: ${byType[0][0].toLowerCase()}s lead with ${formatCount(byType[0][1])}, `
@@ -52,10 +61,10 @@ try {
   renderLegend(legendBox, byType.slice(0, MAX_NAMED).map(([type, count]) => ({ id: type, label: type, color: colorOfType.get(type), count }))
     .concat(folded.length ? [{ id: 'Other', label: `Other (${folded.length} types)`, color: OTHER_COLOR, count: d3.sum(folded, ([, c]) => c) }] : []));
 
-  plot.setAttribute('role', 'img');
+  plot.setAttribute('role', 'group');
   plot.setAttribute('aria-label', `Treemap of ${records.length} outputs by type, language and year.`);
 } catch (err) {
-  showEmpty(plot, 'The publications data could not be loaded.');
+  showEmpty(plot, records?.length === 0 ? 'No valid dated outputs are available.' : 'The publications data could not be loaded.');
   throw err;
 }
 
@@ -69,8 +78,9 @@ function nest(rows, keys) {
   ));
 }
 
-const svg = d3.select(plot).append('svg').attr('aria-hidden', 'true');
+const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
 let firstDraw = true;
+let preparingExport = false;
 
 function typeOf(node) {
   let n = node;
@@ -80,7 +90,7 @@ function typeOf(node) {
 
 function draw() {
   const width = plot.clientWidth;
-  const height = Math.max(280, plot.clientHeight);
+  const height = Math.max(280, availablePlotHeight(plot));
   if (!width) return;
   plot.style.minHeight = '280px';
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
@@ -103,16 +113,17 @@ function draw() {
 
   const cells = svg.selectAll('g.cell').data(leaves, (d) => d.data.name);
   const enter = cells.enter().append('g').attr('class', 'cell')
-    .attr('tabindex', 0).attr('role', current.children?.[0]?.children ? 'button' : 'img');
+    .attr('tabindex', 0);
   enter.append('rect');
   enter.append('text').attr('class', 'name');
   enter.append('text').attr('class', 'count');
   cells.exit().remove();
   const all = enter.merge(cells);
 
-  const animate = !prefersReducedMotion() && !firstDraw;
+  const animate = !preparingExport && !prefersReducedMotion() && !firstDraw;
   const t = animate ? d3.transition().duration(450).ease(d3.easeExpOut) : null;
 
+  all.attr('role', (d) => d.children ? 'button' : 'img').attr('data-cell', (d) => d.data.name);
   all.attr('aria-label', (d) => `${d.data.name}: ${d.value} (${formatPct(d.value / total)})`);
   const rects = all.select('rect').attr('fill', fillFor);
   (animate ? rects.transition(t) : rects)
@@ -125,11 +136,10 @@ function draw() {
     const w = d.x1 - d.x0;
     const h = d.y1 - d.y0;
     const fill = d3.color(fillFor(d, i));
-    const dark = d3.hsl(fill).l < 0.62;
-    const ink = dark ? '#ffffff' : '#1b1b1b';
+    const ink = readableInk(fill.formatHex());
     const name = g.select('text.name').attr('fill', ink).text(d.data.name);
     name.selectAll('tspan').remove();
-    const count = g.select('text.count').text(formatCount(d.value)).attr('fill', ink).attr('opacity', dark ? 0.85 : 0.75);
+    const count = g.select('text.count').text(formatCount(d.value)).attr('fill', ink);
     const nameW = name.node().getComputedTextLength();
     const countW = count.node().getComputedTextLength();
     let nameLines = 0;
@@ -174,52 +184,65 @@ function draw() {
     .on('pointerleave', () => { all.classed('is-dim', false); tooltip.hide(); })
     .on('focus', (event, d) => { const r = event.target.getBoundingClientRect(); tooltip.show(content(d), r.left + 20, r.top + 20); })
     .on('blur', () => tooltip.hide())
-    .on('click', (event, d) => { if (d.children) zoomTo(findNode(current, d.data.name)); })
-    .on('keydown', (event, d) => { if ((event.key === 'Enter' || event.key === ' ') && d.children) { event.preventDefault(); zoomTo(findNode(current, d.data.name)); } });
+    .on('click', (event, d) => { if (d.children) zoomTo(findNode(current, d.data.name), true); })
+    .on('keydown', (event, d) => { if ((event.key === 'Enter' || event.key === ' ') && d.children) { event.preventDefault(); zoomTo(findNode(current, d.data.name), true); } });
 
   firstDraw = false;
   renderCrumbs();
+  plot.setAttribute('aria-label', `${viewTitle()}. ${total} outputs; ${leaves.length} ${LEVELS[current.depth]} groups.`);
+  actionView.refresh();
 }
 
 function findNode(parent, name) {
   return parent.children.find((c) => c.data.name === name);
 }
 
-function zoomTo(node) {
+function zoomTo(node, focus = false) {
   current = node;
   tooltip.hide();
+  updateQueryState({ path: current === root ? null : JSON.stringify(current.ancestors().reverse().slice(1).map((item) => item.data.name)) });
   draw();
+  if (focus) svg.select('g.cell').node()?.focus();
+}
+
+function viewTitle() {
+  return `${TITLE}${current === root ? '' : ` — ${current.ancestors().reverse().slice(1).map((node) => node.data.name).join(' / ')}`}`;
 }
 
 function renderCrumbs() {
+  const focusedLabel = crumbs.contains(document.activeElement) ? document.activeElement.textContent : null;
   const path = current.ancestors().reverse();
   crumbs.replaceChildren(...path.map((node, i) => {
     const last = i === path.length - 1;
     const label = node === root ? 'All outputs' : node.data.name;
-    return el('li', { 'aria-current': last ? 'true' : null }, last ? label : el('button', { type: 'button', onclick: () => zoomTo(node) }, label));
+    return el('li', { 'aria-current': last ? 'true' : null }, last ? label : el('button', { type: 'button', onclick: () => zoomTo(node, true) }, label));
   }));
+  if (focusedLabel) Array.from(crumbs.querySelectorAll('button')).find((button) => button.textContent === focusedLabel)?.focus();
 }
 
-renderActions(actions, {
+const actionView = renderActions(actions, {
   filename: 'publications_treemap',
-  title: TITLE,
+  title: viewTitle,
   source: SOURCE_LINE,
   plot,
   getSvg: () => svg.node(),
   buildTable: () => {
-    const langs = Array.from(new Set(records.map((r) => r.language))).sort();
-    const rows = d3.rollups(records, (v) => v, (d) => d.type)
-      .map(([type, group]) => {
-        const row = { type, total: group.length };
-        for (const l of langs) row[l] = group.filter((r) => r.language === l).length;
-        return row;
-      })
-      .sort((a, b) => d3.descending(a.total, b.total));
-    const cols = [{ key: 'type', label: 'Type' }]
-      .concat(langs.map((l) => ({ key: l, label: l, numeric: true, format: formatCount })))
-      .concat([{ key: 'total', label: 'Total', numeric: true, format: formatCount }]);
-    return buildTable(cols, rows, `${TITLE}. ${SOURCE_LINE}`);
+    const rows = (current.children || []).map((node) => ({
+      name: node.data.name, count: node.value, share: node.value / current.value,
+    }));
+    const level = LEVELS[current.depth];
+    return buildTable([
+      { key: 'name', label: level.charAt(0).toUpperCase() + level.slice(1) },
+      { key: 'count', label: 'Outputs', numeric: true, format: formatCount },
+      { key: 'share', label: 'Share of selection', numeric: true, format: formatPct },
+    ], rows, `${viewTitle()}. ${SOURCE_LINE}`);
   },
 });
 
+document.addEventListener('rb:prepare-export', () => {
+  svg.selectAll('*').interrupt();
+  preparingExport = true;
+  draw();
+  preparingExport = false;
+});
 onResize(plot, draw);

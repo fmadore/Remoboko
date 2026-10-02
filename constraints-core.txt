@@ -1,0 +1,14 @@
+# Tested print-rendering environment: Python 3.12, Linux, 2026-10-02.
+# Optional reproducibility pins: pip install -r requirements.txt -c constraints-core.txt
+# This constrains core packages only; it is not a lock for the optional NLP pipeline.
+contourpy==1.3.3
+cycler==0.12.1
+fonttools==4.61.1
+kiwisolver==1.4.9
+matplotlib==3.10.8
+numpy==2.3.5
+packaging==26.3
+pillow==12.3.0
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+six==1.17.0

@@ -1,69 +1,89 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for maintaining Remoboko's research figures and data.
 
-## Project Overview
+## Product and permanent URLs
 
-Remoboko is a research data visualization project for studying religiosity and secular education in West Africa. It publishes interactive maps, charts and a timeline (hand-written HTML/JavaScript, served from GitHub Pages) plus a few print figures (Python) from research data about Christian and Muslim student activism on university campuses in Togo, Benin, Niger, and Nigeria.
+This is a static research publication: hand-written HTML/JavaScript on GitHub Pages, plus Python print figures. Read `PRODUCT.md` and `DESIGN.md`. Keep every existing figure URL working: they are embedded on remoboko.hypotheses.org and linked from the book. Do not introduce a framework or application build step.
 
-## Development Environment
+- `Book_DeGruyter/Maps/UAC_UL_locations_map.html` and `points_of_interest.html` share `locations-map.js`.
+- `Book_DeGruyter/Maps/universities_map.html` uses `universities-map.js`.
+- `Book_DeGruyter/Timeline/index.html` uses `script.js`.
+- `Final report/` contains country, gender, affiliation-map, treemap and activities-over-time figures.
+- Root `index.html` lists the figures.
+
+## Development and verification
 
 ```bash
-# Interactive figures: any static server at the repo root, no build step
-python -m http.server 8765        # then open http://localhost:8765/
+# Local interactive figures
+python -m http.server 8765 --bind 127.0.0.1
 
-# Smoke tests (Playwright, desktop + phone)
+# Node >=22.13; pinned local libraries support network-independent browser tests
 npm ci
-npx playwright install chromium
+npm run check
+npx playwright install chromium firefox webkit
 npm test
 
-# Print figures (Python)
-.venv\Scripts\activate   # Windows
-source .venv/bin/activate  # Unix
-pip install -r requirements.txt
-python -m spacy download fr_core_news_lg   # word clouds only
+# Python >=3.11, in a virtual environment
+python -m pip install -r requirements-dev.txt -c constraints-core.txt
+ruff check .
+python scripts/validate_data.py
+python -m unittest discover -s tests/python -v
+
+# Generate outside the checkout when checking changes
+python Book_DeGruyter/Timeline/timeline.py --output-dir /tmp/remoboko-figures
+python "Final report/collaborators_gender.py" --output-dir /tmp/remoboko-figures
+python .github/assets/social_preview.py --output-dir /tmp/remoboko-figures
 ```
 
-## Running Scripts
+Inspect generated figures before updating committed PNG/SVG artifacts. Python imports must not download resources, load NLP models, change Matplotlib backends, or write outputs. Print generators default to headless operation; timeline/gender accept `--show`. Preserve monochrome book styling and optional licensed De Gruyter fonts with a DejaVu fallback.
+
+CI validates data, lints Python/JavaScript, runs unit and browser tests, and generates print figures outside the checkout. It retains figures and browser reports/traces. Dependencies and Actions receive Dependabot updates; Actions are SHA-pinned. Browser tests substitute pinned local libraries and a blank style, so they do not depend on external map/CDN uptime.
+
+## Shared architecture
+
+- `assets/tokens.js`: country/categorical palettes, basemap URLs and source attribution.
+- `assets/data.js`: pure strict-date parsing, record normalization, aggregation, full time intervals, colour contrast.
+- `assets/remoboko.js`: data loading, DOM controls, keyboard tooltips, legends, tables, responsive sizing, query-state helpers and actions.
+- `assets/export.js`: independent publication exports, SVG style/font embedding and metadata wrapping.
+- `assets/maps.js`: stable map identities, validated location/institution preparation, accessible data fallback and map lifecycle.
+- `assets/d3.js`: single pinned D3 CDN module; synchronize versions with `package.json`.
+- `assets/remoboko.css`: tokens, chart/map layouts, keyboard focus and table styles.
+- `viz_common.py`: dependency-free Python JSON/date loading, gender normalization and matching print identities.
+- `scripts/validate_data.py` and `schemas/`: executable contracts for all six research/geometry JSON files.
+
+Use the relevant small module rather than adding unrelated code to `remoboko.js`. Browser pure data functions are tested with Node; DOM behavior with jsdom/Playwright. Tests should check real values, state transitions and exports, including empty/malformed records and short iframes.
+
+## Figure behavior to preserve
+
+- Country identity: Benin `#3388ff`, Togo `#2ecc71`, West Africa `#e67e22`, mirrored in Python and CSS.
+- Fixed categorical palette; the seven largest named output types plus a grey remainder. Keep meaning stable when filtering.
+- Every chart value is available without hovering. Use keyboard-accessible marks/controls and a table; do not put focusable descendants under `aria-hidden`.
+- PNG/SVG exports and CSV describe the current view, including visible series, timeline theme or treemap drilldown. Use readable fallback fonts if external fonts fail.
+- Timeline theme, activity period/hidden series and treemap path persist in query parameters. Ignore invalid optional state safely; preserve existing permanent pathnames.
+- Complete time periods include zero-output intervals; parse dates strictly in UTC.
+- Missing gender is `unknown`, kept in totals, without inference. Python and browser use women blue, men orange and other/unknown grey.
+- Maps provide a readable table before importing the map library, with retry/status for failures. Keep location search keyboard-operable and marker controls semantic.
+- OpenFreeMap vector styles (Detailed/Light/Dark), no API key. Do not return to keyed CARTO raster tiles. MapLibre 6 uses named ESM exports.
+- Fit markers with padding for floating controls; do not change the book map's initial Benin/Togo focus to the entire regional dataset.
+- Pages embed at arbitrary iframe sizes. Measure the available figure content area rather than recursing on a plot's own expanding height.
+- Put data text into `textContent`; validate URLs before building links.
+
+## Data and research scope
+
+Data stays alongside its figures. The current files contain 33 locations, four universities, 37 events, 93 collaborators and 181 outputs. Counts are descriptive snapshots, not validation constants. Change research facts only with supporting evidence. Schema changes must accompany intentional new fields/categories.
+
+Timeline `label`, `wrap` and `x` are print layout hints, not historical facts. Current dates have no explicit precision field or item-level citations: never infer uncertain precision from a January date or invent a source. Collaborator country refers to recorded affiliation location. The data schemas validate structure, calendar dates, coordinate ranges and asset existence; they do not establish scholarly accuracy.
+
+## Optional NLP and reproducibility
 
 ```bash
-python Book_DeGruyter/Timeline/timeline.py       # Religion_Timeline.png/svg and Education_Politics_Timeline.png/svg
-python "Final report/collaborators_gender.py"    # collaborators_gender.png (+ _white.png variant)
-python "Final report/word_clouds.py"             # WordClouds/*.png
-python .github/assets/social_preview.py          # .github/assets/social-preview.png (1280x640)
+python -m pip install -r requirements-nlp.txt
+python "Final report/word_clouds.py" --download-resources
+python "Final report/word_clouds.py" --output-dir /tmp/remoboko-clouds
+python "Final report/word_clouds.py" --weighting document --output-dir /tmp/remoboko-clouds
 ```
 
-## Architecture
+Only `--download-resources` may download NLTK corpora and the pinned `fr_core_news_lg` 3.8.0 model (spaCy 3.8). Ordinary runs must be offline. English uses NLTK WordNet noun lemmatization; French retains morphology/lemmatization, excludes parser/NER, and batches texts. Do not change models or language methods without examining their impact on counts.
 
-### Interactive figure pages (permanent URLs, embedded in iframes on remoboko.hypotheses.org)
-- `Book_DeGruyter/Maps/UAC_UL_locations_map.html` and `points_of_interest.html` — identical shells sharing `locations-map.js` (both URLs must keep working)
-- `Book_DeGruyter/Maps/universities_map.html` + `universities-map.js` (data in `universities.json`)
-- `Book_DeGruyter/Timeline/index.html` + `script.js`
-- `Final report/collaborators_by_country.html`, `collaborators_gender.html`, `collaborators_map.html`, `treemap_chart.html`, `activities_type_over_time.html`, each with a `.js` of the same name
-- `index.html` at the root lists them all
-
-Every page is `<figure>`-shaped (title, description, controls row, plot, footer with source line and actions) or a full-viewport map with floating cards. Pages load D3 and MapLibre GL from jsdelivr as ES modules and import `assets/remoboko.js` with a relative path. Never rename or move a page: the URLs are referenced from the blog and the book.
-
-### Shared design system
-- `assets/remoboko.css` — tokens (`--rb-*`), figure layout, legend, segmented control, tooltip, table view, chart mark classes, map cards and markers
-- `assets/remoboko.js` — country colours, the validated 8-slot categorical palette, basemap style URLs, Font Awesome icon paths, `loadJSON`, `el`, `createTooltip`, `renderLegend`, `renderSegmented`, `renderActions` (table toggle + PNG/SVG export with the web font embedded), `buildTable`, `onResize`
-- `viz_common.py` — the same country colours for the Python print scripts, plus `load_json`
-
-### Data Sources
-- `Book_DeGruyter/Timeline/data.json` - Timeline events (date, country, category, plus optional `label`/`wrap`/`x` fields used only by the matplotlib print version)
-- `Book_DeGruyter/Maps/locations.json` - GeoJSON points of interest (name, country, type)
-- `Book_DeGruyter/Maps/universities.json` - GeoJSON of the four universities (name, country, city, logo)
-- `Final report/Data/Collaborators_data.json` - Collaborator info (name, country, gender, affiliation, coordinates, URL)
-- `Final report/Data/Publications_and_activities_data.json` - Publications/activities with type, language, date, abstract
-- `.github/assets/west-africa.geo.json` - Trimmed Natural Earth country outlines, used only by the social preview generator
-
-### Key Patterns
-- Basemaps are OpenFreeMap vector styles (Liberty / Positron / Dark) rendered by MapLibre GL; they need no API key. Do not switch back to CARTO raster tiles: without a key every tile is watermarked "API KEY REQUIRED". maplibre-gl 6 is ESM-only and exposes named exports, so import it as a namespace (`import * as maplibregl`)
-- Country identity is fixed: Benin `#3388ff`, Togo `#2ecc71`, West Africa `#e67e22`, in both `assets/remoboko.css` and `viz_common.py`
-- Categorical series use the fixed-order palette in `assets/remoboko.js`; past eight series fold into "Other" (grey), hues are never generated. The palette was validated with the dataviz skill's `validate_palette.js`
-- Charts read the JSON at load, aggregate in the browser, and re-draw on resize (`onResize`). Every value is reachable without hovering (direct labels or the table view), and tooltips are built with `textContent`
-- Pages must work inside an iframe of any size: `.rb-figure` is a `100dvh` flex column, the plot flexes, and short frames scroll
-- Timeline label layout for the print version (manual x positions, wrapping) lives in `data.json` per event, not in code
-- Word cloud generation uses NLTK for English and spaCy for French text processing
-- CI (`.github/workflows/ci.yml`) lints with ruff, runs the Python print scripts headless, and runs the Playwright smoke tests in `tests/`
-- Design context for the impeccable skill lives in `PRODUCT.md` and `DESIGN.md`
+Generate exact token counters first, export CSV, and pass frequencies directly into seeded WordCloud rendering. Document mode counts a term once per record. Record source/resource/font hashes, included/omitted records, package/model versions and seed in the methods JSON. Abstracts are incomplete and mix short abstracts with long blog posts; disclose coverage and weighting. German is outside this pipeline. Core constraints are tested; the optional NLP dependency ranges are not a validated full transitive lock. See README for commands and limitations.
