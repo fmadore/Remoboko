@@ -45,6 +45,7 @@ CI validates data, lints Python/JavaScript, runs unit and browser tests, and gen
 - `assets/tokens.js`: country/categorical palettes, basemap URLs and source attribution.
 - `assets/data.js`: pure strict-date parsing, record normalization, aggregation, full time intervals, colour contrast.
 - `assets/remoboko.js`: data loading, DOM controls, keyboard tooltips, legends, tables, responsive sizing, query-state helpers and actions.
+- `assets/chart.js`: D3 chart lifecycle (resize, font-load and export redraws, entrance motion, focus kept by `data-key`), tooltip binding and bar paths. It takes the page's D3 selection, so it runs in Node tests.
 - `assets/export.js`: independent publication exports, SVG style/font embedding and metadata wrapping.
 - `assets/maps.js`: stable map identities, validated location/institution preparation, accessible data fallback and map lifecycle.
 - `assets/d3.js`: single pinned D3 CDN module; synchronize versions with `package.json`.

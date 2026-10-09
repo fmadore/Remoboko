@@ -63,9 +63,32 @@ export function outputSeries(records, colors, otherColor, maxNamed = 7) {
     // The reserved id cannot collide with a published type called Other.
     id: 'other', label: `Other (${folded.length} types)`, color: otherColor,
     types: folded.map(([type]) => type), count: folded.reduce((sum, [, count]) => sum + count, 0),
+    typeCounts: folded,
     detail: folded.map(([type, count]) => `${type} ${count}`).join(', '),
   });
   return series;
+}
+
+const GENDER_LABELS = { female: 'Women', male: 'Men', unknown: 'Unknown' };
+
+/**
+ * Count every person, missing gender included; women, then men, then other
+ * values by count. Mirrors gender_series() in viz_common.py.
+ */
+export function genderSeries(records, { female, male, other }) {
+  const counts = new Map();
+  for (const row of records) {
+    const key = text(row?.Gender).toLowerCase() || 'unknown';
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  const rest = [...counts.keys()].filter((key) => key !== 'female' && key !== 'male')
+    .sort((a, b) => counts.get(b) - counts.get(a) || (a < b ? -1 : a > b ? 1 : 0));
+  const total = records.length;
+  const colors = { female, male };
+  return ['female', 'male'].filter((key) => counts.has(key)).concat(rest).map((id) => ({
+    id, label: GENDER_LABELS[id] || id.charAt(0).toUpperCase() + id.slice(1),
+    count: counts.get(id), share: counts.get(id) / total, color: colors[id] || other,
+  }));
 }
 
 export function aggregatePeriods(records, series, granularity) {

@@ -43,6 +43,7 @@ The interactive figures share small ES modules:
 | `tokens.js` | Country/categorical colours, basemaps and source attribution |
 | `data.js` | Strict calendar dates, normalization, counts and complete time periods |
 | `remoboko.js` | Data loading, controls, tooltips, tables and responsive figure helpers |
+| `chart.js` | Chart lifecycle: redraws on resize, font load and export, kept keyboard focus, tooltips, bar shapes |
 | `export.js` | Self-contained chart SVG/PNG exports, current-view metadata and CSV |
 | `maps.js` | Map data identities, validation, accessible fallback and shared map lifecycle |
 | `d3.js` | One pinned D3 import used by every chart |
@@ -93,7 +94,7 @@ Dependency-free Python helpers: strict JSON/calendar-date loading, missing-gende
 
 ## Getting started
 
-Serve the repository root with any static server:
+Serve the repository root with any static server, for example the bundled one:
 
 ```bash
 python scripts/serve.py --port 8765

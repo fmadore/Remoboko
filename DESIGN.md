@@ -242,7 +242,7 @@ The system is flat. Charts, tables, legends and the segmented control sit direct
 
 ## Shapes
 
-Corners are near-square. The base radius is 4px (tooltip, cards, popups, search input, segmented options, logo thumbnails); keys and focus rings use 2px; the segmented control's outer frame is 6px; the 48px university logo marker is 8px. Legend swatches are 12px squares with 2px corners, 12px dots for point marks, or 16 by 3px lines for line series. Bars are square at the baseline and rounded 4px at the data end only (clip-path), so the rounding reads as a mark end, not a pill. Map circles carry a 2px white stroke; timeline dots a 2px paper stroke; treemap cells a 2px paper stroke. Every rule is 1px and rendered with `shape-rendering: crispEdges`. Focus is a 2px ink outline offset 2px.
+Corners are near-square. The base radius is 4px (tooltip, cards, popups, search input, segmented options, logo thumbnails); keys and focus rings use 2px; the segmented control's outer frame is 6px; the 48px university logo marker is 8px. Legend swatches are 12px squares with 2px corners, 12px dots for point marks, or 16 by 3px lines for line series. Bars are square at the baseline and rounded 4px at the data end only (drawn as one path), so the rounding reads as a mark end, not a pill. Map circles carry a 2px white stroke; timeline dots a 2px paper stroke, and timeline labels sit on paper plates above the leader lines; treemap cells a 2px paper stroke. Every rule is 1px and rendered with `shape-rendering: crispEdges`. Focus is a 2px ink outline offset 2px.
 
 ## Components
 

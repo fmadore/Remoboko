@@ -1,7 +1,7 @@
 import { test, expect, PAGES, download } from './helpers/fixtures.js';
 
 const CHARTS = [
-  ['country', PAGES.byCountry, '.rb-cat-label', 'rect.rb-mark'],
+  ['country', PAGES.byCountry, '.rb-cat-label', 'path.rb-mark'],
   ['gender', PAGES.byGender, '.seg-value', 'rect.rb-mark'],
   ['treemap', PAGES.treemap, 'g.cell text.name', 'g.cell rect'],
   ['timeline', PAGES.timeline, '.event-text', '.event-dot'],

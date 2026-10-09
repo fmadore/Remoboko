@@ -4,9 +4,9 @@
 import * as d3 from '../assets/d3.js';
 import {
   CATEGORICAL, OTHER_COLOR, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderSegmented,
-  renderActions, buildTable, onResize, showEmpty, formatCount, prefersReducedMotion, measureText, availablePlotHeight, updateQueryState,
+  renderActions, buildTable, showEmpty, formatCount, measureText, availablePlotHeight, updateQueryState,
 } from '../assets/remoboko.js';
-
+import { createChart, bindTooltip } from '../assets/chart.js';
 import { normalizePublications, outputSeries, aggregatePeriods } from '../assets/data.js';
 
 const plot = document.getElementById('plot');
@@ -48,11 +48,14 @@ try {
   throw err;
 }
 
+const chart = createChart(d3.select(plot).append('svg'));
+const { svg } = chart;
+
 renderLegend(legendBox, series.map((s) => ({ id: s.id, label: s.label, color: s.color, count: s.count })), {
   onToggle: (id, visible) => {
     if (visible) hidden.delete(id); else hidden.add(id);
     syncQuery();
-    draw();
+    chart.render();
   },
 });
 
@@ -65,11 +68,8 @@ function syncQuery() {
 renderSegmented(granBox, [{ id: 'quarter', label: 'By quarter' }, { id: 'year', label: 'By year' }], {
   value: granularity,
   label: 'Time granularity',
-  onChange: (id) => { granularity = id; syncQuery(); draw(); },
+  onChange: (id) => { granularity = id; syncQuery(); chart.render(); },
 });
-
-const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
-let firstDraw = true;
 
 function stackedData() {
   const visible = series.filter((s) => !hidden.has(s.id));
@@ -87,7 +87,6 @@ function viewTitle() {
 function draw() {
   const width = plot.clientWidth;
   const height = Math.max(260, availablePlotHeight(plot));
-  if (!width) return;
   plot.style.minHeight = '260px';
 
   const { periods, visible, table } = stackedData();
@@ -95,7 +94,6 @@ function draw() {
   const maxY = d3.max(table, (d) => d.total) || 1;
 
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
-  const focusedPeriod = document.activeElement?.dataset.period;
   svg.selectAll('*').remove();
   plot.setAttribute('aria-label', `${viewTitle()}. ${d3.sum(table, (row) => row.total)} outputs in the current selection.`);
 
@@ -112,40 +110,50 @@ function draw() {
 
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
+  // Years in the quarter view: faint separators, and one label centred under each year's quarters.
+  const years = d3.groups(periods, (p) => p.slice(0, 4)).map(([year, quarters]) => ({
+    year, start: x(quarters[0]), end: x(quarters[quarters.length - 1]) + x.bandwidth(),
+  }));
+  const gap = x.step() - x.bandwidth();
+
   // Grid and axes
-  g.append('g').attr('class', 'rb-grid').selectAll('line').data(y.ticks(5)).join('line')
+  const grid = g.append('g').attr('class', 'rb-grid');
+  grid.selectAll('line.y').data(y.ticks(5)).join('line').attr('class', 'y')
     .attr('x1', 0).attr('x2', innerW).attr('y1', (d) => y(d)).attr('y2', (d) => y(d));
+  if (granularity === 'quarter') {
+    grid.selectAll('line.year').data(years.slice(1)).join('line').attr('class', 'year')
+      .attr('x1', (d) => Math.round(d.start - gap / 2) + 0.5).attr('x2', (d) => Math.round(d.start - gap / 2) + 0.5)
+      .attr('y1', 0).attr('y2', innerH + 6);
+  }
   g.append('g').attr('class', 'rb-axis').attr('transform', `translate(-8,0)`)
     .call(d3.axisLeft(y).tickValues(y.ticks(5).filter(Number.isInteger)).tickSize(0).tickFormat(formatCount))
     .call((ax) => ax.select('.domain').remove());
   const xAxis = g.append('g').attr('class', 'rb-axis').attr('transform', `translate(0,${innerH})`);
   xAxis.append('line').attr('x1', 0).attr('x2', innerW);
-  const labelEvery = granularity === 'year' ? 1 : 4;
-  const tickPeriods = periods.filter((p, i) => (granularity === 'year' ? true : p.endsWith('Q1') || i === 0));
-  xAxis.selectAll('text').data(tickPeriods).join('text')
-    .attr('x', (p) => x(p) + x.bandwidth() / 2)
-    .attr('y', 18)
-    .attr('text-anchor', granularity === 'year' ? 'middle' : 'start')
-    .attr('dx', granularity === 'year' ? 0 : -barW / 2)
-    .text((p) => p.slice(0, 4))
-    .filter((p, i) => granularity === 'quarter' && innerW / periods.length * labelEvery < 34 && i % 2 === 1)
-    .remove();
+  const labels = granularity === 'year'
+    ? periods.map((p) => ({ year: p, centre: x(p) + x.bandwidth() / 2 }))
+    : years.map((d) => ({ year: d.year, centre: (d.start + d.end) / 2 }));
+  const crowded = granularity === 'quarter' && x.step() * 4 < 34;
+  xAxis.selectAll('text').data(labels.filter((d, i) => !crowded || i % 2 === 0)).join('text')
+    .attr('x', (d) => d.centre).attr('y', 18).attr('text-anchor', 'middle')
+    .text((d) => d.year);
 
   // Hit bands: full-height, wider than the bar
   const bands = g.append('g').selectAll('rect').data(table).join('rect')
     .attr('class', 'rb-hit')
     .attr('x', (d) => x(d.period) - x.step() * 0.1).attr('width', x.step())
     .attr('y', 0).attr('height', innerH)
-    .attr('tabindex', 0).attr('role', 'img').attr('data-period', (d) => d.period)
+    .attr('tabindex', 0).attr('role', 'img').attr('data-key', (d) => d.period)
     .attr('aria-label', (d) => `${d.period}: ${d.total} ${d.total === 1 ? 'output' : 'outputs'}`);
 
   const colorOf = new Map(series.map((s) => [s.id, s.color]));
   const layers = g.append('g').attr('pointer-events', 'none').selectAll('g').data(stack).join('g').attr('fill', (d) => colorOf.get(d.key));
+  const segHeight = (d) => Math.max(0, y(d[0]) - y(d[1]) - 2); // 2px surface gap above each segment
   const segs = layers.selectAll('rect').data((d) => d.filter((v) => v[1] > v[0]).map((v) => ({ ...v, key: d.key }))).join('rect')
     .attr('class', 'rb-mark')
     .attr('x', (d) => barX(d.data.period)).attr('width', barW)
     .attr('y', (d) => y(d[1]))
-    .attr('height', (d) => Math.max(0, y(d[0]) - y(d[1]) - 2)); // 2px surface gap above each segment
+    .attr('height', segHeight);
 
   // Totals on the cap, only when the columns are wide enough to carry them
   if (barW >= 18) {
@@ -156,36 +164,24 @@ function draw() {
       .text((d) => formatCount(d.total));
   }
 
-  if (firstDraw && !prefersReducedMotion()) {
+  if (chart.entrance) {
     segs.attr('y', innerH).attr('height', 0)
       .transition().duration(700).delay((d, i) => i * 12).ease(d3.easeExpOut)
-      .attr('y', (d) => y(d[1])).attr('height', (d) => Math.max(0, y(d[0]) - y(d[1]) - 2));
+      .attr('y', (d) => y(d[1])).attr('height', segHeight);
   }
-  firstDraw = false;
 
-  function show(event, d) {
-    const [px, py] = event.type.startsWith('focus') ? centre(event.target) : [event.clientX, event.clientY];
-    const rows = visible.filter((s) => d[s.id] > 0).reverse().map((s) => ({ key: s.label, value: formatCount(d[s.id]), color: s.color }));
-    tooltip.show({
-      title: granularity === 'year' ? d.period : d.period.replace('-', ' '),
-      rows: rows.length ? rows : [{ key: 'No outputs', value: '', muted: true }],
-      note: rows.length > 1 ? `${formatCount(d.total)} in total` : null,
-    }, px, py);
-    segs.classed('is-dim', (s) => s.data.period !== d.period);
-  }
-  function hide() {
-    tooltip.hide();
-    segs.classed('is-dim', false);
-  }
-  bands.on('pointerenter', show).on('pointermove', (event) => tooltip.move(event.clientX, event.clientY))
-    .on('pointerleave', hide).on('focus', show).on('blur', hide);
-  if (focusedPeriod) bands.filter((d) => d.period === focusedPeriod).node()?.focus();
-  actionView.refresh();
-}
-
-function centre(node) {
-  const r = node.getBoundingClientRect();
-  return [r.left + r.width / 2, r.top + 40];
+  bindTooltip(bands, tooltip, {
+    content: (d) => {
+      const rows = visible.filter((s) => d[s.id] > 0).reverse().map((s) => ({ key: s.label, value: formatCount(d[s.id]), color: s.color }));
+      return {
+        title: granularity === 'year' ? d.period : d.period.replace('-', ' '),
+        rows: rows.length ? rows : [{ key: 'No outputs', value: '', muted: true }],
+        note: rows.length > 1 ? `${formatCount(d.total)} in total` : null,
+      };
+    },
+    highlight: (d) => segs.classed('is-dim', (s) => d !== null && s.data.period !== d.period),
+    anchor: (box) => [box.left + box.width / 2, box.top + 40],
+  });
 }
 
 const actionView = renderActions(actions, {
@@ -193,7 +189,7 @@ const actionView = renderActions(actions, {
   title: viewTitle,
   source: SOURCE_LINE,
   plot,
-  getSvg: () => svg.node(),
+  getSvg: chart.node,
   buildTable: () => {
     const { table, visible } = stackedData();
     const cols = [{ key: 'period', label: granularity === 'year' ? 'Year' : 'Quarter' }]
@@ -203,5 +199,4 @@ const actionView = renderActions(actions, {
   },
 });
 
-document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
-onResize(plot, draw);
+chart.start(draw, { after: actionView.refresh });
