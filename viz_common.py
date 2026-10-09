@@ -50,6 +50,12 @@ def normalize_gender(value):
     return value.strip().lower() or 'unknown'
 
 
+def format_share(share):
+    """Percent as the browser figures print it: one decimal below 10%, whole above."""
+    percent = share * 100
+    return f'{percent:.1f}%' if percent < 10 else f'{percent:.0f}%'
+
+
 def gender_series(records):
     """Count every person, including missing gender; preserve stable identities."""
     counts = Counter(normalize_gender(item.get('Gender')) for item in records)

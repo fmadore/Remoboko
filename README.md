@@ -75,7 +75,7 @@ Figures and data for the project's final report:
 | `collaborators_gender.html` + `.js` | The same collaborators by gender, as a proportion bar | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/collaborators_gender.html) |
 | `treemap_chart.html` + `.js` | 181 publications and activities by type, language and year | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html) |
 | `activities_type_over_time.html` + `.js` | The same outputs stacked by type, per quarter or per year | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/activities_type_over_time.html) |
-| `collaborators_gender.py` | `collaborators_gender.png` (+ `_white` variant), the print version | — |
+| `collaborators_gender.py` | `collaborators_gender.png` (+ `_white` variant), the print proportion bar | — |
 | `word_clouds.py` | `WordClouds/english_wordcloud.png` and `french_wordcloud.png` | — |
 
 ### `viz_common.py`

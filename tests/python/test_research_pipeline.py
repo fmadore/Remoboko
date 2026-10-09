@@ -10,7 +10,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from viz_common import gender_series, load_json, normalize_gender, parse_date
+from viz_common import format_share, gender_series, load_json, normalize_gender, parse_date
 
 
 def module_from_path(name, relative):
@@ -22,6 +22,7 @@ def module_from_path(name, relative):
 
 timeline = module_from_path('timeline', 'Book_DeGruyter/Timeline/timeline.py')
 clouds = module_from_path('clouds', 'Final report/word_clouds.py')
+gender_chart = module_from_path('gender_chart', 'Final report/collaborators_gender.py')
 validator = module_from_path('validator', 'scripts/validate_data.py')
 
 
@@ -90,6 +91,28 @@ class FigureDataTests(unittest.TestCase):
         self.assertEqual(women['color'], '#2a78d6')
         self.assertEqual(men['color'], '#eb6834')
         self.assertEqual(normalize_gender('  '), 'unknown')
+
+    def test_shares_round_like_the_browser_figures(self):
+        self.assertEqual(format_share(35 / 93), '38%')
+        self.assertEqual(format_share(0.0754), '7.5%')
+        self.assertEqual(format_share(1), '100%')
+
+    def test_print_gender_bar_labels_only_segments_wide_enough(self):
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+
+        records = [{'Gender': 'female'}] * 40 + [{'Gender': 'male'}] * 59 + [{'Gender': None}]
+        fig = gender_chart.create_chart(records)
+        try:
+            texts = [text.get_text() for ax in fig.axes for text in ax.texts]
+            self.assertIn('Women', texts)
+            self.assertIn('59 · 59%', texts)
+            self.assertNotIn('Unknown', texts, 'a 1% segment keeps its legend entry only')
+            legend = [text.get_text() for text in fig.legends[0].get_texts()]
+            self.assertEqual(legend, ['Women 40', 'Men 59', 'Unknown 1'])
+        finally:
+            plt.close(fig)
 
     def test_last_timeline_event_is_inside_axis(self):
         data = load_json(ROOT / 'Book_DeGruyter/Timeline/data.json')
