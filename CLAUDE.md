@@ -16,7 +16,7 @@ This is a static research publication: hand-written HTML/JavaScript on GitHub Pa
 
 ```bash
 # Local interactive figures
-python -m http.server 8765 --bind 127.0.0.1
+python scripts/serve.py --port 8765   # or any static server
 
 # Node >=22.22.2; pinned local libraries support network-independent browser tests
 npm ci

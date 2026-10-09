@@ -204,7 +204,7 @@ A white page, an ink ramp of three steps, and colour spent only on data from two
 **Body Font:** Source Sans 3 (same family)
 **Label/Mono Font:** none; numerals use `font-variant-numeric: tabular-nums` wherever they align.
 
-**Character:** One workhorse humanist sans at three weights (400, 600, 700), loaded from Google Fonts and embedded as woff2 into exported SVGs when the font service is available. Font fetches are bounded and exports fall back to the declared system fonts offline. Exported marks snapshot computed styles, including page-specific and responsive rules, with hover dimming removed. Nothing is set in a second face; hierarchy comes from size, weight, and the three inks.
+**Character:** One workhorse humanist sans at three weights (400, 600, 700), loaded from Google Fonts and embedded as woff2 into exported SVGs when the font service is available: each variable-font file once, and only the unicode subsets the figure's text uses. Font fetches are bounded and exports fall back to the declared system fonts offline. Exported marks snapshot computed styles, including page-specific and responsive rules, with hover dimming removed; a value is written once where it changes and inherited below. Nothing is set in a second face; hierarchy comes from size, weight, and the three inks.
 
 ### Hierarchy
 - **Title** (700, 22px / 1.375rem, 1.2, -0.01em, `text-wrap: balance`): the figure's H1, top-left. Drops to 19px (1.1875rem) under 640px.

@@ -96,7 +96,7 @@ Dependency-free Python helpers: strict JSON/calendar-date loading, missing-gende
 Serve the repository root with any static server:
 
 ```bash
-python -m http.server 8765 --bind 127.0.0.1
+python scripts/serve.py --port 8765
 ```
 
 Then visit <http://localhost:8765/>. Opening HTML directly from disk does not work because pages fetch their JSON data.

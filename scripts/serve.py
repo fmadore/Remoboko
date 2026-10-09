@@ -1,9 +1,9 @@
-"""Serve the repository for browser tests with platform-independent script MIME types.
+"""Serve the repository for previews and browser tests.
 
 ``python -m http.server`` asks the operating system for MIME types; Windows
 registries commonly map ``.mjs`` to ``text/plain``, which browsers refuse for
-module scripts. This server fixes the JavaScript types and is otherwise the
-standard library server with a deeper connection queue.
+module scripts. This standard-library server fixes the JavaScript types, asks
+browsers to revalidate edited files and accepts a deeper connection queue.
 """
 
 import argparse
@@ -20,6 +20,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         '.js': 'text/javascript',
         '.mjs': 'text/javascript',
     }
+
+    def end_headers(self):
+        # Revalidate every request so edited modules are never served stale.
+        self.send_header('Cache-Control', 'no-cache')
+        super().end_headers()
 
 
 class Server(http.server.ThreadingHTTPServer):

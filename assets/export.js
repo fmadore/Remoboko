@@ -11,47 +11,102 @@ const PRESENTATION = [
   'opacity', 'display', 'color', 'clip-path',
 ];
 
+// Properties that SVG descendants inherit; the others are written only when
+// they differ from their initial value.
+const NOT_INHERITED = { opacity: '1', display: 'inline', 'clip-path': 'none', 'vector-effect': 'none', 'dominant-baseline': 'auto' };
+const FONT_CSS_URL = 'https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap';
+const FONT_TIMEOUT = 5000;
+
 const svgElement = (name, attributes = {}) => {
   const node = document.createElementNS(SVG_NS, name);
   for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, String(value));
   return node;
 };
 
-let fontCssPromise;
-function fontFaceCss() {
-  if (fontCssPromise) return fontCssPromise;
-  fontCssPromise = (async () => {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    try {
-      const response = await fetch('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap', { signal: controller.signal });
-      if (!response.ok) throw new Error('Font stylesheet unavailable');
-      const blocks = (await response.text()).match(/@font-face\s*{[^}]*}/g) || [];
-      const downloads = new Map();
-      const faces = await Promise.all(blocks.map(async (block) => {
-        const url = block.match(/url\(['"]?(https:[^)'"\s]+)['"]?\)/)?.[1];
-        if (!url) return '';
-        if (!downloads.has(url)) {
-          downloads.set(url, (async () => {
-            const font = await fetch(url, { signal: controller.signal });
-            if (!font.ok) throw new Error('Font file unavailable');
-            const bytes = new Uint8Array(await font.arrayBuffer());
-            const chunks = [];
-            for (let i = 0; i < bytes.length; i += 32768) chunks.push(String.fromCharCode(...bytes.subarray(i, i + 32768)));
-            return `data:font/woff2;base64,${btoa(chunks.join(''))}`;
-          })());
-        }
-        return block.replace(/src:[^;]+;/, `src:url(${await downloads.get(url)}) format('woff2');`);
-      }));
-      return faces.join('\n');
-    } catch {
-      // The same system-font fallback remains available without a network.
-      return '';
-    } finally {
-      clearTimeout(timeout);
+function parseUnicodeRange(value) {
+  if (!value) return [[0, 0x10FFFF]];
+  return value.split(',').map((part) => {
+    const [start, end = start] = part.trim().replace(/^U\+/i, '').split('-');
+    return [parseInt(start.replace(/\?/g, '0'), 16), parseInt(end.replace(/\?/g, 'F'), 16)];
+  }).filter(([start, end]) => Number.isFinite(start) && Number.isFinite(end));
+}
+
+/**
+ * One entry per font file in a font-service stylesheet. A variable font is
+ * served once per requested weight from the same file; it is embedded once.
+ */
+export function fontFiles(css) {
+  const files = new Map();
+  for (const block of String(css || '').match(/@font-face\s*{[^}]*}/g) || []) {
+    const url = block.match(/url\(['"]?(https:[^)'"\s]+)['"]?\)/)?.[1];
+    if (!url) continue;
+    const property = (name) => block.match(new RegExp(`${name}\\s*:\\s*([^;}]+)`))?.[1].trim();
+    const weights = (property('font-weight') || '400').split(/\s+/).map(Number).filter(Number.isFinite);
+    if (!files.has(url)) {
+      const unicodeRange = property('unicode-range');
+      files.set(url, {
+        url, family: property('font-family'), style: property('font-style') || 'normal',
+        unicodeRange, ranges: parseUnicodeRange(unicodeRange), weights: [],
+      });
     }
-  })();
-  return fontCssPromise;
+    files.get(url).weights.push(...weights);
+  }
+  return [...files.values()].filter((file) => file.family && file.weights.length);
+}
+
+/** Files whose unicode-range covers at least one character of the exported text. */
+export function fontFilesForText(files, text) {
+  const codes = new Set([...String(text || '')].map((char) => char.codePointAt(0)));
+  return files.filter((file) => [...codes].some((code) => file.ranges.some(([start, end]) => code >= start && code <= end)));
+}
+
+export function fontFaceRule(file, source) {
+  const weight = `${Math.min(...file.weights)}${Math.max(...file.weights) > Math.min(...file.weights) ? ` ${Math.max(...file.weights)}` : ''}`;
+  return `@font-face{font-family:${file.family};font-style:${file.style};font-weight:${weight};`
+    + `src:url(${source}) format('woff2');${file.unicodeRange ? `unicode-range:${file.unicodeRange};` : ''}}`;
+}
+
+async function fetchBounded(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FONT_TIMEOUT);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`Font resource unavailable: ${url}`);
+    return response;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+let fontFilesPromise;
+const fontSources = new Map();
+
+function fontSource(url) {
+  if (!fontSources.has(url)) {
+    const source = (async () => {
+      const bytes = new Uint8Array(await (await fetchBounded(url)).arrayBuffer());
+      const chunks = [];
+      for (let i = 0; i < bytes.length; i += 32768) chunks.push(String.fromCharCode(...bytes.subarray(i, i + 32768)));
+      return `data:font/woff2;base64,${btoa(chunks.join(''))}`;
+    })();
+    fontSources.set(url, source);
+    source.catch(() => fontSources.delete(url));
+  }
+  return fontSources.get(url);
+}
+
+/** Embedded Source Sans 3 faces for the characters present in an export. */
+async function fontFaceCss(text) {
+  try {
+    fontFilesPromise ||= fetchBounded(FONT_CSS_URL).then((response) => response.text()).then(fontFiles);
+    const files = fontFilesForText(await fontFilesPromise, text);
+    const sources = await Promise.all(files.map((file) => fontSource(file.url)));
+    return files.map((file, index) => fontFaceRule(file, sources[index])).join('\n');
+  } catch {
+    // Retry on the next export; this one keeps the system-font fallback.
+    fontFilesPromise = null;
+    return '';
+  }
 }
 
 async function waitForDocumentFonts() {
@@ -184,15 +239,26 @@ function styledClone(svg, width, height) {
   document.body.append(stage);
   try {
     const nodes = [clone, ...clone.querySelectorAll('*')];
-    const values = nodes.map((node) => {
+    const values = new Map(nodes.map((node) => {
       const computed = window.getComputedStyle(node);
-      return PRESENTATION.map((property) => [property, computed.getPropertyValue(property)]);
-    });
-    nodes.forEach((node, index) => {
-      for (const [property, value] of values[index]) {
-        if (value) node.style.setProperty(property, value);
+      return [node, Object.fromEntries(PRESENTATION.map((property) => [property, computed.getPropertyValue(property)]))];
+    }));
+    // The root carries every value; descendants only what they do not inherit
+    // unchanged. A presentation attribute is always overridden, because the
+    // export has no stylesheet to correct it.
+    for (const node of nodes) {
+      const own = values.get(node);
+      const parent = node === clone ? null : values.get(node.parentElement);
+      for (const property of PRESENTATION) {
+        const value = own[property];
+        if (!value) continue;
+        if (parent && !node.hasAttribute(property)) {
+          const implied = Object.hasOwn(NOT_INHERITED, property) ? NOT_INHERITED[property] : parent[property];
+          if (value === implied) continue;
+        }
+        node.style.setProperty(property, value);
       }
-    });
+    }
   } finally {
     stage.remove();
   }
@@ -226,7 +292,6 @@ export async function exportableSvg(svg, { title = '', source = '' } = {}) {
     root.append(desc);
   }
   const style = svgElement('style');
-  style.textContent = await fontFaceCss();
   root.append(style, svgElement('rect', { width: totalW, height: totalH, fill: '#ffffff' }));
   appendLines(root, titleLines, { x: pad, y: pad + 18, size: 18, leading: 22, weight: 700, fill: '#1b1b1b' });
   appendLegend(root, legend, pad, pad + titleBand);
@@ -234,6 +299,9 @@ export async function exportableSvg(svg, { title = '', source = '' } = {}) {
   clone.setAttribute('y', pad + titleBand + legendBand);
   root.append(clone);
   appendLines(root, sourceLines, { x: pad, y: pad + titleBand + legendBand + height + 23, size: 11, leading: 14, weight: 400, fill: '#6f6f6f' });
+  // Embed only the font subsets that the visible text needs.
+  const text = [...root.querySelectorAll('text')].map((node) => node.textContent).join('');
+  style.textContent = await fontFaceCss(text);
   return { root, width: totalW, height: totalH };
 }
 

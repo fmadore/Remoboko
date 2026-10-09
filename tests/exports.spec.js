@@ -31,15 +31,24 @@ for (const [name, url, textSelector, markSelector] of CHARTS) {
       const figure = doc.querySelector('svg svg');
       const text = figure?.querySelector(textSelector);
       const mark = figure?.querySelector(markSelector);
+      // Exports write a value once and let descendants inherit it unchanged.
+      const effective = (node, property) => {
+        for (let current = node; current && current !== doc; current = current.parentNode) {
+          const value = current.style?.getPropertyValue(property);
+          if (value) return value;
+        }
+        return '';
+      };
       return {
         parseError: Boolean(doc.querySelector('parsererror')),
         width: Number(doc.documentElement.getAttribute('width')),
         height: Number(doc.documentElement.getAttribute('height')),
-        fontSize: text?.style.getPropertyValue('font-size'),
-        textFill: text?.style.getPropertyValue('fill'),
-        markFill: mark?.style.getPropertyValue('fill'),
+        fontSize: effective(text, 'font-size'),
+        textFill: effective(text, 'fill'),
+        markFill: effective(mark, 'fill'),
         text: doc.documentElement.textContent,
         hitAreas: doc.querySelectorAll('.rb-hit').length,
+        bytes: xml.length,
       };
     }, { xml: svgFile.bytes.toString('utf8'), textSelector, markSelector });
     expect(exported.parseError).toBe(false);

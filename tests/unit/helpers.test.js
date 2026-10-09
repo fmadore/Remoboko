@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 import { buildTable, renderActions, updateQueryState, availablePlotHeight } from '../../assets/remoboko.js';
-import { exportableSvg, tableToCSV, wrapExportText, layoutExportLegend } from '../../assets/export.js';
+import {
+  exportableSvg, tableToCSV, wrapExportText, layoutExportLegend, fontFiles, fontFilesForText, fontFaceRule,
+} from '../../assets/export.js';
 
 function withDOM(markup, run) {
   const dom = new JSDOM(markup, { url: 'https://example.org/figure.html?keep=value', pretendToBeVisual: true });
@@ -82,6 +84,54 @@ test('SVG export resolves page-specific styles and removes transient/interaction
     assert.equal(svg.style.visibility, 'hidden');
     assert.ok(svg.querySelector('.is-dim'));
     assert.equal(document.querySelectorAll('.rb-plot').length, 1);
+  } finally { globalThis.fetch = originalFetch; }
+}));
+
+test('font embedding keeps one face per file and only the subsets the text uses', () => {
+  const face = (subset, weight, range) => `/* ${subset} */\n@font-face {\n  font-family: 'Source Sans 3';\n  font-style: normal;\n`
+    + `  font-weight: ${weight};\n  src: url(https://fonts.example/${subset}.woff2) format('woff2');\n  unicode-range: ${range};\n}`;
+  const css = [400, 600, 700].flatMap((weight) => [
+    face('cyrillic', weight, 'U+0301, U+0400-045F'),
+    face('latin-ext', weight, 'U+0100-02BA, U+1E00-1E9F'),
+    face('latin', weight, 'U+0000-00FF, U+2000-206F'),
+  ]).join('\n');
+  const files = fontFiles(css);
+  const name = (file) => file.url.split('/').at(-1);
+  assert.deepEqual(files.map(name), ['cyrillic.woff2', 'latin-ext.woff2', 'latin.woff2']);
+  assert.deepEqual(files[2].weights, [400, 600, 700]);
+  assert.deepEqual(fontFilesForText(files, 'Lomé – 2025').map(name), ['latin.woff2']);
+  assert.deepEqual(fontFilesForText(files, 'Łódź').map(name), ['latin-ext.woff2', 'latin.woff2']);
+  assert.deepEqual(fontFilesForText(files, ''), []);
+  const rule = fontFaceRule(files[2], 'data:font/woff2;base64,AAAA');
+  assert.match(rule, /font-weight:400 700;/);
+  assert.match(rule, /unicode-range:U\+0000-00FF, U\+2000-206F;/);
+  assert.equal(fontFiles('@font-face { font-family: X; }').length, 0);
+});
+
+test('SVG export embeds each needed font file once and writes only values a node does not inherit', () => withDOM(`
+  <style>.mark{fill:rgb(1,2,3)} .label{font-size:12px}</style>
+  <div class="rb-plot"><svg width="120" height="60"><g class="mark"><rect class="bar" width="10" height="10"/><rect class="own" fill="red" width="5" height="5"/></g><text class="label">Lomé</text></svg></div>`, async (window) => {
+  const css = [400, 700].map((weight) => `@font-face { font-family: 'Source Sans 3'; font-style: normal; font-weight: ${weight}; src: url(https://fonts.example/latin.woff2) format('woff2'); unicode-range: U+0000-00FF; }`)
+    .concat(`@font-face { font-family: 'Source Sans 3'; font-style: normal; font-weight: 400; src: url(https://fonts.example/greek.woff2) format('woff2'); unicode-range: U+0370-03FF; }`).join('\n');
+  const requests = [];
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    requests.push(String(url));
+    return String(url).includes('fonts.googleapis.com') ? new Response(css) : new Response(new Uint8Array([1, 2, 3]));
+  };
+  window.HTMLCanvasElement.prototype.getContext = () => ({ measureText: (text) => ({ width: text.length * 7 }) });
+  try {
+    const { root } = await exportableSvg(document.querySelector('svg'), { title: 'Title', source: 'Source' });
+    const style = root.querySelector('style').textContent;
+    assert.equal((style.match(/@font-face/g) || []).length, 1);
+    assert.match(style, /font-weight:400 700;src:url\(data:font\/woff2;base64,AQID\)/);
+    assert.deepEqual(requests.filter((url) => url.endsWith('.woff2')), ['https://fonts.example/latin.woff2']);
+    const figure = root.querySelector('svg svg');
+    assert.equal(figure.querySelector('.mark').style.fill, 'rgb(1, 2, 3)');
+    assert.equal(figure.querySelector('.bar').style.fill, '', 'an unchanged inherited value is not repeated');
+    assert.notEqual(figure.querySelector('.own').style.fill, '', 'a presentation attribute is always overridden');
+    assert.equal(figure.querySelector('.label').style.fontSize, '12px');
+    assert.equal(figure.querySelector('.bar').style.opacity, '', 'initial non-inherited values are omitted');
   } finally { globalThis.fetch = originalFetch; }
 }));
 
