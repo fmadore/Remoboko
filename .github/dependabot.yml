@@ -13,6 +13,9 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # Requirement files keep wide ranges; only the exact pins in
+    # constraints-core.txt move with each release.
+    versioning-strategy: increase-if-necessary
     groups:
       python-figures:
         patterns: ["*"]

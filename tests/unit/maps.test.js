@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
-import { stableId, parseCoordinates, readPointFeatures, groupCollaborators, collaboratorRadius, safeProfileUrl, createMapView } from '../../assets/maps.js';
+import {
+  stableId, parseCoordinates, readPointFeatures, groupCollaborators, collaboratorRadius, safeProfileUrl, createMapView, overlappingGroups,
+} from '../../assets/maps.js';
 
 const readJSON = async (path) => JSON.parse(await readFile(new URL(`../../${path}`, import.meta.url), 'utf8'));
 
@@ -70,6 +72,18 @@ test('bubble areas are proportional to headcount and profile URLs only permit we
   assert.equal(safeProfileUrl('javascript:alert(1)'), null);
   assert.equal(safeProfileUrl('data:text/html,test'), null);
   assert.equal(safeProfileUrl('https://example.org/person'), 'https://example.org/person');
+});
+
+test('only same-country pins that would cover each other merge, and a selected place stays separate', () => {
+  const points = [
+    { id: 'a', country: 'Benin', x: 100, y: 100 }, { id: 'b', country: 'Benin', x: 110, y: 112 },
+    { id: 'c', country: 'Benin', x: 105, y: 95 }, { id: 'd', country: 'Togo', x: 102, y: 101 },
+    { id: 'e', country: 'Benin', x: 140, y: 100 },
+  ];
+  assert.deepEqual(overlappingGroups(points), [{ country: 'Benin', ids: ['a', 'b', 'c'] }]);
+  assert.deepEqual(overlappingGroups(points, { keep: 'a' }), [{ country: 'Benin', ids: ['b', 'c'] }]);
+  assert.deepEqual(overlappingGroups(points, { keep: 'b' }).map((group) => group.ids), [['a', 'c']]);
+  assert.deepEqual(overlappingGroups(points.slice(3)), [], 'one pin per country never forms a group');
 });
 
 test('navigation registers synchronous reduced-motion arrivals and cancels superseded callbacks', () => {

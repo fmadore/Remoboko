@@ -43,6 +43,7 @@ The interactive figures share small ES modules:
 | `tokens.js` | Country/categorical colours, basemaps and source attribution |
 | `data.js` | Strict calendar dates, normalization, counts and complete time periods |
 | `remoboko.js` | Data loading, controls, tooltips, tables and responsive figure helpers |
+| `chart.js` | Chart lifecycle: redraws on resize, font load and export, kept keyboard focus, tooltips, bar shapes |
 | `export.js` | Self-contained chart SVG/PNG exports, current-view metadata and CSV |
 | `maps.js` | Map data identities, validation, accessible fallback and shared map lifecycle |
 | `d3.js` | One pinned D3 import used by every chart |
@@ -74,7 +75,7 @@ Figures and data for the project's final report:
 | `collaborators_gender.html` + `.js` | The same collaborators by gender, as a proportion bar | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/collaborators_gender.html) |
 | `treemap_chart.html` + `.js` | 181 publications and activities by type, language and year | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html) |
 | `activities_type_over_time.html` + `.js` | The same outputs stacked by type, per quarter or per year | [Open ↗](https://fmadore.github.io/Remoboko/Final%20report/activities_type_over_time.html) |
-| `collaborators_gender.py` | `collaborators_gender.png` (+ `_white` variant), the print version | — |
+| `collaborators_gender.py` | `collaborators_gender.png` (+ `_white` variant), the print proportion bar | — |
 | `word_clouds.py` | `WordClouds/english_wordcloud.png` and `french_wordcloud.png` | — |
 
 ### `viz_common.py`
@@ -93,17 +94,17 @@ Dependency-free Python helpers: strict JSON/calendar-date loading, missing-gende
 
 ## Getting started
 
-Serve the repository root with any static server:
+Serve the repository root with any static server, for example the bundled one:
 
 ```bash
-python -m http.server 8765 --bind 127.0.0.1
+python scripts/serve.py --port 8765
 ```
 
 Then visit <http://localhost:8765/>. Opening HTML directly from disk does not work because pages fetch their JSON data.
 
 ### Tests and validation
 
-Use Node.js 22.13 or later. The browser suite covers desktop/phone Chromium, plus a focused Firefox/WebKit compatibility suite. It checks interactions, filtered exports, keyboard access, failure fallbacks, and iframe layouts.
+Use Node.js 22.22.2 or later. The browser suite covers desktop/phone Chromium, plus a focused Firefox/WebKit compatibility suite. It checks interactions, filtered exports, keyboard access, failure fallbacks, and iframe layouts.
 
 ```bash
 npm ci
@@ -112,7 +113,7 @@ npx playwright install chromium firefox webkit
 npm test
 ```
 
-Browser tests serve the pinned npm releases locally and replace external basemaps with an empty style. This checks our rendering and behavior independently of third-party availability; it does not certify that a remote tile service is online. Reports and failure traces are retained in CI.
+Browser tests serve the pinned npm releases locally and replace external basemaps with an empty style. This checks our rendering and behavior independently of third-party availability; it does not certify that a remote tile service is online. Playwright starts `scripts/serve.py`, the standard-library server with fixed JavaScript module MIME types (Windows otherwise serves `.mjs` as text). Reports and failure traces are retained in CI.
 
 Research-data validation uses only Python's standard library:
 
@@ -125,7 +126,7 @@ The six schemas in `schemas/` cover research JSON and the social-preview boundar
 
 ### Print figures
 
-Use Python 3.11 or later and a virtual environment. The core constraints capture the tested Python 3.12 Linux rendering environment; CI also exercises Python 3.11. They constrain core figure dependencies only, not the optional NLP pipeline.
+Use Python 3.12 or later and a virtual environment. The core constraints capture the tested Python 3.12 Linux rendering environment that CI uses. They constrain core figure dependencies only, not the optional NLP pipeline.
 
 ```bash
 python -m venv .venv

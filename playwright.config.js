@@ -23,7 +23,7 @@ export default defineConfig({
     reducedMotion: 'reduce',
   },
   webServer: {
-    command: 'python -m http.server 8765 --bind 127.0.0.1',
+    command: 'python scripts/serve.py --port 8765 --bind 127.0.0.1',
     url: 'http://127.0.0.1:8765/index.html',
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

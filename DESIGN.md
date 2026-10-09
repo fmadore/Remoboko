@@ -204,7 +204,7 @@ A white page, an ink ramp of three steps, and colour spent only on data from two
 **Body Font:** Source Sans 3 (same family)
 **Label/Mono Font:** none; numerals use `font-variant-numeric: tabular-nums` wherever they align.
 
-**Character:** One workhorse humanist sans at three weights (400, 600, 700), loaded from Google Fonts and embedded as woff2 into exported SVGs when the font service is available. Font fetches are bounded and exports fall back to the declared system fonts offline. Exported marks snapshot computed styles, including page-specific and responsive rules, with hover dimming removed. Nothing is set in a second face; hierarchy comes from size, weight, and the three inks.
+**Character:** One workhorse humanist sans at three weights (400, 600, 700), loaded from Google Fonts and embedded as woff2 into exported SVGs when the font service is available: each variable-font file once, and only the unicode subsets the figure's text uses. Font fetches are bounded and exports fall back to the declared system fonts offline. Exported marks snapshot computed styles, including page-specific and responsive rules, with hover dimming removed; a value is written once where it changes and inherited below. Nothing is set in a second face; hierarchy comes from size, weight, and the three inks.
 
 ### Hierarchy
 - **Title** (700, 22px / 1.375rem, 1.2, -0.01em, `text-wrap: balance`): the figure's H1, top-left. Drops to 19px (1.1875rem) under 640px.
@@ -242,7 +242,7 @@ The system is flat. Charts, tables, legends and the segmented control sit direct
 
 ## Shapes
 
-Corners are near-square. The base radius is 4px (tooltip, cards, popups, search input, segmented options, logo thumbnails); keys and focus rings use 2px; the segmented control's outer frame is 6px; the 48px university logo marker is 8px. Legend swatches are 12px squares with 2px corners, 12px dots for point marks, or 16 by 3px lines for line series. Bars are square at the baseline and rounded 4px at the data end only (clip-path), so the rounding reads as a mark end, not a pill. Map circles carry a 2px white stroke; timeline dots a 2px paper stroke; treemap cells a 2px paper stroke. Every rule is 1px and rendered with `shape-rendering: crispEdges`. Focus is a 2px ink outline offset 2px.
+Corners are near-square. The base radius is 4px (tooltip, cards, popups, search input, segmented options, logo thumbnails); keys and focus rings use 2px; the segmented control's outer frame is 6px; the 48px university logo marker is 8px. Legend swatches are 12px squares with 2px corners, 12px dots for point marks, or 16 by 3px lines for line series. Bars are square at the baseline and rounded 4px at the data end only (drawn as one path), so the rounding reads as a mark end, not a pill. Map circles carry a 2px white stroke; timeline dots a 2px paper stroke, and timeline labels sit on paper plates above the leader lines; treemap cells a 2px paper stroke. Every rule is 1px and rendered with `shape-rendering: crispEdges`. Focus is a 2px ink outline offset 2px.
 
 ## Components
 
@@ -279,7 +279,8 @@ Shared SVG classes carry the whole chart vocabulary: axis text in Small / ink-3 
 ### Map markers (signature)
 - **Pin**: 30 by 38px teardrop, body filled with the country colour via `--pin`, a white 16px Font Awesome type icon (mosque / church / school / university / landmark) centred in the head, Pin lift shadow, scales 1.12 on hover and focus from its tip.
 - **Logo marker**: 48px square, 8px radius, 2px white border, Float shadow, scales 1.08 on hover.
-- **Bubble**: MapLibre circle in Series Blue at 80% opacity (100% on hover), 2px white stroke, radius `7 * sqrt(n)` (area proportional to collaborator count); the legend's size key repeats the exact radii.
+- **Group badge**: where same-country pins would cover each other below zoom 16, one 30px circle in the country colour, 2px white ring, Float shadow, the count in Label 700 with readable ink. It is a button naming every place it holds; selecting it zooms to them and moves focus to the first pin. A searched or listed place always keeps its own pin. The legend's type key shows it as "Nearby places".
+- **Bubble**: MapLibre circle in Series Blue at 80% opacity (100% on hover), 2px white stroke, radius `7 * sqrt(n)` (area proportional to collaborator count); the legend's size key repeats the exact radii. Larger circles draw first, so smaller institutions stay visible on top.
 
 Motion across all components is one easing, `cubic-bezier(0.16, 1, 0.3, 1)`, at 120 to 150ms for state changes.
 

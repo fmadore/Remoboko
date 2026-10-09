@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Static HTML, CSS and ES-module JavaScript served from GitHub Pages, no build step. D3 (CDN) for charts, MapLibre GL (CDN) with OpenFreeMap vector styles for maps. Python stays only for print figures (matplotlib timelines, gender donut) and NLP word clouds.
+Static HTML, CSS and ES-module JavaScript served from GitHub Pages, no build step. D3 (CDN) for charts, MapLibre GL (CDN) with OpenFreeMap vector styles for maps. Python stays only for print figures (matplotlib timelines, gender proportion bar) and NLP word clouds.
 
 ## Users
 

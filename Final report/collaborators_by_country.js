@@ -2,9 +2,9 @@
 import * as d3 from '../assets/d3.js';
 import {
   SEQ_COLOR, SOURCE_LINE, loadJSON, createTooltip, renderActions, buildTable,
-  onResize, showEmpty, formatCount, measureText, prefersReducedMotion, availablePlotHeight,
+  showEmpty, formatCount, measureText, availablePlotHeight,
 } from '../assets/remoboko.js';
-
+import { createChart, bindTooltip, roundedBarPath } from '../assets/chart.js';
 import { normalizeCollaborators } from '../assets/data.js';
 
 const plot = document.getElementById('plot');
@@ -31,12 +31,11 @@ try {
   throw err;
 }
 
-const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
-let firstDraw = true;
+const chart = createChart(d3.select(plot).append('svg'));
+const { svg } = chart;
 
 function draw() {
   const width = plot.clientWidth;
-  if (!width) return;
   const narrow = width < 480;
   const n = rows.length;
 
@@ -49,7 +48,6 @@ function draw() {
   plot.style.minHeight = `${height}px`;
 
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
-  const focusedCountry = document.activeElement?.dataset.country;
   svg.selectAll('*').remove();
 
   const labelW = narrow ? 0 : Math.min(width * 0.42, d3.max(rows, (d) => measureText(svg, d.country, 'rb-cat-label')) + 14);
@@ -58,14 +56,15 @@ function draw() {
   const y = d3.scaleBand().domain(rows.map((d) => d.country)).range([0, height]).paddingInner(0);
   const barH = Math.min(24, narrow ? rowH - 24 : rowH - 8);
   const barY = (d) => (narrow ? y(d.country) + 20 : y(d.country) + (rowH - barH) / 2);
+  const barPath = (d, value = d.count) => roundedBarPath(0, barY(d), x(value), barH);
 
   const g = svg.append('g').attr('transform', `translate(${labelW},0)`);
 
   // Row-wide hit targets (bigger than the mark)
   const row = svg.append('g').attr('class', 'rows').selectAll('g').data(rows).join('g')
     .attr('transform', (d) => `translate(0,${y(d.country)})`);
-  row.append('rect').attr('class', 'rb-hit').attr('width', width).attr('height', rowH).attr('tabindex', 0)
-    .attr('data-country', (d) => d.country)
+  const hit = row.append('rect').attr('class', 'rb-hit').attr('width', width).attr('height', rowH).attr('tabindex', 0)
+    .attr('data-key', (d) => d.country)
     .attr('role', 'img').attr('aria-label', (d) => `${d.country}: ${d.count} ${d.count === 1 ? 'collaborator' : 'collaborators'}`);
 
   row.append('text').attr('class', 'rb-cat-label').attr('pointer-events', 'none')
@@ -75,21 +74,10 @@ function draw() {
     .attr('text-anchor', narrow ? 'start' : 'end')
     .text((d) => d.country);
 
-  const bars = g.selectAll('rect.rb-mark').data(rows).join('rect')
-    .attr('class', 'rb-mark')
-    .attr('x', 0).attr('y', barY).attr('height', barH)
-    .attr('rx', 0).attr('fill', SEQ_COLOR)
-    .attr('width', firstDraw && !prefersReducedMotion() ? 0 : (d) => x(d.count));
-
-  // 4px rounded data-end, square at the baseline: clip the right corners only.
-  const clipId = 'bar-ends';
-  const defs = svg.append('defs');
-  rows.forEach((d, i) => {
-    defs.append('clipPath').attr('id', `${clipId}-${i}`).append('rect')
-      .attr('x', -8).attr('y', barY(d)).attr('height', barH).attr('rx', 4).attr('ry', 4)
-      .attr('width', x(d.count) + 8);
-  });
-  bars.attr('clip-path', (d, i) => `url(#${clipId}-${i})`);
+  // Square at the baseline, 4px rounded at the data end.
+  const bars = g.selectAll('path.rb-mark').data(rows).join('path')
+    .attr('class', 'rb-mark').attr('fill', SEQ_COLOR)
+    .attr('d', (d) => barPath(d));
 
   const values = g.selectAll('text.rb-value').data(rows).join('text')
     .attr('class', 'rb-value')
@@ -97,35 +85,17 @@ function draw() {
     .attr('y', (d) => barY(d) + barH / 2).attr('dy', '0.35em')
     .text((d) => formatCount(d.count));
 
-  if (firstDraw && !prefersReducedMotion()) {
-    bars.transition().duration(700).delay((d, i) => i * 18).ease(d3.easeExpOut).attr('width', (d) => x(d.count));
+  if (chart.entrance) {
+    bars.attr('d', (d) => barPath(d, 0))
+      .transition().duration(700).delay((d, i) => i * 18).ease(d3.easeExpOut).attr('d', (d) => barPath(d));
     values.attr('opacity', 0).transition().duration(400).delay((d, i) => 300 + i * 18).attr('opacity', 1);
   }
-  firstDraw = false;
 
-  const hit = row.select('rect.rb-hit');
-  function show(event, d) {
-    const [px, py] = event.type.startsWith('focus') ? centre(event.target) : [event.clientX, event.clientY];
-    bars.classed('is-dim', (b) => b !== d);
-    tooltip.show({
-      title: d.country,
-      sub: `${formatCount(d.count)} ${d.count === 1 ? 'collaborator' : 'collaborators'}`,
-      list: d.names,
-    }, px, py);
-  }
-  function hide() {
-    bars.classed('is-dim', false);
-    tooltip.hide();
-  }
-  hit.on('pointerenter', show).on('pointermove', (event) => tooltip.move(event.clientX, event.clientY))
-    .on('pointerleave', hide).on('focus', show).on('blur', hide);
-  if (focusedCountry) hit.filter((d) => d.country === focusedCountry).node()?.focus();
-  actionView.refresh();
-}
-
-function centre(node) {
-  const r = node.getBoundingClientRect();
-  return [r.left + Math.min(r.width, 160), r.top + r.height / 2];
+  bindTooltip(hit, tooltip, {
+    content: (d) => ({ title: d.country, sub: `${formatCount(d.count)} ${d.count === 1 ? 'collaborator' : 'collaborators'}`, list: d.names }),
+    highlight: (d) => bars.classed('is-dim', (b) => d !== null && b !== d),
+    anchor: (box) => [box.left + Math.min(box.width, 160), box.top + box.height / 2],
+  });
 }
 
 const actionView = renderActions(actions, {
@@ -133,7 +103,7 @@ const actionView = renderActions(actions, {
   title: TITLE,
   source: SOURCE_LINE,
   plot,
-  getSvg: () => svg.node(),
+  getSvg: chart.node,
   buildTable: () => buildTable([
     { key: 'country', label: 'Country' },
     { key: 'count', label: 'Collaborators', numeric: true, format: formatCount },
@@ -141,5 +111,4 @@ const actionView = renderActions(actions, {
   ], rows, `${TITLE}. ${SOURCE_LINE}`),
 });
 
-document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
-onResize(plot, draw);
+chart.start(draw, { after: actionView.refresh });

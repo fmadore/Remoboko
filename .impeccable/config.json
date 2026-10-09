@@ -74,6 +74,33 @@
         ],
         "createdAt": "2026-09-14T05:46:42.165Z",
         "reason": "DESIGN.md Four Steps Rule: the 12/13/15/22px chart register is deliberate; the finish reviewer accepted it at the Datawrapper bar"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "tests/unit/**"
+        ],
+        "createdAt": "2026-10-09T19:53:15.972Z",
+        "reason": "Claude: unit-test fixtures use arbitrary literal styles to verify export behaviour; they are not page styling"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "*",
+        "files": [
+          "tests/unit/**"
+        ],
+        "createdAt": "2026-10-09T19:53:16.206Z",
+        "reason": "Claude: unit-test fixtures use arbitrary literal styles to verify export behaviour; they are not page styling"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          "tests/unit/**"
+        ],
+        "createdAt": "2026-10-09T19:53:16.436Z",
+        "reason": "Claude: unit-test fixtures use arbitrary literal styles to verify export behaviour; they are not page styling"
       }
     ]
   }

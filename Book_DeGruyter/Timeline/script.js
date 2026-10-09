@@ -5,9 +5,9 @@
 import * as d3 from '../../assets/d3.js';
 import {
   COUNTRY_COLORS, SOURCE_LINE, loadJSON, createTooltip, renderLegend, renderSegmented, renderActions,
-  buildTable, onResize, showEmpty, prefersReducedMotion, availablePlotHeight, updateQueryState,
+  buildTable, showEmpty, availablePlotHeight, updateQueryState,
 } from '../../assets/remoboko.js';
-
+import { createChart, bindTooltip } from '../../assets/chart.js';
 import { normalizeTimeline } from '../../assets/data.js';
 
 const plot = document.getElementById('plot');
@@ -18,8 +18,10 @@ const desc = document.getElementById('desc');
 const tooltip = createTooltip();
 const TITLE = 'Religion, education and politics in Togo and Benin, 1960–2010';
 const CATEGORIES = ['Religion', 'Education', 'Politics'];
+const LABEL_LEADING = 1.1; // em; three wrapped lines fit one 38px lane
 
 let events = [];
+let years = '';
 const initialCategory = new URLSearchParams(window.location.search).get('theme');
 let category = CATEGORIES.includes(initialCategory) ? initialCategory : 'All';
 
@@ -27,8 +29,9 @@ try {
   events = normalizeTimeline(await loadJSON('data.json'));
   if (!events.length) throw new Error('The timeline dataset is empty.');
   const [min, max] = d3.extent(events, (d) => d.date);
+  years = `${min.getUTCFullYear()}–${max.getUTCFullYear()}`;
   const byCountry = d3.rollup(events, (v) => v.length, (d) => d.country);
-  desc.textContent = `${events.length} events from the book, ${min.getUTCFullYear()}–${max.getUTCFullYear()}: Benin (${byCountry.get('Benin')}) above the axis, Togo (${byCountry.get('Togo')}) below.`;
+  desc.textContent = `${events.length} events from the book, ${years}: Benin (${byCountry.get('Benin')}) above the axis, Togo (${byCountry.get('Togo')}) below.`;
   plot.setAttribute('role', 'group');
   plot.setAttribute('aria-label', `Timeline of ${events.length} events in Togo and Benin between ${min.getUTCFullYear()} and ${max.getUTCFullYear()}.`);
 } catch (err) {
@@ -36,20 +39,29 @@ try {
   throw err;
 }
 
+const chart = createChart(d3.select(plot).append('svg'));
+const { svg } = chart;
+
 renderLegend(legendBox, ['Benin', 'Togo'].map((c) => ({ id: c, label: c, color: COUNTRY_COLORS[c], count: events.filter((e) => e.country === c).length })), { shape: 'dot' });
 renderSegmented(filterBox, [{ id: 'All', label: 'All themes' }].concat(CATEGORIES.map((c) => ({ id: c, label: c }))), {
   value: category,
   label: 'Theme',
-  onChange: (id) => { category = id; updateQueryState({ theme: id === 'All' ? null : id }); draw(); },
+  onChange: (id) => { category = id; updateQueryState({ theme: id === 'All' ? null : id }); chart.render(); },
 });
 
-const svg = d3.select(plot).append('svg').attr('role', 'group').attr('aria-label', 'Interactive chart; the table provides the same values');
 const formatDate = d3.utcFormat('%-d %B %Y');
 const shortDate = d3.utcFormat('%-d %b %Y');
-let firstDraw = true;
 
 function visibleEvents() {
   return category === 'All' ? events : events.filter((e) => e.category === category);
+}
+
+/** Five-year ticks; the spine ends at the last event, as in the print timeline. */
+function timeDomain() {
+  const [min, max] = d3.extent(events, (d) => d.date);
+  const start = new Date(Date.UTC(Math.floor(min.getUTCFullYear() / 5) * 5, 0, 1));
+  const tick = new Date(Date.UTC(Math.ceil(max.getUTCFullYear() / 5) * 5, 0, 1));
+  return [start, tick > max ? tick : max];
 }
 
 function wrap(textSel, width) {
@@ -70,7 +82,7 @@ function wrap(textSel, width) {
         tspan.text(line.join(' '));
         line = [word];
         lineNumber += 1;
-        tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', `${lineNumber * 1.15}em`).text(word);
+        tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', `${lineNumber * LABEL_LEADING}em`).text(word);
       }
       word = words.pop();
     }
@@ -79,77 +91,92 @@ function wrap(textSel, width) {
 
 function draw() {
   const width = plot.clientWidth;
-  if (!width) return;
-  const focusedId = document.activeElement?.dataset.eventId;
   svg.selectAll('*').remove();
   const data = visibleEvents();
   if (width < 640) drawVertical(data, width); else drawHorizontal(data, width);
-  firstDraw = false;
-  desc.textContent = `${data.length} ${category === 'All' ? '' : `${category.toLowerCase()} `}events from the book, 1960–2010. ${width < 640 ? 'Chronological list with country and date; spacing does not represent elapsed time.' : 'Benin above the axis, Togo below.'}`;
+  desc.textContent = `${data.length} ${category === 'All' ? '' : `${category.toLowerCase()} `}events from the book, ${years}. ${width < 640 ? 'Chronological list with country and date; spacing does not represent elapsed time.' : 'Benin above the axis, Togo below.'}`;
   plot.setAttribute('aria-label', `${viewTitle()}. ${data.length} events.`);
-  if (focusedId != null) svg.selectAll('g.event').filter((d) => String(d.id) === focusedId).node()?.focus();
-  actionView.refresh();
 }
 
 function drawHorizontal(data, width) {
-  const laneCount = 5;
-  const laneStep = 38;   // room for a three-line label inside its own lane
+  const minLanes = 5;
+  const laneStep = 38;   // room for a two-line label inside its own lane
   const laneBase = 22;
-  const margin = { top: 14, right: 60, bottom: 14, left: 60 };
-  const height = Math.max(availablePlotHeight(plot), margin.top + margin.bottom + 2 * (laneBase + laneCount * laneStep) + 8);
+  const labelWidth = Math.min(124, Math.max(96, (width - 120) / 8.5));
+  // The spine ends at the last event, so the right margin holds half a label.
+  const margin = { top: 14, right: Math.ceil(labelWidth / 2) + 4, bottom: 14, left: 60 };
+  const height = Math.max(availablePlotHeight(plot), margin.top + margin.bottom + 2 * (laneBase + minLanes * laneStep) + 8);
   plot.style.minHeight = `${height}px`;
   svg.attr('viewBox', `0 0 ${width} ${height}`).attr('width', width).attr('height', height);
 
-  const x = d3.scaleUtc().domain(d3.extent(events, (d) => d.date)).nice(d3.utcYear.every(5)).range([margin.left, width - margin.right]);
+  const x = d3.scaleUtc().domain(timeDomain()).range([margin.left, width - margin.right]);
   const axisY = height / 2;
-  const labelWidth = Math.min(124, Math.max(96, (width - margin.left - margin.right) / 8.5));
+  // Taller embeds get more lanes, up to eight per side, and so fewer crowded labels.
+  const laneCount = Math.max(minLanes, Math.min(8, Math.floor((axisY - margin.top - laneBase - 52) / laneStep) + 1));
   const minLabelGap = labelWidth + 6;
   const neighbourGap = 44;
 
-  // Country bands
-  svg.append('text').attr('class', 'axis-label').attr('x', margin.left).attr('y', margin.top - 2).text('Benin');
-  svg.append('text').attr('class', 'axis-label').attr('x', margin.left).attr('y', height - margin.bottom + 10).text('Togo');
+  // Country names head the two sides of the axis, left of its first year.
+  svg.append('text').attr('class', 'axis-label').attr('x', 0).attr('y', axisY - 10).text('Benin');
+  svg.append('text').attr('class', 'axis-label').attr('x', 0).attr('y', axisY + 19).text('Togo');
 
   const eventsLayer = svg.append('g');
 
-  // Lane assignment per side
-  const laneLastX = { Benin: new Array(laneCount).fill(-Infinity), Togo: new Array(laneCount).fill(-Infinity) };
-  function assignLane(country, xPos) {
-    const lanes = laneLastX[country];
-    const dist = (i) => (i < 0 || i >= lanes.length ? Infinity : xPos - lanes[i]);
-    // Prefer a lane whose neighbours are also clear, so labels step diagonally; when crowded, take the roomiest lane.
-    let lane = lanes.findIndex((last, i) => dist(i) >= minLabelGap && dist(i - 1) >= neighbourGap && dist(i + 1) >= neighbourGap);
-    if (lane === -1) lane = lanes.indexOf(Math.min(...lanes));
-    lanes[lane] = xPos;
+  // Lane assignment per side. A label of three or more lines reaches into
+  // the next lane outwards, so that lane must be clear for a full label width.
+  const emptyLane = () => ({ x: -Infinity, lines: 1 });
+  const laneLast = { Benin: Array.from({ length: laneCount }, emptyLane), Togo: Array.from({ length: laneCount }, emptyLane) };
+  function assignLane(country, xPos, lines) {
+    const lanes = laneLast[country];
+    const dist = (i) => (i < 0 || i >= lanes.length ? Infinity : xPos - lanes[i].x);
+    const tall = (count) => count >= 3;
+    // Room left in lane i: its own label gap and both neighbours' clearances.
+    const slack = (i) => Math.min(dist(i) - minLabelGap,
+      dist(i - 1) - (tall(lanes[i - 1]?.lines) ? minLabelGap : neighbourGap),
+      dist(i + 1) - (tall(lines) ? minLabelGap : neighbourGap));
+    // Overlapping area if lane i is used: a shared lane overlaps by a full
+    // label height, a tall neighbour's reach by a few pixels.
+    const short = (i) => Math.max(0, minLabelGap - dist(i));
+    const cost = (i) => short(i) * 30 + (tall(lanes[i - 1]?.lines) ? short(i - 1) * 6 : 0) + (tall(lines) ? short(i + 1) * 6 : 0);
+    // Prefer the innermost clear lane, so labels step diagonally; when crowded, overlap the least.
+    let lane = lanes.findIndex((last, i) => slack(i) >= 0);
+    if (lane === -1) lane = lanes.reduce((best, last, i) => (cost(i) < cost(best) ? i : best), 0);
+    lanes[lane] = { x: xPos, lines };
     return lane;
   }
 
   const groups = eventsLayer.selectAll('g.event').data(data, (d) => d.id).join('g')
     .attr('class', 'event')
     .attr('transform', (d) => `translate(${x(d.date)},${axisY})`)
-    .attr('tabindex', 0).attr('role', 'img').attr('data-event-id', (d) => d.id)
+    .attr('tabindex', 0).attr('role', 'img').attr('data-key', (d) => d.id)
     .attr('aria-label', (d) => `${formatDate(d.date)}, ${d.country}, ${d.category}: ${d.event}`);
 
+  // Leader lines sit beneath every label, so a crowded decade never strikes through text.
+  const leaders = eventsLayer.insert('g', ':first-child');
+  const plates = eventsLayer.insert('g', 'g.event');
   groups.each(function drawEvent(d) {
     const g = d3.select(this);
     const side = d.country === 'Benin' ? -1 : 1;
-    const lane = assignLane(d.country, x(d.date));
-    const labelY = side * (laneBase + lane * laneStep);
     const color = COUNTRY_COLORS[d.country] || '#888';
     // Dots sit just off the line on their country's side, so same-year events never overprint
-    g.append('line').attr('class', 'event-line').attr('y1', side * 4).attr('y2', labelY).attr('stroke', color).attr('stroke-opacity', 0.55);
     g.append('circle').attr('class', 'event-dot').attr('cy', side * 4).attr('r', 4.5).attr('fill', color);
     g.append('circle').attr('class', 'rb-hit').attr('cy', side * 4).attr('r', 14);
-    g.append('text').attr('class', 'event-text')
-      .attr('y', labelY + (side < 0 ? -6 - 11 : 13))
-      .attr('text-anchor', 'middle')
-      .text(d.event)
-      .call(wrap, labelWidth);
+    const text = g.append('text').attr('class', 'event-text').attr('text-anchor', 'middle').text(d.event).call(wrap, labelWidth);
+    const lines = text.selectAll('tspan').size();
+    const lane = assignLane(d.country, x(d.date), lines);
+    const labelY = side * (laneBase + lane * laneStep);
+    text.attr('y', labelY + (side < 0 ? -6 - 11 : 13)).selectAll('tspan').attr('y', labelY + (side < 0 ? -6 - 11 : 13));
     // Multi-line labels above the axis grow upwards: shift them so the last line sits by the leader
-    if (side < 0) {
-      const lines = g.select('text').selectAll('tspan').size();
-      g.select('text').attr('transform', `translate(0,${-(lines - 1) * 12.1})`);
-    }
+    const lineHeight = LABEL_LEADING * parseFloat(window.getComputedStyle(text.node()).fontSize);
+    if (side < 0) text.attr('transform', `translate(0,${-(lines - 1) * lineHeight})`);
+    // Paper plates, beneath every label, mask other events' leaders, including between words.
+    const box = text.node().getBBox();
+    plates.append('rect').attr('class', 'event-plate')
+      .attr('transform', `translate(${x(d.date)},${axisY}) ${text.attr('transform') || ''}`)
+      .attr('x', box.x - 2).attr('y', box.y).attr('width', box.width + 4).attr('height', box.height);
+    leaders.append('line').attr('class', 'event-line').datum(d)
+      .attr('transform', `translate(${x(d.date)},${axisY})`)
+      .attr('y1', side * 4).attr('y2', labelY).attr('stroke', color).attr('stroke-opacity', 0.55);
   });
 
   // Axis drawn last: year labels sit just below the line on white plates, over any leader lines
@@ -161,10 +188,12 @@ function drawHorizontal(data, width) {
       .attr('width', bbox.width + 8).attr('height', bbox.height + 2).attr('fill', '#fff');
   });
 
-  attachHover(groups);
+  attachHover(groups, leaders.selectAll('line'));
 
-  if (firstDraw && !prefersReducedMotion()) {
-    groups.attr('opacity', 0).transition().duration(500).delay((d, i) => i * 25).ease(d3.easeExpOut).attr('opacity', 1);
+  if (chart.entrance) {
+    for (const layer of [groups, leaders.selectAll('line')]) {
+      layer.attr('opacity', 0).transition().duration(500).delay((d, i) => i * 25).ease(d3.easeExpOut).attr('opacity', 1);
+    }
   }
 }
 
@@ -172,10 +201,10 @@ function drawVertical(data, width) {
   // A chronological list: measured rows keep long event names clear of their date/country.
   const margin = { top: 12, right: 8, bottom: 12, left: 30 };
   const lineX = 12;
-  const line = svg.append('line').attr('class', 'rb-grid')
-    .attr('x1', lineX).attr('x2', lineX).attr('y1', margin.top).attr('stroke', 'var(--rb-axis)');
+  const line = svg.append('line').attr('class', 'event-spine')
+    .attr('x1', lineX).attr('x2', lineX).attr('y1', margin.top);
   const groups = svg.append('g').selectAll('g.event').data(data, (d) => d.id).join('g')
-    .attr('class', 'event').attr('tabindex', 0).attr('role', 'img').attr('data-event-id', (d) => d.id)
+    .attr('class', 'event').attr('tabindex', 0).attr('role', 'img').attr('data-key', (d) => d.id)
     .attr('aria-label', (d) => `${formatDate(d.date)}, ${d.country}, ${d.category}: ${d.event}`);
   groups.append('rect').attr('class', 'rb-hit').attr('x', 0).attr('y', 0).attr('width', width);
   groups.append('circle').attr('class', 'event-dot').attr('cx', lineX).attr('cy', 13).attr('r', 5)
@@ -201,20 +230,14 @@ function drawVertical(data, width) {
   attachHover(groups);
 }
 
-function attachHover(groups) {
-  function show(event, d) {
-    const [px, py] = event.type.startsWith('focus')
-      ? (() => { const r = event.currentTarget.getBoundingClientRect(); return [r.left + r.width / 2, r.top]; })()
-      : [event.clientX, event.clientY];
-    groups.classed('is-dim', (o) => o !== d);
-    tooltip.show({ title: d.event, sub: `${formatDate(d.date)} · ${d.country}`, rows: [{ key: 'Theme', value: d.category }] }, px, py);
-  }
-  function hide() {
-    groups.classed('is-dim', false);
-    tooltip.hide();
-  }
-  groups.on('pointerenter', show).on('pointermove', (event) => tooltip.move(event.clientX, event.clientY))
-    .on('pointerleave', hide).on('focus', show).on('blur', hide);
+function attachHover(groups, leaders = null) {
+  bindTooltip(groups, tooltip, {
+    content: (d) => ({ title: d.event, sub: `${formatDate(d.date)} · ${d.country}`, rows: [{ key: 'Theme', value: d.category }] }),
+    highlight: (d) => {
+      groups.classed('is-dim', (o) => d !== null && o !== d);
+      leaders?.classed('is-dim', (o) => d !== null && o !== d);
+    },
+  });
 }
 
 function viewTitle() {
@@ -226,7 +249,7 @@ const actionView = renderActions(actions, {
   title: viewTitle,
   source: SOURCE_LINE,
   plot,
-  getSvg: () => svg.node(),
+  getSvg: chart.node,
   buildTable: () => buildTable([
     { key: 'date', label: 'Date', format: formatDate },
     { key: 'event', label: 'Event' },
@@ -235,5 +258,4 @@ const actionView = renderActions(actions, {
   ], visibleEvents(), `${viewTitle()}. ${SOURCE_LINE}`),
 });
 
-document.addEventListener('rb:prepare-export', () => { svg.selectAll('*').interrupt(); firstDraw = false; draw(); });
-onResize(plot, draw);
+chart.start(draw, { after: actionView.refresh });
