@@ -75,7 +75,10 @@ async function main() {
       tooltip.hide();
       if (!activeMap.getSource('collaborators')) activeMap.addSource('collaborators', { type: 'geojson', data: geojson });
       if (!activeMap.getLayer('collaborators-circles')) activeMap.addLayer({
-        id: 'collaborators-circles', type: 'circle', source: 'collaborators', paint: {
+        id: 'collaborators-circles', type: 'circle', source: 'collaborators',
+        // Larger institutions draw first, so overlapping smaller ones stay visible and selectable.
+        layout: { 'circle-sort-key': ['*', -1, ['get', 'count']] },
+        paint: {
           'circle-radius': ['get', 'r'], 'circle-color': SEQ_COLOR,
           'circle-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0.8],
           'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2,

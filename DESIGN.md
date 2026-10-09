@@ -279,7 +279,8 @@ Shared SVG classes carry the whole chart vocabulary: axis text in Small / ink-3 
 ### Map markers (signature)
 - **Pin**: 30 by 38px teardrop, body filled with the country colour via `--pin`, a white 16px Font Awesome type icon (mosque / church / school / university / landmark) centred in the head, Pin lift shadow, scales 1.12 on hover and focus from its tip.
 - **Logo marker**: 48px square, 8px radius, 2px white border, Float shadow, scales 1.08 on hover.
-- **Bubble**: MapLibre circle in Series Blue at 80% opacity (100% on hover), 2px white stroke, radius `7 * sqrt(n)` (area proportional to collaborator count); the legend's size key repeats the exact radii.
+- **Group badge**: where same-country pins would cover each other below zoom 16, one 30px circle in the country colour, 2px white ring, Float shadow, the count in Label 700 with readable ink. It is a button naming every place it holds; selecting it zooms to them and moves focus to the first pin. A searched or listed place always keeps its own pin. The legend's type key shows it as "Nearby places".
+- **Bubble**: MapLibre circle in Series Blue at 80% opacity (100% on hover), 2px white stroke, radius `7 * sqrt(n)` (area proportional to collaborator count); the legend's size key repeats the exact radii. Larger circles draw first, so smaller institutions stay visible on top.
 
 Motion across all components is one easing, `cubic-bezier(0.16, 1, 0.3, 1)`, at 120 to 150ms for state changes.
 

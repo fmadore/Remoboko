@@ -79,6 +79,24 @@ export function groupCollaborators(data) {
   return { places, unmapped, total: data.length };
 }
 
+/**
+ * Group same-country pins that would cover each other on screen. Points are
+ * {id, country, x, y} in pixels; `keep` (a selected place) always stays a pin.
+ */
+export function overlappingGroups(points, { width = 20, height = 26, keep = null } = {}) {
+  const pending = new Set(points.filter((point) => point.id !== keep));
+  const groups = [];
+  for (const seed of points) {
+    if (!pending.has(seed)) continue;
+    const members = [...pending].filter((point) => point.country === seed.country
+      && Math.abs(point.x - seed.x) < width && Math.abs(point.y - seed.y) < height);
+    if (members.length < 2) continue;
+    for (const member of members) pending.delete(member);
+    groups.push({ country: seed.country, ids: members.map((member) => member.id) });
+  }
+  return groups;
+}
+
 export function profileList(people) {
   return el('ul', { class: 'rb-people-list' }, people.map((person) => el('li', {},
     person.url ? el('a', { href: person.url, target: '_blank', rel: 'noopener noreferrer' }, person.name) : person.name)));

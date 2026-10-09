@@ -1,12 +1,14 @@
 // Both permanent points-of-interest URLs share this figure.
 import { COUNTRY_COLORS, OTHER_COLOR, loadJSON, el, iconSvg, renderLegend, makeCollapsible, buildTable } from '../../assets/remoboko.js';
-import { createMapView, readPointFeatures } from '../../assets/maps.js';
+import { createMapView, readPointFeatures, overlappingGroups } from '../../assets/maps.js';
+import { readableInk } from '../../assets/data.js';
 
 const TYPE_LABELS = {
   mosque: 'Mosque', church: 'Church or parish', school: 'School or lycée',
   university: 'University or institute', landmark: 'Campus landmark',
 };
 const normalise = (text) => text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+const SEPARATE_ZOOM = 16; // at this zoom every place keeps its own pin
 
 async function main() {
   let features;
@@ -33,7 +35,7 @@ async function main() {
     count: features.filter((feature) => feature.country === country).length,
   })), { shape: 'dot', onToggle: (country, visible) => {
     if (visible) visibleCountries.add(country); else visibleCountries.delete(country);
-    applyVisibility();
+    updatePins();
   } });
   const countryButtons = new Map();
   [...countryBox.querySelectorAll('.rb-key')].forEach((button, index) => {
@@ -42,25 +44,66 @@ async function main() {
   });
   legendCard.append(el('h2', {}, 'Country'), countryBox, el('h2', {}, 'Type'),
     el('ul', { class: 'rb-type-key', 'aria-label': 'Icon key' }, Object.entries(TYPE_LABELS)
-      .map(([type, label]) => el('li', {}, iconSvg(type), el('span', {}, label)))));
+      .map(([type, label]) => el('li', {}, iconSvg(type), el('span', {}, label)))
+      .concat(el('li', {}, el('span', { class: 'rb-cluster-key', 'aria-hidden': 'true' }, '3'), el('span', {}, 'Nearby places; select to zoom in')))));
   makeCollapsible(legendCard);
 
-  function applyVisibility() {
+  // Pins that would cover each other merge into one count per country until
+  // the map is zoomed in far enough; a selected place always keeps its pin.
+  let selectedId = null;
+  let groupMarkers = [];
+  function updatePins() {
+    const map = view.map;
+    if (!map) return;
+    const focusedGroup = document.activeElement?.closest?.('.rb-cluster')?.dataset.ids;
+    for (const marker of groupMarkers) marker.remove();
+    groupMarkers = [];
+    const shown = [...markers.values()].filter(({ feature }) => visibleCountries.has(feature.country));
+    const groups = map.getZoom() >= SEPARATE_ZOOM ? [] : overlappingGroups(shown.map(({ feature }) => {
+      const { x, y } = map.project([feature.lng, feature.lat]);
+      return { id: feature.id, country: feature.country, x, y };
+    }), { keep: selectedId });
+    const grouped = new Set(groups.flatMap((group) => group.ids));
     for (const { feature, element, marker } of markers.values()) {
-      const visible = visibleCountries.has(feature.country);
+      const visible = visibleCountries.has(feature.country) && !grouped.has(feature.id);
       element.hidden = !visible;
       if (!visible) marker.getPopup().remove();
     }
+    for (const group of groups) {
+      const places = group.ids.map((id) => markers.get(id).feature);
+      const color = COUNTRY_COLORS[group.country] || OTHER_COLOR;
+      const element = el('button', {
+        type: 'button', class: 'rb-cluster', dataset: { ids: group.ids.join(' '), count: String(places.length) },
+        'aria-label': `${places.length} nearby places in ${group.country}: ${places.map((place) => place.name).join('; ')}. Zoom in to show them.`,
+        title: `${places.length} places in ${group.country}; select to zoom in`,
+      }, el('span', { class: 'rb-cluster-badge', style: { '--pin': color, '--pin-ink': readableInk(color) } }, String(places.length)));
+      element.addEventListener('click', () => expand(places));
+      const lng = places.reduce((sum, place) => sum + place.lng, 0) / places.length;
+      const lat = places.reduce((sum, place) => sum + place.lat, 0) / places.length;
+      groupMarkers.push(new view.lib.Marker({ element }).setLngLat([lng, lat]).addTo(map));
+    }
+    // A redraw replaces group buttons: keep keyboard focus on the same group.
+    if (focusedGroup) groupMarkers.find((marker) => marker.getElement().dataset.ids === focusedGroup)?.getElement().focus();
+  }
+
+  /** Zoom to a group's places, then move keyboard focus to the first of them. */
+  function expand(places) {
+    for (const { marker } of markers.values()) marker.getPopup().remove();
+    view.fitPoints(places, { maxZoom: SEPARATE_ZOOM + 1, base: 40 });
+    const first = markers.get(places[0].id).element;
+    if (!first.hidden) first.focus();
+    else groupMarkers.find((marker) => marker.getElement().dataset.ids.split(' ').includes(places[0].id))?.getElement().focus();
   }
 
   function select(feature) {
     const entry = markers.get(feature.id);
     if (!entry) return;
+    selectedId = feature.id;
     if (!visibleCountries.has(feature.country)) {
       visibleCountries.add(feature.country);
       countryButtons.get(feature.country)?.setAttribute('aria-pressed', 'true');
-      applyVisibility();
     }
+    updatePins();
     input.value = feature.name;
     closeResults();
     for (const { marker } of markers.values()) marker.getPopup().remove();
@@ -152,12 +195,15 @@ async function main() {
     });
     markers.set(feature.id, { feature, marker, element });
   }
-  applyVisibility();
+  map.on('moveend', updatePins);
+  map.on('resize', updatePins);
   input.disabled = false;
   const local = features.filter((feature) => ['Benin', 'Togo'].includes(feature.country));
   const reset = () => {
+    selectedId = null;
     for (const { marker } of markers.values()) marker.getPopup().remove();
     view.fitPoints(local.length ? local : features, { maxZoom: 10 });
+    updatePins();
   };
   view.setReset(reset);
   reset();
@@ -165,7 +211,7 @@ async function main() {
 
 function pinElement(feature) {
   const wrap = el('button', {
-    type: 'button', class: 'rb-pin', style: { '--pin': COUNTRY_COLORS[feature.country] || OTHER_COLOR },
+    type: 'button', class: 'rb-pin', dataset: { id: feature.id }, style: { '--pin': COUNTRY_COLORS[feature.country] || OTHER_COLOR },
     'aria-label': `${feature.name}, ${TYPE_LABELS[feature.type]}, ${feature.country}`, title: feature.name,
   });
   const ns = 'http://www.w3.org/2000/svg';

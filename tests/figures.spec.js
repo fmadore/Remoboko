@@ -84,20 +84,45 @@ test('timeline draws 37 events and filters by theme', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+// Places shown as their own pin, or inside a badge grouping nearby places.
+const representedPlaces = (page) => page.evaluate(() => [...document.querySelectorAll('.rb-pin')].filter((pin) => !pin.hidden).length
+  + [...document.querySelectorAll('.rb-cluster')].reduce((sum, group) => sum + Number(group.dataset.count), 0));
+
 for (const [name, url] of [['locations map', PAGES.locations], ['points of interest', PAGES.pointsOfInterest]]) {
   test(`${name} places 33 pins with search and country toggles`, async ({ page }) => {
     const errors = trackErrors(page);
     await page.goto(url);
     await expect(page.locator('.rb-pin')).toHaveCount(33);
+    await expect.poll(() => representedPlaces(page)).toBe(33);
     await page.getByRole('combobox', { name: 'Search locations' }).fill('mosq');
     await expect(page.locator('#search-results li').first()).toContainText(/mosq/i);
     const toggle = page.locator('#legend-card .rb-card-toggle');
     if (await toggle.isVisible()) await toggle.click();
     await page.locator('#legend-card .rb-key', { hasText: 'Togo' }).click();
-    await expect(page.locator('.rb-pin:visible')).toHaveCount(33 - 14);
+    await expect.poll(() => representedPlaces(page)).toBe(33 - 14);
     expect(errors).toEqual([]);
   });
 }
+
+test('grouped nearby places expand into their own pins from the keyboard', async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto(PAGES.locations);
+  await expect(page.locator('#map')).toHaveAttribute('data-map-state', 'ready');
+  const group = page.locator('.rb-cluster').first();
+  await expect(group).toBeVisible();
+  const ids = (await group.getAttribute('data-ids')).split(' ');
+  await expect(group).toHaveAccessibleName(new RegExp(`^${ids.length} nearby places in`));
+  await group.focus();
+  await group.press('Enter');
+  const shownMembers = () => page.evaluate((members) => members.filter((id) => {
+    const pin = document.querySelector(`.rb-pin[data-id="${CSS.escape(id)}"]`);
+    return pin && !pin.hidden;
+  }).length, ids);
+  await expect.poll(shownMembers).toBeGreaterThan(0);
+  await expect(page.locator('.rb-pin:focus, .rb-cluster:focus')).toHaveCount(1);
+  await expect.poll(() => representedPlaces(page)).toBe(33);
+  expect(errors).toEqual([]);
+});
 
 test('universities map places four logos', async ({ page }) => {
   const errors = trackErrors(page);

@@ -362,6 +362,11 @@ button.rb-key:hover { color: var(--rb-ink); }
 .rb-pin svg { display: block; width: 100%; height: 100%; overflow: visible; transition: transform 0.15s var(--rb-ease); transform-origin: 50% 100%; }
 .rb-pin .pin-body { fill: var(--pin, var(--rb-ink-3)); }
 .rb-pin .pin-icon { fill: #fff; }
+/* Nearby places merged into one count per country; the button itself is positioned by MapLibre. */
+.rb-cluster { border: 0; padding: 0; background: none; cursor: pointer; }
+.rb-cluster-badge { display: grid; place-items: center; width: 30px; height: 30px; border: 2px solid #fff; border-radius: 50%; background: var(--pin, var(--rb-ink-3)); color: var(--pin-ink, #fff); font-size: var(--rb-fs-label); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; box-shadow: var(--rb-shadow); transition: transform 0.15s var(--rb-ease); }
+.rb-cluster:hover .rb-cluster-badge, .rb-cluster:focus-visible .rb-cluster-badge { transform: scale(1.1); }
+.rb-type-key .rb-cluster-key { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; background: var(--rb-ink-2); color: var(--rb-surface); font-size: var(--rb-fs-small); font-weight: 700; line-height: 1; justify-self: center; }
 .rb-logo-marker { width: 48px; height: 48px; border: 0; padding: 0; background: none; cursor: pointer; }
 .rb-logo-image { display: block; width: 100%; height: 100%; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: var(--rb-shadow); border: 2px solid #fff; transition: transform 0.15s var(--rb-ease); }
 .rb-logo-marker:hover .rb-logo-image, .rb-logo-marker:focus-visible .rb-logo-image { transform: scale(1.08); }
@@ -394,10 +399,11 @@ button.rb-key:hover { color: var(--rb-ink); }
   .rb-card--legend { max-height: 42%; max-width: 60vw; }
   .rb-search { width: min(60vw, 260px); }
   .rb-map-actions button, .rb-map-link, .rb-map-reset, .rb-card--legend .rb-key, .rb-uni-list button, .rb-search li { min-height: 42px; }
+  .rb-cluster { padding: 6px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rb-pin svg, .rb-logo-image { transition: none; }
+  .rb-pin svg, .rb-logo-image, .rb-cluster-badge { transition: none; }
 }
 
 .rb-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
