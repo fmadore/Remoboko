@@ -18,13 +18,13 @@ This is a static research publication: hand-written HTML/JavaScript on GitHub Pa
 # Local interactive figures
 python -m http.server 8765 --bind 127.0.0.1
 
-# Node >=22.13; pinned local libraries support network-independent browser tests
+# Node >=22.22.2; pinned local libraries support network-independent browser tests
 npm ci
 npm run check
 npx playwright install chromium firefox webkit
 npm test
 
-# Python >=3.11, in a virtual environment
+# Python >=3.12, in a virtual environment
 python -m pip install -r requirements-dev.txt -c constraints-core.txt
 ruff check .
 python scripts/validate_data.py

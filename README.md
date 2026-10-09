@@ -103,7 +103,7 @@ Then visit <http://localhost:8765/>. Opening HTML directly from disk does not wo
 
 ### Tests and validation
 
-Use Node.js 22.13 or later. The browser suite covers desktop/phone Chromium, plus a focused Firefox/WebKit compatibility suite. It checks interactions, filtered exports, keyboard access, failure fallbacks, and iframe layouts.
+Use Node.js 22.22.2 or later. The browser suite covers desktop/phone Chromium, plus a focused Firefox/WebKit compatibility suite. It checks interactions, filtered exports, keyboard access, failure fallbacks, and iframe layouts.
 
 ```bash
 npm ci
@@ -112,7 +112,7 @@ npx playwright install chromium firefox webkit
 npm test
 ```
 
-Browser tests serve the pinned npm releases locally and replace external basemaps with an empty style. This checks our rendering and behavior independently of third-party availability; it does not certify that a remote tile service is online. Reports and failure traces are retained in CI.
+Browser tests serve the pinned npm releases locally and replace external basemaps with an empty style. This checks our rendering and behavior independently of third-party availability; it does not certify that a remote tile service is online. Playwright starts `scripts/serve.py`, the standard-library server with fixed JavaScript module MIME types (Windows otherwise serves `.mjs` as text). Reports and failure traces are retained in CI.
 
 Research-data validation uses only Python's standard library:
 
@@ -125,7 +125,7 @@ The six schemas in `schemas/` cover research JSON and the social-preview boundar
 
 ### Print figures
 
-Use Python 3.11 or later and a virtual environment. The core constraints capture the tested Python 3.12 Linux rendering environment; CI also exercises Python 3.11. They constrain core figure dependencies only, not the optional NLP pipeline.
+Use Python 3.12 or later and a virtual environment. The core constraints capture the tested Python 3.12 Linux rendering environment that CI uses. They constrain core figure dependencies only, not the optional NLP pipeline.
 
 ```bash
 python -m venv .venv

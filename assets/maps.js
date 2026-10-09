@@ -173,7 +173,7 @@ export function createMapView({ style = 'detailed', featureCount = 0, headcount 
     };
     watchLoading();
     try {
-      const lib = await import('https://cdn.jsdelivr.net/npm/maplibre-gl@6.11.2/+esm');
+      const lib = await import('https://cdn.jsdelivr.net/npm/maplibre-gl@6.13.0/+esm');
       view.lib = lib;
       const map = new lib.Map({
         container, style: BASEMAPS[style].style, attributionControl: false,

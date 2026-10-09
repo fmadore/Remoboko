@@ -75,7 +75,7 @@ test('SVG export resolves page-specific styles and removes transient/interaction
     assert.equal(width, 232);
     assert.ok(height > 200);
     assert.equal(root.querySelector('.event-text').style.fontSize, '11px');
-    assert.equal(root.querySelector('.event-text').style.fill, 'rgb(20,30,40)');
+    assert.equal(root.querySelector('.event-text').style.fill, 'rgb(20, 30, 40)');
     assert.equal(root.querySelector('.event-dot').style.strokeWidth, '2px');
     assert.equal(root.querySelectorAll('.rb-hit, .is-dim, [tabindex]').length, 0);
     assert.notEqual(root.querySelector('svg').style.visibility, 'hidden');
